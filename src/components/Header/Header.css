@@ -1,0 +1,10 @@
+
+.navigation {
+    display: grid;
+    grid-template-columns: 300px 100px auto; /* Adjust this to change the number of items */
+    position: fixed;
+    top: 25px;
+    width: 50%;
+    justify-items: start; /* Align items to the start, change as needed */
+    gap: 0px; /* Space between grid items, adjust as needed */
+}
