@@ -1,4 +1,5 @@
 
+import Button from '../Button/Button'
 import './Register.css'
 
 export default function Register() {
@@ -23,6 +24,8 @@ export default function Register() {
             <input id='register-password' type='password' name='register-password' />
             <br />
             <br />
+
+            <Button onClick={() => alert('Test')}>Join</Button>
         </div>
     )
 }
