@@ -1,10 +1,19 @@
 
-.navigation {
+
+/* .navigation {
     display: grid;
-    grid-template-columns: 300px 100px auto; /* Adjust this to change the number of items */
+    grid-template-columns: 350px 100px 100px;
     position: fixed;
     top: 25px;
-    width: 50%;
-    justify-items: start; /* Align items to the start, change as needed */
-    gap: 0px; /* Space between grid items, adjust as needed */
+    left: 50%;
+    transform: translateX(-50%); 
+    width: 80%;
+    justify-items: start;
+ 
+} */
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
