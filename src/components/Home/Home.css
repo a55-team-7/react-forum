@@ -1,0 +1,20 @@
+#currentUsers-and-Post-content .container {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-items: center;
+    margin-top: 40px;
+}
+
+#recents-and-popular-content .container {
+    display: grid;
+    grid-template-columns: 100px auto;
+    justify-items: start;
+}
+
+
+#recents, #popular {
+    /* Adjust properties as needed */
+    margin-right: 10px; /* Add space between elements */
+}
+
+
