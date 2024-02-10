@@ -1,4 +1,5 @@
 
+import Button from '../Button/Button'
 import './Login.css'
 
 export default function Login () {
@@ -16,6 +17,8 @@ export default function Login () {
             <br />
             <label htmlFor='login-password'>Password:</label>
             <input id='login-password' type='password' name='login-password'/>
+
+            <Button onClick={() => alert('Test')}>Log In</Button>
         </div>
     )
 }
