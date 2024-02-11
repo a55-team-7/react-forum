@@ -68,19 +68,19 @@ const Register = () => {
             <Container>
 
                 <label htmlFor='register-first-name'>Full Name:</label>
-                <input value={`${form.name} ${form.lastName}`} onClick={updateForm('name')} id='register-first-name' type='text' name='register-first-name' />
+                <input value={`${form.name}${form.lastName}`} onChange={updateForm('name')} id='register-first-name' type='text' name='register-first-name' />
                 <br />
                 <br />
                 <label htmlFor='register-username'>Username:</label>
-                <input value={form.username} onClick={updateForm('username')} id='register-username' type='text' name='register-username' />
+                <input value={form.username} onChange={updateForm('username')} id='register-username' type='text' name='register-username' />
                 <br />
                 <br />
                 <label htmlFor='register-email'>Email:</label>
-                <input value={form.email} onClick={updateForm('email')} id='register-email' type='text' name='register-email' />
+                <input value={form.email} onChange={updateForm('email')} id='register-email' type='text' name='register-email' />
                 <br />
                 <br />
                 <label htmlFor='register-password'>Password:</label>
-                <input value={form.password} onClick={updateForm('username')} id='register-password' type='password' name='register-password' />
+                <input value={form.password} onChange={updateForm('password')} id='register-password' type='password' name='register-password' />
                 <br />
                 <br />
 
