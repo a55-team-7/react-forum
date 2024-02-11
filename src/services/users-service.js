@@ -1,5 +1,5 @@
 import { get, set, ref, query, equalTo, orderByChild } from "firebase/database";
-import { db } from "../config/firebase-config";
+import { db } from "../config/firebase-setup.js";
                                      //(hande='pesho') - give me everything which pesho contains
 export const getUserByHandle = async (handle) => { //search a user by email or name for example?
     return await get(ref(db, `users/${handle}`)); //we use references to access data in the database / it points to it
