@@ -23,11 +23,11 @@ export default function Login() {
         setForm({ ...form, [prop]: e.target.value });
       };
 
-      useEffect(() => {
-        if(user){
-            navigate(location.state?.from || '/home');
-        }
-        }, [user]);
+    //   useEffect(() => {
+    //     if(user){
+    //         navigate(location.state?.from.pathname || '/home');
+    //     }
+    //     }, [user]);
 
         const login = async () => {
             try{
@@ -46,11 +46,11 @@ export default function Login() {
                 <h2>Login:</h2>
                 <br />
                 <label htmlFor='login-email'>Email:</label>
-                <input value={form.email} onClick={updateForm('email')} id='login-email' type='text' name='login-email' />
+                <input value={form.email} onChange={updateForm('email')} id='login-email' type='text' name='login-email' />
                 <br />
                 <br />
                 <label htmlFor='login-password'>Password:</label>
-                <input value={form.password} onClick={updateForm('password')} id='login-password' type='password' name='login-password' />
+                <input value={form.password} onChange={updateForm('password')} id='login-password' type='password' name='login-password' />
 
             </Container>
             <Button onClick={login}>Sign In</Button>
