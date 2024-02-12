@@ -8,13 +8,31 @@ import AppContext from "./context/AppContext";
 import Recents from "./components/Recents/Recents";
 import './App.css'
 import Popular from "./components/Popular/Popular";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./config/firebase-setup.js";
+import { getUserData } from "./services/users-service";
+import { DataSnapshot } from "firebase/database";
 
 const App = () => {
   const [context, setContext] = useState({
     user: null,
     userData: null,
   }) //we will use this to share data between components [not implemented for now
+
+  const [user, loading, error] = useAuthState(auth); //this is a hook from firebase that will return the user, loading and error
+
+  useEffect(() => {
+    if(user){
+
+      getUserData(user.uid)
+      .then(snapshot =>{
+        if(snapshot.exists()){
+          setContext({user, userData: snapshot.val()[ Object.keys(snapshot.val())[0] ] });
+        }
+      })
+    }
+  },[user, loading, error]) //this will update the context when  the user changes
 
   return (
     <>
