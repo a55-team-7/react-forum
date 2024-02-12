@@ -9,7 +9,7 @@ export const getUserByHandle = async (handle) => { //search a user by email or n
 export const createUserHandle = (handle, uid, email, name, lastName) => { 
     return set(ref(db, `users/${handle}`), // we are using this function write or set data to a defined path in the database
         {                                              //null objects may be ignored
-            handle, uid, email, name, lastName, createdOn: new Date(), likedTweets: {} //here we are creating the user object with the handle, uid, email, createdOn and likedTweets
+            handle, uid, email, name, lastName, createdOn: new Date().valueOf(), likedTweets: {} //here we are creating the user object with the handle, uid, email, createdOn and likedTweets
                                                                        //and sending it to the database in the required path
         }
     );
