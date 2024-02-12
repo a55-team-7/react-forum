@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const Authenticated = ({children}) => {
     const user = useContext(AppContext);
-    const location = useLocation();
+    const location = useLocation(); 
 
     if(!user){
         return <Navigate replace to="/login" state={{from: location.pathname}} />
