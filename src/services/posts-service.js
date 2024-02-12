@@ -106,6 +106,18 @@ export const getPostsByMostComments = async () => {
 };
 */}
 
+{/*
+export const commentPost = async (postId, userHandle, comment) => {
+    const newCommentRef = push(ref(db, `posts/${postId}/comments`));
+    await update(newCommentRef, {
+        userHandle,
+        comment,
+        createdOn: Date.now(),
+    });
+};
+*/}
+
+
 export const likePost = (handle, postId) => {
     const updateLikes = {};
     updateLikes[`/posts/${postId}/likedBy/${handle}`] = true;
