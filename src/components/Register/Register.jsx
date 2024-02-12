@@ -52,7 +52,7 @@ const Register = () => {
             await createUserHandle(form.username, credentials.user.uid, form.email, form.name, form.lastName);
 
             //update the context
-            setContext({ user, userData: null }); 
+            setContext({ user, userData: null });  
             navigate('/home'); //redirect to the home page when the operations are finished
 
         } catch (err) {
