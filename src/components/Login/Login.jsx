@@ -23,11 +23,11 @@ export default function Login() {
         setForm({ ...form, [prop]: e.target.value });
       };
 
-    //   useEffect(() => {
-    //     if(user){
-    //         navigate(location.state?.from.pathname || '/home');
-    //     }
-    //     }, [user]);
+      useEffect(() => {
+        if(user){
+            navigate(location.state?.from.pathname || '/home');
+        }
+        }, [user]);
 
         const login = async () => {
             try{
