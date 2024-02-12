@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./config/firebase-setup.js";
 import { getUserData } from "./services/users-service";
-import { DataSnapshot } from "firebase/database";
 
 const App = () => {
   const [context, setContext] = useState({
