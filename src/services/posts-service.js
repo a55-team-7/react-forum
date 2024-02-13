@@ -12,20 +12,23 @@ export const addPost = async (author, content, title) => {
 
 }
 
-export const getAllPost = async (search) => {   //this function can show all posts by sreation order , but it can also filter posts by title (for now)
+export const getAllPost = async () => {   //this function can show all posts by sreation order , but it can also filter posts by title (for now)
     const snapshot = await get(query(ref(db, 'posts'), orderByChild('createdOn')));
 
     if (!snapshot.exists()) {
         return [];
     }
 
-    const posts = Object.keys(snapshot.val().map((key => ({
+    console.log(Object.values(snapshot.val()));
+    console.log(Object.keys(snapshot.val()));
+
+    const posts = Object.keys(snapshot.val()).map((key => ({
         id: key, //the key
         ...snapshot.val()[key], //console.log  //the key value pairs of this id object
         createdOn: new Date(snapshot.val()[key].createdOn).toString(),
         likedBy: snapshot.val().likedBy ? Object.keys(snapshot.val().likedBy) : [],
-    }))))
-        .filter(post => post.title.toLowerCase().includes(search.toLowerCase()));
+    })))
+        // .filter(post => post.title.toLowerCase().includes(search.toLowerCase()));
 
     return posts;
 }
