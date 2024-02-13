@@ -1,4 +1,4 @@
-import { get, set, ref, query, equalTo, orderByChild } from "firebase/database";
+import { get, set, ref, query, equalTo, orderByChild, update } from "firebase/database";
 import { db } from "../config/firebase-setup.js";
                                      //(hande='pesho') - give me everything which pesho contains
 export const getUserByHandle = async (handle) => { //search a user by email or name for example?
@@ -21,3 +21,26 @@ export const getUserData = async (uid) => {  //retrieve data for a single user b
     const userRef = (query(ref(db, 'users'), orderByChild('uid'), equalTo(uid))); 
     return await get(userRef); // we are getting the query object we received
 }
+
+//make someone admin 
+export const makeUserAdmin = async (uid) => {
+  const userRef = ref(db, `users/${uid}`);
+  await update(userRef, 
+    { isAdmin: true });
+};
+
+//an example function that will allow admin actions (a test for now)
+export const performAdminAction = async (userId, db) => {
+    const userRef = ref(db, `users/${userId}`);
+    const snapshot = await get(userRef);
+    if (snapshot.val().isAdmin) {
+      // Perform the admin action
+    } else {
+      // Deny the action
+    }
+  };
+
+  export const removeAdminRights = async (uid) => {
+    const userRef = ref(db, `users/${uid}`);
+    await update(userRef, { isAdmin: false });
+  };
