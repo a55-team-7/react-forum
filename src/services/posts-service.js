@@ -1,4 +1,4 @@
-import { get, ref, query, equalTo, orderByChild, update, push } from "firebase/database";
+import { get, ref, query, equalTo, orderByChild, update, push, remove } from "firebase/database";
 import { db } from "../config/firebase-setup";
 
 export const addPost = async (author, content, title) => {
@@ -63,6 +63,13 @@ export const getPostByAuthor = async (author) => {
 
     return post;
 };
+
+//admin only / except for the user's own posts
+export const deletePost = async (id) => {
+    const postRef = ref(db, `posts/${id}`);
+    await remove(postRef);
+};
+
 
 {/* 
 export const getPostsByMostLikes = async () => {
