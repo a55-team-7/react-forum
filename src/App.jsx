@@ -15,6 +15,7 @@ import { getUserData } from "./services/users-service";
 import CreatePost from "./components/CreatePost/CreatePost.jsx";
 import PostDetails from "./components/Post Details/PostDetails.jsx";
 import UserPage from "./components/UserPage/UserPage.jsx";
+import AllPosts from "./components/AllPosts/AllPosts.jsx";
 
 const App = () => {
   const [context, setContext] = useState({
@@ -56,6 +57,7 @@ const App = () => {
             <Route path="recents" element={<Recents />} />
             <Route path="popular" element={<Popular />} />
             <Route path="create-post" element={<CreatePost />} />
+            <Route path="my-posts" element={<AllPosts />} />
             <Route path="users/:handle" element={<UserPage />} />
             <Route path="/posts/:id" element={<PostDetails />} />
             <Route path="*" element={<NotFound />} />
