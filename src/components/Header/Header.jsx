@@ -18,6 +18,7 @@ export default function Header() {
             {/*<h2>How to keep my sanity during Telerik Alpha? Forum</h2>*/}
             <div className='navigation'>
                 <NavLink to="/home">ReadIT</NavLink>
+                <NavLink to="/posts/-NqWtfEVY4vVVMz82z2A">Test Post Details</NavLink>
 
                 {/*if the user is not logged in or logged in*/}
                 {user

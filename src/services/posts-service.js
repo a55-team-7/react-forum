@@ -113,7 +113,7 @@ export const getPostsByMostComments = async () => {
 };
 */}
 
-{/*
+
 export const commentPost = async (postId, userHandle, comment) => {
     const newCommentRef = push(ref(db, `posts/${postId}/comments`));
     await update(newCommentRef, {
@@ -122,7 +122,6 @@ export const commentPost = async (postId, userHandle, comment) => {
         createdOn: Date.now(),
     });
 };
-*/}
 
 
 export const likePost = (handle, postId) => {

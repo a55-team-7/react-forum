@@ -12,6 +12,9 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./config/firebase-setup.js";
 import { getUserData } from "./services/users-service";
+import CreatePost from "./components/CreatePost/CreatePost.jsx";
+import PostDetails from "./components/Post Details/PostDetails.jsx";
+import UserPage from "./components/UserPage/UserPage.jsx";
 
 const App = () => {
   const [context, setContext] = useState({
@@ -52,6 +55,9 @@ const App = () => {
                Logout???*/}
             <Route path="recents" element={<Recents />} />
             <Route path="popular" element={<Popular />} />
+            <Route path="create-post" element={<CreatePost />} />
+            <Route path="users/:handle" element={<UserPage />} />
+            <Route path="/posts/:id" element={<PostDetails />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppContext.Provider>
