@@ -1,4 +1,4 @@
-import { get, set, ref, query, equalTo, orderByChild, update } from "firebase/database";
+import { get, set, ref, query, equalTo, orderByChild, update, remove } from "firebase/database";
 import { db } from "../config/firebase-setup.js";
                                      //(hande='pesho') - give me everything which pesho contains
 export const getUserByHandle = async (handle) => { //search a user by email or name for example?
@@ -40,7 +40,27 @@ export const performAdminAction = async (userId, db) => {
     }
   };
 
+  //remove admin rights
   export const removeAdminRights = async (uid) => {
     const userRef = ref(db, `users/${uid}`);
     await update(userRef, { isAdmin: false });
   };
+
+  //remove yours, or someone else's account
+  export const deleteAccount = async (uid) => {
+    const userRef = ref(db, `users/${uid}`);
+    await remove(userRef);
+  };
+
+
+  //block a user
+  export const blockUser = async (uid) => {
+    const userRef = ref(db, `users/${uid}`);
+    await update(userRef, { isBlocked: true });
+  };
+
+    //unblock a user
+    export const unblockUser = async (uid) => {
+      const userRef = ref(db, `users/${uid}`);
+      await update(userRef, { isBlocked: false });
+    };
