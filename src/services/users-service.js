@@ -5,7 +5,7 @@ export const getUserByHandle = async (handle) => { //search a user by email or n
   const snapshot = await get(ref(db, `users/${handle}`)); //we use references to access data in the database / it points to it
 
   if (!snapshot.exists()) {
-    return [];
+    return null;
   }
 
   const user = {
@@ -18,10 +18,10 @@ export const getUserByHandle = async (handle) => { //search a user by email or n
 }
 
 //we want to add value to the handle object , which is in the users object in this case
-export const createUserHandle = (handle, uid, email, name, lastName) => {
+export const createUserHandle = (handle, uid, email, firstName, lastName) => {
   return set(ref(db, `users/${handle}`), // we are using this function write or set data to a defined path in the database
     {                                              //null objects may be ignored
-      handle, uid, email, name, lastName, createdOn: new Date().valueOf(), likedTweets: {} //here we are creating the user object with the handle, uid, email, createdOn and likedTweets
+      handle, uid, email, firstName, lastName, createdOn: new Date().valueOf(), likedTweets: {} //here we are creating the user object with the handle, uid, email, createdOn and likedTweets
       //and sending it to the database in the required path
     }
   );

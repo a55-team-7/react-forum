@@ -29,11 +29,11 @@ export default function UserPage() {
                 <>
 
                     <h2>User: {user.handle}</h2>
-                    <h3>Name: {user.name} {user.lastName}</h3>
+                    <h3>Name: {user.firstName} {user.lastName}</h3>
                     <h3>Email: {user.email}</h3>
                     {user.profilePicture ? user.profilePicture : <Button id='upload-profile-picture-button' onClick>Upload Profile Picture</Button>}
                     <h2>Posts by {user.handle}:</h2>
-                    {userPosts ? userPosts.map((post, index) => <Post key={index} post={post} />) : <p>{user.handle} has no posts</p>}
+                    {userPosts.length ? userPosts.map((post, index) => <Post key={index} post={post} />) : <p>{user.handle} has no posts</p>}
                 </>
             ) : (
                 <p>Loading...</p>

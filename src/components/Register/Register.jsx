@@ -12,7 +12,7 @@ import Container from '../Container/Container';
 const Register = () => {
     const { setContext } = useContext(AppContext);
     const [form, setForm] = useState({
-        name: '',
+        firstName: '',
         lastName: '',
         username: '',
         email: '',
@@ -21,40 +21,49 @@ const Register = () => {
 
     const navigate = useNavigate();
 
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
     const updateForm = prop => e => {
-        if (prop === 'name') {
-            const [name, lastName = ''] = e.target.value.split(' ');
-            setForm({
-                ...form,
-                name,
-                lastName
-            });
-        }
-        else {
-            setForm({
-                ...form,
-                [prop]: e.target.value
-            });
-        }
+        setForm({
+            ...form,
+            [prop]: e.target.value
+        });
     }
 
     const register = async () => {
         try {
+            //input constraints validation
+            if (form.firstName.length < 4 || form.firstName.length > 32) {
+                alert('Your first name should be between 4 and 32 symbols');
+            }
+            if (form.lastName.length < 4 || form.lastName.length > 32) {
+                alert('Your last name should be between 4 and 32 symbols');
+            }
+            if (!emailRegex.test(form.email)) {
+                alert('Please enter a valid email');
+            }
 
             //check if the user is already registered
             const user = await getUserByHandle(form.username);
-            if (user.exists()) {
-                return console.log('User already exists');
+            if (user) {
+                alert('User already exists');
+            } else {
+                try {
+                    //register the user in Firebase Authentication and in our database
+                    const credentials = await registerUser(form.email, form.password);
+                    await createUserHandle(form.username, credentials.user.uid, form.email, form.firstName, form.lastName);
+
+                } catch (err) {
+                    if (err.message === 'Firebase: Error (auth/email-already-in-use).') {
+                        alert('email already in use');
+                        return;
+                    }
+                }
+
+                //update the context
+                setContext({ user, userData: null });
+                navigate('/home'); //redirect to the home page when the operations are finished
             }
-
-            //register the user in Firebase Authentication and in our database
-            const credentials = await registerUser(form.email, form.password);
-            await createUserHandle(form.username, credentials.user.uid, form.email, form.name, form.lastName);
-
-            //update the context
-            setContext({ user, userData: null });  
-            navigate('/home'); //redirect to the home page when the operations are finished
-
         } catch (err) {
             console.log(err.message);
         }
@@ -67,8 +76,12 @@ const Register = () => {
                 IT lifestyle forum in the world!</h3>
             <Container>
 
-                <label htmlFor='register-first-name'>Full Name:</label>
-                <input value={`${form.name}${form.lastName}`} onChange={updateForm('name')} id='register-first-name' type='text' name='register-first-name' />
+                <label htmlFor='register-first-name'>First Name:</label>
+                <input value={form.firstName} onChange={updateForm('firstName')} id='register-first-name' type='text' name='register-first-name' />
+                <br />
+                <br />
+                <label htmlFor='register-last-name'>Last Name:</label>
+                <input value={form.lastName} onChange={updateForm('lastName')} id='register-last-name' type='text' name='register-last-name' />
                 <br />
                 <br />
                 <label htmlFor='register-username'>Username:</label>

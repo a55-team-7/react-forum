@@ -31,7 +31,7 @@ export default function Header() {
                     ? (
                         <>
                             {/* Search Bar */}
-                            {`Welcome, ${userData?.name}`}
+                            {`Welcome, ${userData?.firstName}`}
                             {/*profile pic with ptofile component */}
                             <Button onClick={logOut}>Logout</Button>
                             <NavLink to={userPageLink}>User Page</NavLink>
