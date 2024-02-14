@@ -1,8 +1,8 @@
 import Post from '../Post/Post';
 import { useEffect, useState } from 'react';
 import { getAllPost } from '../../services/posts-service';
-import Container from '../Container/Container';
-import './AllPosts.css';
+//import Container from '../Container/Container';
+//import './AllPosts.css';
 
 const AllPosts = () => {
   const [posts, setPosts] = useState([]);
