@@ -19,8 +19,8 @@ export const getAllPost = async () => {   //this function can show all posts by 
         return [];
     }
 
-    console.log(Object.values(snapshot.val()));
-    console.log(Object.keys(snapshot.val()));
+    // console.log(Object.values(snapshot.val()));
+    // console.log(Object.keys(snapshot.val()));
 
     const posts = Object.keys(snapshot.val()).map((key => ({
         id: key, //the key
