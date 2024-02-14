@@ -1,0 +1,34 @@
+#post-container  {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 20px;
+    border: 1px solid #5900ff;
+    flex-direction: column;
+    border-radius: 10px;
+    padding-left: 35px;
+    width: 850px;
+}
+
+#likes-comments-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+    align-items: start;
+}
+
+#content-container{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #5900ff;
+    border-radius: 10px;
+    width: 650px;
+}
+
+#post-header-container{
+   display: grid;
+    grid-template-columns: 700px auto;
+    margin-top: 10px;
+}
