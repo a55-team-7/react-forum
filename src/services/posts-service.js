@@ -135,7 +135,7 @@ export const likePost = (handle, postId) => {
     return update(ref(db), updateLikes);
 };
 
-export const dislikeTweet = (handle, postId) => {
+export const dislikePost = (handle, postId) => {
     const updateLikes = {};
     updateLikes[`/posts/${postId}/likedBy/${handle}`] = null;
     updateLikes[`/users/${handle}/likedPost/${postId}`] = null;

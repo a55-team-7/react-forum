@@ -5,6 +5,7 @@ import { commentPost, getPostById } from "../../services/posts-service";
 import Comment from "../Comment/Comment";
 import Button from "../Button/Button";
 import AppContext from "../../context/AppContext";
+import { dislikePost, likePost } from "../../services/posts-service";
 
 export default function PostDetails() {
     const [post, setPost] = useState(null);
@@ -25,6 +26,15 @@ export default function PostDetails() {
     //     togglePostLike(userData.handle, post.id);
     //   };
 
+    const togglePostLike = async () => {
+        if (post.likedBy.includes(userData.handle)) {
+            await dislikePost(userData.handle, post.id);
+        } else {
+            await likePost(userData.handle, post.id);
+        }
+        getPostById(id).then(setPost);
+    };
+
     const postComment = async () => {
         if (!commentText) {
             alert('write something down to comment');
@@ -42,7 +52,7 @@ export default function PostDetails() {
                     <h2>{post.title}</h2>
                     <p>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</p>
                     <p>{post.content}</p>
-                    <Button onClick={postComment}>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
+                    <Button onClick={togglePostLike}>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
                     <h3>Comments:</h3>
                     {post.comments ? Object.values(post.comments).map((comment, index) => (
                         <Comment key={index} comment={comment} />
