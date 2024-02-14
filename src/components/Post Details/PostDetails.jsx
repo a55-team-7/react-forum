@@ -42,7 +42,7 @@ export default function PostDetails() {
                     <h2>{post.title}</h2>
                     <p>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</p>
                     <p>{post.content}</p>
-                    <Button onClick>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
+                    <Button>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
                     <h3>Comments:</h3>
                     {post.comments ? Object.values(post.comments).map((comment, index) => (
                         <Comment key={index} comment={comment} />

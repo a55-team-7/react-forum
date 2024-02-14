@@ -13,7 +13,7 @@ export default function Comment ({comment}) {
 Comment.propTypes = {
     comment: PropTypes.shape({
         userHandle: PropTypes.string,
-        createdOn: PropTypes.string,
+        createdOn: PropTypes.number,
         comment: PropTypes.string,
     })
 }

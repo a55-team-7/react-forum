@@ -13,6 +13,11 @@ export default function Header() {
         await logoutUser();
         setContext({user: null, userData: null});
     }
+
+    let userPageLink = '/users/';
+    if (userData) {
+        userPageLink += userData.handle;
+    }
     return (
         <>
             {/*<h2>How to keep my sanity during Telerik Alpha? Forum</h2>*/}
@@ -28,6 +33,7 @@ export default function Header() {
                             {`Welcome, ${userData?.name}`}
                             {/*profile pic with ptofile component */}
                             <Button onClick={logOut}>Logout</Button>
+                            <NavLink to={userPageLink}>User Page</NavLink>
                         </>
                     )
                     : (<>

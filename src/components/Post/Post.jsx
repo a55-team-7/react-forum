@@ -8,7 +8,7 @@ const Post = ( {post} ) => {
             <p>Author: {post.author}</p>
             <p>Content: {post.content}</p>
             <p>Created on: {post.createdOn}</p>
-            <p>Comments: {post.comments.length}</p>
+            <p>Comments: {post.comments ? Object.values(post.comments).length : 0}</p>
         </div>
     )
 };
