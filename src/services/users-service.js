@@ -1,5 +1,7 @@
 import { get, set, ref, query, equalTo, orderByChild, update, remove } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db } from "../config/firebase-setup.js";
+
 //(hande='pesho') - give me everything which pesho contains
 export const getUserByHandle = async (handle) => { //search a user by email or name for example?
   const snapshot = await get(ref(db, `users/${handle}`)); //we use references to access data in the database / it points to it
@@ -76,3 +78,60 @@ export const unblockUser = async (uid) => {
   const userRef = ref(db, `users/${uid}`);
   await update(userRef, { isBlocked: false });
 };
+
+//upload profile picture by user handle
+export const uploadProfilePictureByHandle = async (handle, file) => {
+  const storage = getStorage();
+  const profilePictureStorageRef = storageRef(storage, 'profilePictures/' + handle + '.jpg');
+
+  let contentType;
+  switch (file.name.split('.').pop()) {
+    case 'png':
+      contentType = 'image/png';
+      break;
+    case 'jpg':
+    case 'jpeg':
+      contentType = 'image/jpeg';
+      break;
+    default:
+      contentType = 'application/octet-stream'; // Fallback to binary data
+  }
+
+  const metadata = {
+    contentType
+  };
+
+  const uploadTask = uploadBytesResumable(profilePictureStorageRef, file, metadata);
+
+  uploadTask.on('state_changed',
+    (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log('Upload is ' + progress + '% done');
+    },
+    (error) => {
+      console.log('Upload failed', error);
+    },
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        console.log('File available at', downloadURL);
+      });
+    }
+  );
+}
+
+export const getProfilePictureByHandle = async (handle) => {
+  const storage = getStorage();
+  const profilePictureStorageRef = storageRef(storage, 'profilePictures/' + handle + '.jpg');
+  let url;
+  try {
+    url = await getDownloadURL(profilePictureStorageRef);
+  } catch (error) {
+    console.log('error getting profile pic');
+  }
+
+  return url;
+}
+
+
+// var spaceRef = imagesRef.child('space.jpg');
+
