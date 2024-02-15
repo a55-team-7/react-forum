@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import AppContext from "../../context/AppContext";
 import { useParams } from "react-router-dom"
 import './UserPage.css'
 import { getUserByHandle, uploadProfilePictureByHandle } from "../../services/users-service";
@@ -7,17 +8,22 @@ import Post from "../Post/Post";
 import { getAllPost } from "../../services/posts-service";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
 
-//import uplaod profile picture
 
 export default function UserPage() {
     const [user, setUser] = useState(null);
     const [allPosts, setAllPosts] = useState([]);
     const [profilePicture, setProfilePicture] = useState(null);
+    const [yourOwnProfile, setYourOwnProfile] = useState(false);
+    const { userData } = useContext(AppContext);
     const { handle } = useParams();
 
+
     useEffect(() => {
+        if (userData && userData.handle === handle) {
+            setYourOwnProfile(true);
+        }
         getUserByHandle(handle).then(setUser);
-    }, [handle]);
+    }, [handle, userData]);
 
     useEffect(() => {
         getAllPost().then(setAllPosts);
@@ -46,10 +52,14 @@ export default function UserPage() {
                     <h3>Name: {user.firstName} {user.lastName}</h3>
                     <h3>Email: {user.email}</h3>
                     <ProfilePicture handle={handle}/>
-                    <input id="upload-picture" type="file" onChange={updateProfilePicture} accept=".jpg, .jpeg, .png"/>
-                    <Button id='upload-profile-picture-button' onClick={uploadProfilePicture}>Change Profile Picture</Button>
+                    {yourOwnProfile && (
+                        <div id='upload-picture'>
+                        <input id="upload-picture-input" type="file" onChange={updateProfilePicture} accept=".jpg, .jpeg, .png"/>
+                        <Button id='upload-profile-picture-button' onClick={uploadProfilePicture}>Change Profile Picture</Button>
+                        </div>
+                    )}
                     <h2>Posts by {user.handle}:</h2>
-                    {userPosts.length ? userPosts.map((post, index) => <Post key={index} post={post} />) : <p>{user.handle} has no posts</p>}
+                    {userPosts.length ? userPosts.map((post, index) => <Post key={index} post={post} postType='profilePagePosts' />) : <p>{user.handle} has no posts</p>}
                 </>
             ) : (
                 <p>Loading...</p>
