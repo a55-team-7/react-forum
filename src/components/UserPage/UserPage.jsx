@@ -19,7 +19,7 @@ export default function UserPage() {
 
     useEffect(() => {
         getAllPost().then(setAllPosts);
-    }, []);
+    }, [allPosts]);
 
     const userPosts = (user && allPosts) ? allPosts.filter(post => post.author === user.handle) : [];
 
