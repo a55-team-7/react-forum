@@ -26,25 +26,31 @@ const App = () => {
   const [user, loading, error] = useAuthState(auth); //this is a hook from firebase that will return the user, loading and error
 
   useEffect(() => {
-    if(user){
+    if (user) {
 
       getUserData(user.uid)
-      .then(snapshot =>{
-        if(snapshot.exists()){
-          setContext({user, userData: snapshot.val()[ Object.keys(snapshot.val())[0] ] });
-        }
-      })
+        .then(snapshot => {
+          if (snapshot.exists()) {
+            setContext({ user, userData: snapshot.val()[Object.keys(snapshot.val())[0]] });
+          }
+        })
     }
-  },[user, loading, error]) //this will update the context when  the user changes
+  }, [user, loading, error]) //this will update the context when  the user changes
 
   return (
     <>
       <BrowserRouter>
-        <AppContext.Provider value={{...context, setContext}}> {/* in value we will pass everything the need to share with the other component (not implemented for now)*/}
+        <AppContext.Provider value={{ ...context, setContext }}> {/* in value we will pass everything the need to share with the other component (not implemented for now)*/}
           <Header />
           <Routes>
             <Route index element={<Home />} />
-            <Route path="home" element={<Home />} /> {/* also named ReadIT as an experiment ??? home will show different things depending on weather the user is signed in or not*/}
+            <Route path="home" element={<Home />} > {/* also named ReadIT as an experiment ??? home will show different things depending on weather the user is signed in or not*/}
+              <Route path="recents" element={<Recents />} />
+              <Route path="popular" element={<Popular />} />
+              <Route path="create-post" element={<CreatePost />} />
+              <Route path="my-posts" element={<AllPosts />} />
+              <Route path="posts/:id" element={<PostDetails />} />
+            </Route>
             <Route path="login" element={<Login />} /> {/* also labeled as Sign In, login would be reusable as we will give the user the option to log in even if he somehow lands on the Register form (Look Excalidraw)*/}
             <Route path="register" element={<Register />} /> {/* also labeled as Join now , so that no one gets confused */}
             {/* Authenticated content:
@@ -54,12 +60,9 @@ const App = () => {
                Settings,
                Profile,
                Logout???*/}
-            <Route path="recents" element={<Recents />} />
-            <Route path="popular" element={<Popular />} />
-            <Route path="create-post" element={<CreatePost />} />
-            <Route path="my-posts" element={<AllPosts />} />
+
             <Route path="users/:handle" element={<UserPage />} />
-            <Route path="/posts/:id" element={<PostDetails />} />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AppContext.Provider>
