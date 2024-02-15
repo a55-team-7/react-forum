@@ -21,7 +21,7 @@ export default function UserPage() {
 
     useEffect(() => {
         getAllPost().then(setAllPosts);
-    }, []);
+    }, [allPosts]);
 
     const updateProfilePicture = (event) => {
         setProfilePicture(event.target.files[0]);
