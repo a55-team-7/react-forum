@@ -18,9 +18,10 @@ export default function Home() {
                     <div id="home-layout-grid-authenticated">
                         <div id='sidebar-content'>
                             <Container>
+                                <Link to="my-posts">My Feed</Link>
                                 <Link to="recents">Recents</Link>
                                 <Link to="popular">Popular</Link>
-                                <Link to="my-posts">My Posts</Link>
+                                
                                 <Link to="create-post">Create Post</Link>
                                 <Link to="settings">Settings</Link>
                             </Container>
@@ -31,7 +32,7 @@ export default function Home() {
                                 <Outlet />
                             </Container>
                         </div>
-                        
+
                     </div>
                 </div>
                 :
