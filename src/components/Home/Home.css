@@ -24,6 +24,13 @@
     justify-items: start;
     margin-top: 40px;
     grid-gap: 20px;
-    max-width: 100px; /* limit the width of the content */
+    width: 150px; /* limit the width of the content */
 }
 
+#home-layout-grid-authenticated{
+    display: grid;
+    grid-template-columns: 150px 900px;
+  
+    margin-top: 40px;
+    
+}
