@@ -14,7 +14,7 @@ import { auth } from "./config/firebase-setup.js";
 import { getUserData } from "./services/users-service";
 import CreatePost from "./components/CreatePost/CreatePost";
 import PostDetails from "./components/Post Details/PostDetails";
-//import UserPage from "./components/UserPage/UserPage";
+import UserPage from "./components/UserPage/UserPage";
 import AllPosts from "./components/AllPosts/AllPosts";
 
 const App = () => {
@@ -58,7 +58,7 @@ const App = () => {
             <Route path="popular" element={<Popular />} />
             <Route path="create-post" element={<CreatePost />} />
             <Route path="my-posts" element={<AllPosts />} />
-            {/*<Route path="users/:handle" element={<UserPage />} />*/}
+            <Route path="users/:handle" element={<UserPage />} />
             <Route path="/posts/:id" element={<PostDetails />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
