@@ -17,6 +17,21 @@ import PostDetails from "./components/Post Details/PostDetails";
 import UserPage from "./components/UserPage/UserPage";
 import AllPosts from "./components/AllPosts/AllPosts";
 
+//sort and filter posts in search / or in component
+//edit post (for admind and for own posts) and delete post (for admin and for own posts) IN DETAILED VIEW
+//edit profile information for your own profile SHOULD NOT CHANGE USERNAME
+//edit your own comments
+
+//FOR ADMINS
+//search for a user by their username, email, or display name
+//block and unblock a user -> a blocked user is not able to crate posts or to comment
+//option to delete ANY post
+
+//TAGS
+//user must be able to add/remove/edit tags only on its own posts
+//Admins must be able to add/remove/edit tags on all posts
+
+
 const AllRoutes = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search') || '';
