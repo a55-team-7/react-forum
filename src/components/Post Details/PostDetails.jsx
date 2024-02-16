@@ -6,25 +6,26 @@ import Comment from "../Comment/Comment";
 import Button from "../Button/Button";
 import AppContext from "../../context/AppContext";
 import { dislikePost, likePost } from "../../services/posts-service";
+import { getUserByHandle } from "../../services/users-service";
 
 export default function PostDetails() {
     const [post, setPost] = useState(null);
     const [commentText, setCommentText] = useState('');
     const { id } = useParams();
-    const { user, userData } = useContext(AppContext);
+    const { userData } = useContext(AppContext);
     const [showOptions, setShowOptions] = useState(false);
+    const [author, setAuthor] = useState(null);
 
     useEffect(() => {
         getPostById(id).then(setPost);
     }, [id]);
- // const toggleLike = async () => {
-    //     if (post.likedBy.includes(userData.handle)) {
-    //       dislikePost(userData.handle, post.id);
-    //     } else {
-    //       likePost(userData.handle, post.id);
-    //     }
-    //     togglePostLike(userData.handle, post.id);
-    //   };
+
+    useEffect(() => {
+        if (post) {
+            getUserByHandle(post.author).then(setAuthor);
+        }
+    }, [post]);
+
     const togglePostLike = async () => {
         if (post.likedBy.includes(userData.handle)) {
             await dislikePost(userData.handle, post.id);
@@ -48,20 +49,22 @@ export default function PostDetails() {
         setShowOptions(!showOptions);
     }
 
+
     return (
         <div id='post-details'>
-            {(post && userData) ? (
+            {(post && userData && author) ? (
                 <>
-                    {(post.author === userData.handle || userData.isAdmin) &&
-                        <Button onClick={toggleAuthorOptions}>options</Button>
+                    { (!author.isAdmin && (post.author === userData.handle || userData.isAdmin)) 
+                    ||  (post.author === userData.handle) 
+                    &&  <Button onClick={toggleAuthorOptions}>options</Button>
                     }
 
-                    {showOptions && (post.author === userData.handle || userData.isAdmin) &&
+                    {showOptions &&  (
                         <>
                             <Button onClick={() => console.log('edit')}>Edit</Button>
                             <Button onClick={() => console.log('delete')}>Delete</Button>
                         </>
-                    }
+                    )}
 
                     <h2>{post.title}</h2>
                     <p>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</p>
