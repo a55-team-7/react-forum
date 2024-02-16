@@ -19,6 +19,9 @@ export default function UserPage() {
     //profile pics updates
     const [profilePicture, setProfilePicture] = useState(null);
     const [yourOwnProfile, setYourOwnProfile] = useState(false);
+    const [newPictureURL, setNewPictureURL] = useState(null);
+    const [imageURL, setImageURL] = useState(null);
+    const [loadStatus, setLoadStatus] = useState(null);
 
     //user the data of our user
     const { userData } = useContext(AppContext);
@@ -49,11 +52,15 @@ export default function UserPage() {
 
     const updateProfilePicture = (event) => {
         setProfilePicture(event.target.files[0]);
+        const url = URL.createObjectURL(event.target.files[0]);
+        setNewPictureURL(url);
     }
 
     const uploadProfilePicture = async () => {
         if (profilePicture) {
-            await uploadProfilePictureByHandle(handle, profilePicture);
+            uploadProfilePictureByHandle(handle, profilePicture, setLoadStatus)
+                .then(url => setImageURL(url))
+                .then(setNewPictureURL(null));
         } else {
             alert('please upload a file');
         }
@@ -95,6 +102,9 @@ export default function UserPage() {
             {(user) ? (
                 <>
                     <h2>User: {user.handle}</h2>
+                    <ProfilePicture handle={handle} src={imageURL} />
+                    <h3>Name: {user.firstName} {user.lastName}</h3>
+                    <h3>Email: {user.email}</h3>
 
                     {/*if profile is his own*/}
                     {isEditing ? (
@@ -118,11 +128,12 @@ export default function UserPage() {
                     {userData && userData.isAdmin &&  userData.handle !== handle && !user.isAdmin && <Button onClick={toggleBlockUser}>{isBlocked ? 'Unblock user' : 'Block user'}</Button>}
                     {userData && userData.isAdmin &&  userData.handle !== handle && !user.isAdmin && <Button onClick={giveAdminRights}>Make admin</Button>}
 
-                    <ProfilePicture handle={handle}/>
                     {yourOwnProfile && (
                         <div id='upload-picture'>
-                        <input id="upload-picture-input" type="file" onChange={updateProfilePicture} accept=".jpg, .jpeg, .png"/>
-                        <Button id='upload-profile-picture-button' onClick={uploadProfilePicture}>Change Profile Picture</Button>
+                            {newPictureURL && <img src={newPictureURL} id='profile-picture-preview' alt="Preview" width='100' height='100' />}
+                            <input id="upload-picture-input" type="file" onChange={updateProfilePicture} accept=".jpg, .jpeg, .png" />
+                            {loadStatus && <p>{loadStatus}</p>}
+                            <Button id='upload-profile-picture-button' onClick={uploadProfilePicture}>Change Profile Picture</Button>
                         </div>
                     )}
                     <h2>Posts by {user.handle}:</h2>
