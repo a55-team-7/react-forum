@@ -30,8 +30,8 @@ import AllPosts from "./components/AllPosts/AllPosts";
 
 //FOR ADMINS
 //search for a user by their username, email, or display name  (search by handle, email, or name in search bar) 
-//block and unblock a user -> a blocked user is not able to crate posts or to comment  - OK - to finish the new views
-//option to delete ANY post - (exept the one for the admins)
+//block and unblock a user -> a blocked user is not able to crate posts or to comment  - OK - to finish the new views 
+//option to delete ANY post - (exept the one for the admins) 
 
 //TAGS
 //user must be able to add/remove/edit tags only on its own posts 
