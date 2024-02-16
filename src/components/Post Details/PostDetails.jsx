@@ -12,12 +12,12 @@ export default function PostDetails() {
     const [commentText, setCommentText] = useState('');
     const { id } = useParams();
     const { user, userData } = useContext(AppContext);
+    const [showOptions, setShowOptions] = useState(false);
 
     useEffect(() => {
         getPostById(id).then(setPost);
     }, [id]);
-
-    // const toggleLike = async () => {
+ // const toggleLike = async () => {
     //     if (post.likedBy.includes(userData.handle)) {
     //       dislikePost(userData.handle, post.id);
     //     } else {
@@ -25,7 +25,6 @@ export default function PostDetails() {
     //     }
     //     togglePostLike(userData.handle, post.id);
     //   };
-
     const togglePostLike = async () => {
         if (post.likedBy.includes(userData.handle)) {
             await dislikePost(userData.handle, post.id);
@@ -45,10 +44,25 @@ export default function PostDetails() {
         setCommentText('');
     }
 
+    const toggleAuthorOptions = () => {
+        setShowOptions(!showOptions);
+    }
+
     return (
         <div id='post-details'>
-            {(post && userData)  ? (
+            {(post && userData) ? (
                 <>
+                    {(post.author === userData.handle || userData.isAdmin) &&
+                        <Button onClick={toggleAuthorOptions}>options</Button>
+                    }
+
+                    {showOptions && (post.author === userData.handle || userData.isAdmin) &&
+                        <>
+                            <Button onClick={() => console.log('edit')}>Edit</Button>
+                            <Button onClick={() => console.log('delete')}>Delete</Button>
+                        </>
+                    }
+
                     <h2>{post.title}</h2>
                     <p>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</p>
                     <p>{post.content}</p>
@@ -66,5 +80,5 @@ export default function PostDetails() {
                 <p>Loading...</p>
             )}
         </div>
-    )    
+    )
 }
