@@ -18,13 +18,19 @@ import UserPage from "./components/UserPage/UserPage";
 import AllPosts from "./components/AllPosts/AllPosts";
 
 //sort and filter posts in search / or in component
-//edit post (for admind and for own posts) and delete post (for admin and for own posts) IN DETAILED VIEW
-//edit profile information for your own profile SHOULD NOT CHANGE USERNAME
+//most commented
+//most liked
+//newest 
+//oldest
+
+
+//edit post (for admind and for own posts) and delete post (for admin and for own posts) IN DETAILED VIEW  OK - finish
+//edit profile information for your own profile SHOULD NOT CHANGE USERNAME  OK
 //edit your own comments
 
 //FOR ADMINS
 //search for a user by their username, email, or display name
-//block and unblock a user -> a blocked user is not able to crate posts or to comment
+//block and unblock a user -> a blocked user is not able to crate posts or to comment  - OK
 //option to delete ANY post
 
 //TAGS
@@ -49,9 +55,10 @@ const AllRoutes = () => {
           <Route path="recents" element={<Recents />} />
           <Route path="popular" element={<Popular />} />
           <Route path="create-post" element={<CreatePost />} />
-          <Route path="my-posts" element={<AllPosts search={search}/>} />
-          <Route path="posts/:id" element={<PostDetails />} />
+          <Route path="my-posts" element={<AllPosts search={search}/>}>
+          </Route>
         </Route>
+        <Route path="home/my-posts/:id" element={<PostDetails />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="users/:handle" element={<UserPage />} />

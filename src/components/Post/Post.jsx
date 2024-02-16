@@ -14,7 +14,7 @@ const Post = ({ post, postType='post' }) => {
                 {/*author will be displayed with his profile pic and next to him - his name/username*/}
                 <div id="post-header-container">
                     {postType==='post' ? <ProfilePicture handle={post.author} type={postType}/> : []}
-                    <button onClick={() => navigate(`/posts/${post.id}`)} >see more</button>
+                    <button onClick={() => navigate(`/home/my-posts/${post.id}`)} >see more</button>
                     {postType==='post' ? <p>{post.author}</p> : []}
                 </div>
                 <h4>{post.title}</h4>
