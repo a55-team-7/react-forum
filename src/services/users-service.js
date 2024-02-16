@@ -37,8 +37,8 @@ export const getUserData = async (uid) => {  //retrieve data for a single user b
 }
 
 //make someone admin 
-export const makeUserAdmin = async (uid) => {
-  const userRef = ref(db, `users/${uid}`);
+export const makeUserAdmin = async (handle) => {
+  const userRef = ref(db, `users/${handle}`);
   await update(userRef,
     { isAdmin: true });
 };
@@ -55,10 +55,10 @@ export const performAdminAction = async (userId, db) => {
 };
 
 //remove admin rights
-export const removeAdminRights = async (uid) => {
-  const userRef = ref(db, `users/${uid}`);
-  await update(userRef, { isAdmin: false });
-};
+// export const removeAdminRights = async (uid) => {
+//   const userRef = ref(db, `users/${uid}`);
+//   await update(userRef, { isAdmin: false });
+// };
 
 //remove yours, or someone else's account
 export const deleteAccount = async (uid) => {
@@ -130,6 +130,16 @@ export const getProfilePictureByHandle = async (handle) => {
   }
 
   return url;
+}
+
+export const updateUserByHandle = async (handle, updatedUser) => {
+  const userRef = ref(db, `users/${handle}`);
+  await update(userRef, {
+    firstName: updatedUser.firstName,
+    lastName: updatedUser.lastName,
+    email: updatedUser.email,
+    isBlocked: updatedUser.isBlocked,
+  });
 }
 
 
