@@ -80,7 +80,7 @@ export const unblockUser = async (uid) => {
 };
 
 //upload profile picture by user handle
-export const uploadProfilePictureByHandle = async (handle, file) => {
+export const uploadProfilePictureByHandle = async (handle, file, setStatus) => {
   const storage = getStorage();
   const profilePictureStorageRef = storageRef(storage, 'profilePictures/' + handle + '.jpg');
 
@@ -103,20 +103,24 @@ export const uploadProfilePictureByHandle = async (handle, file) => {
 
   const uploadTask = uploadBytesResumable(profilePictureStorageRef, file, metadata);
 
-  uploadTask.on('state_changed',
-    (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Upload is ' + progress + '% done');
-    },
-    (error) => {
-      console.log('Upload failed', error);
-    },
-    () => {
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        console.log('File available at', downloadURL);
-      });
-    }
-  );
+  return new Promise((resolve, reject) => {
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        const status = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setStatus('Upload is ' + status + '% done');
+      },
+      (error) => {
+        console.log('Upload failed', error);
+        reject(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+          resolve(downloadURL);
+        });
+      }
+    );
+  });
 }
 
 export const getProfilePictureByHandle = async (handle) => {
