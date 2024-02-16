@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import './PostDetails.css'
-import { commentPost, getPostById } from "../../services/posts-service";
+import { commentPost, deletePost, getPostById } from "../../services/posts-service";
 import Comment from "../Comment/Comment";
 import Button from "../Button/Button";
 import AppContext from "../../context/AppContext";
@@ -15,6 +15,9 @@ export default function PostDetails() {
     const { userData } = useContext(AppContext);
     const [showOptions, setShowOptions] = useState(false);
     const [author, setAuthor] = useState(null);
+    
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         getPostById(id).then(setPost);
@@ -49,6 +52,12 @@ export default function PostDetails() {
         setShowOptions(!showOptions);
     }
 
+    const postDeletion = async () => {
+        await deletePost(post.id);
+        setPost(null);
+        navigate('/home/my-posts');
+    }
+
 
     return (
         <div id='post-details'>
@@ -62,7 +71,7 @@ export default function PostDetails() {
                     {showOptions &&  (
                         <>
                             <Button onClick={() => console.log('edit')}>Edit</Button>
-                            <Button onClick={() => console.log('delete')}>Delete</Button>
+                            <Button onClick={postDeletion}>Delete post</Button>
                         </>
                     )}
 
