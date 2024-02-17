@@ -17,6 +17,7 @@ import PostDetails from "./components/Post Details/PostDetails";
 import UserPage from "./components/UserPage/UserPage";
 import AllPosts from "./components/AllPosts/AllPosts";
 import Authenticated from "./hoc/Authenticated.jsx";
+import { Users } from "./components/Users/Users.jsx";
 
 //SEARCH
 //in search bar - tags, users OK
@@ -28,8 +29,8 @@ import Authenticated from "./hoc/Authenticated.jsx";
 //edit your own comments                                                                                                  |
 
 //FOR ADMINS
-//search for a user by their username, email, or display name  (search by handle, email, or name in search bar) 
-//block and unblock a user -> a blocked user is not able to crate posts or to comment  - OK - to finish the new views 
+//search for a user by their username, email, or display name  (search by handle, email, or name in search bar) OK
+//block and unblock a user -> a blocked user is not able to crate posts or to comment  - OK - to finish the new views OK 
 //option to delete ANY post - (exept the one for the admins) 
 
 //TAGS
@@ -55,6 +56,7 @@ const AllRoutes = () => {
           <Route path="popular" element={<Popular />} />
           <Route path="create-post" element={<Authenticated> <CreatePost /> </Authenticated>} />
           <Route path="my-posts" element={<Authenticated> <AllPosts search={search} /> </Authenticated>} />
+          <Route path="users" element={<Authenticated> <Users search={search} />  </Authenticated>} />
         </Route>
         <Route path="home/my-posts/:id" element={<Authenticated> <PostDetails /> </Authenticated>} />
         <Route path="login" element={<Login />} />
