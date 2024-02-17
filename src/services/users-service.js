@@ -130,7 +130,7 @@ export const getProfilePictureByHandle = async (handle) => {
   try {
     url = await getDownloadURL(profilePictureStorageRef);
   } catch (error) {
-    console.log('error getting profile pic');
+    //no need to log error right now
   }
 
   return url;

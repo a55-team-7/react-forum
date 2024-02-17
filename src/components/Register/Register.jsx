@@ -8,7 +8,7 @@ import { createUserHandle, getUserByHandle } from '../../services/users-service'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Container from '../Container/Container';
-import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from '../../common/contants';
+import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH, EMAIL_REGEX } from '../../common/contants';
 
 const Register = () => {
     const { setContext } = useContext(AppContext);
@@ -22,8 +22,7 @@ const Register = () => {
 
     const navigate = useNavigate();
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const emailValid = emailRegex.test(form.email);
+    const emailValid = EMAIL_REGEX.test(form.email);
 
     const updateForm = prop => e => {
         setForm({
