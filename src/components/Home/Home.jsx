@@ -5,12 +5,14 @@ import Popular from '../Popular/Popular'
 import Recents from '../Recents/Recents'
 import './Home.css'
 import AppContext from '../../context/AppContext'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import AllPosts from '../AllPosts/AllPosts'
 
 export default function Home() {
     const { user } = useContext(AppContext);
     const [view, setView] = useState('home');
+    const location = useLocation();
+
 
     return (
         <>
@@ -20,19 +22,11 @@ export default function Home() {
                         <div id='sidebar-content'>
                             <Container>
 
-                                {(view !== 'home') && <Link to="my-posts">My Feed</Link>}
-                                <div onClick={() => setView('recents')}>
+                                {(location.pathname !== '/home/my-posts' && location.pathname !== '/home') && <Link to="my-posts">My Feed</Link>}
                                     <Link to="recents">Recents</Link>
-                                </div>
-                                <div onClick={() => setView('popular')}>
                                     <Link to="popular">Popular</Link>
-                                </div>
-                                <div onClick={() => setView('create-post')}>
                                     <Link to="create-post">Create Post</Link>
-                                </div>
-                                <div onClick={() => setView('settings')}>
                                     <Link to="settings">Settings</Link>
-                                </div>
                             </Container>
                         </div>
 
