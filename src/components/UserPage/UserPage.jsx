@@ -10,7 +10,7 @@ import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH, EMAIL_REGEX } from "../../common/contants";
 
 export default function UserPage() {
-
+  
     //update the local user 
     const [user, setUser] = useState(null);
 
