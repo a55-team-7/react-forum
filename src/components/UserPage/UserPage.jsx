@@ -37,14 +37,16 @@ export default function UserPage() {
     const [updatedUser, setUpdatedUser] = useState({ firstName: '', lastName: '', email: '', isBlocked: false });
     //
 
-   
-
     useEffect(() => {
         if (userData && userData.handle === handle) {
             setYourOwnProfile(true);
         }
-        getUserByHandle(handle).then(setUser);
+        getUserByHandle(handle).then(user => {
+            setUser(user);
+            setIsBlocked(user.isBlocked !== undefined ? user.isBlocked : false); // set isBlocked based on the user's block status, or false if it's undefined
+        });
     }, [handle, userData]);
+    
 
     useEffect(() => {
         getAllPosts().then(setAllPosts);
@@ -83,13 +85,23 @@ export default function UserPage() {
     }
     
     const toggleBlockUser = async () => {
+        if (user.isAdmin) {
+            alert('Admins cannot be blocked');
+            return;
+        }
         if (isBlocked) {
-            await unblockUser(user.uid);
+            await unblockUser(user.handle);
         } else {
-            await blockUser(user.uid);
+            await blockUser(user.handle);
         }
         setIsBlocked(!isBlocked);
-        getUserByHandle(handle).then(setUser);
+        getUserByHandle(handle).then(user => {
+            if (user.isBlocked === undefined) {
+                user.isBlocked = false;
+            }
+            setUser(user);
+            setIsBlocked(user.isBlocked);
+        });
     };
 
     const giveAdminRights = async () => {

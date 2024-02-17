@@ -17,6 +17,7 @@ import PostDetails from "./components/Post Details/PostDetails";
 import UserPage from "./components/UserPage/UserPage";
 import AllPosts from "./components/AllPosts/AllPosts";
 
+//SEARCH
 //sort and filter posts in search / or in component
 //most commented
 //most liked
