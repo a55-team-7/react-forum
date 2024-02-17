@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
 import { useContext } from 'react';
 import AppContext from '../../context/AppContext';
@@ -10,10 +10,12 @@ import { useLocation } from 'react-router-dom';
 export default function Header({ search, setSearch }) {
     const { user, userData, setContext } = useContext(AppContext);
     const location = useLocation();
+    const navigate = useNavigate();
 
     const logOut = async () => {
         await logoutUser();
         setContext({ user: null, userData: null });
+        navigate('../../../home');
     }
 
     let userPageLink = '/users/';
