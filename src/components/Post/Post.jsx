@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import Container from '../Container/Container';
 import './Post.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import ProfilePicture from '../ProfilePicture/ProfilePicture';
 
 const Post = ({ post, postType='post' }) => {
     //const [post, setPost] = useState(null);
     const navigate = useNavigate();
-   
+
     return (
         <div id="post-container">
             <Container>
@@ -25,8 +25,11 @@ const Post = ({ post, postType='post' }) => {
                 {/*Created on only for the detailed Post view */}
                 {/*<p>Created on: {post.createdOn}</p>*/}
                 {/*likes and comments need to be in a seperaye grid */}
-                <div id="likes-comments-container">
-                    <p> Likes: {post.likes ? Object.values(post.likes).length : 0}  Comments: {post.comments ? Object.values(post.comments).length : 0}</p>
+                <div id="likes-comments-tags-container">
+                    <p> Likes: {post.likedBy ? post.likedBy.length : 0}  Comments: {post.comments ? Object.values(post.comments).length : 0}</p>
+                    <div id="post-tags">{post && post.tags ? post.tags.map((tag, index) => (
+                            <span key={`${index}-${tag}`}>{tag}</span>
+                        )) : []}</div>
                 </div>
             </Container>
         </div>
