@@ -7,6 +7,7 @@ import Button from "../Button/Button";
 import Post from "../Post/Post";
 import { getAllPosts } from "../../services/posts-service";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
+import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH, EMAIL_REGEX } from "../../common/contants";
 
 export default function UserPage() {
 
@@ -79,6 +80,18 @@ export default function UserPage() {
 
     //here we update the user in the database
     const saveChanges = async () => {
+        if (updatedUser.firstName.length < MIN_USER_NAME_LENGTH || updatedUser.firstName.length > MAX_USER_NAME_LENGTH) {
+            alert(`Your first name should be between ${MIN_USER_NAME_LENGTH} and ${MAX_USER_NAME_LENGTH} symbols`);
+            return;
+        }
+        if (updatedUser.lastName.length < MIN_USER_NAME_LENGTH || updatedUser.lastName.length > MAX_USER_NAME_LENGTH) {
+            alert(`Your last name should be between ${MIN_USER_NAME_LENGTH} and ${MAX_USER_NAME_LENGTH} symbols`);
+            return;
+        }
+        if (!EMAIL_REGEX.test(updatedUser.email)) {
+            alert('Please enter a valid email');
+            return;
+        }
         await updateUserByHandle(handle, updatedUser);
         setIsEditing(false);
         getUserByHandle(handle).then(setUser);
@@ -128,9 +141,6 @@ export default function UserPage() {
                         </>
                     ) : (
                         <>
-                            <h3>Name: {user.firstName} {user.lastName}</h3>
-                            <h3>Email: {user.email}</h3>
-
                             {/*if profile is  his own*/}
                             {yourOwnProfile && <Button onClick={startEditing}>Edit</Button>}
                         </>

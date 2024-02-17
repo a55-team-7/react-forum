@@ -21,7 +21,7 @@ export default function ProfilePicture ({ handle, type, src }) {
     if (type === 'post') {
         size = 40;
     }
-    
+
     useEffect(() => {
         getProfilePictureByHandle(handle).then(setProfilePictureURL);
     }, [handle]);
