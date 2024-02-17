@@ -16,6 +16,7 @@ import CreatePost from "./components/CreatePost/CreatePost";
 import PostDetails from "./components/Post Details/PostDetails";
 import UserPage from "./components/UserPage/UserPage";
 import AllPosts from "./components/AllPosts/AllPosts";
+import Authenticated from "./hoc/Authenticated.jsx";
 
 //SEARCH
 //sort and filter posts in search / or in component
@@ -51,18 +52,17 @@ const AllRoutes = () => {
     <>
       <Header search={search} setSearch={setSearch} />
       <Routes>
-        <Route index element={<Home />} />
         <Route path="home" element={<Home />}>
+          <Route index element={<Authenticated> <AllPosts search={search} /> </Authenticated>} />
           <Route path="recents" element={<Recents />} />
           <Route path="popular" element={<Popular />} />
-          <Route path="create-post" element={<CreatePost />} />
-          <Route path="my-posts" element={<AllPosts search={search} />}>
-          </Route>
+          <Route path="create-post" element={<Authenticated> <CreatePost /> </Authenticated>} />
+          <Route path="my-posts" element={<Authenticated> <AllPosts search={search} /> </Authenticated>} />
         </Route>
-        <Route path="home/my-posts/:id" element={<PostDetails />} />
+        <Route path="home/my-posts/:id" element={<Authenticated> <PostDetails /> </Authenticated>} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-        <Route path="users/:handle" element={<UserPage />} />
+        <Route path="users/:handle" element={<Authenticated> <UserPage />  </Authenticated>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
