@@ -2,6 +2,15 @@ import { get, set, ref, query, equalTo, orderByChild, update, remove } from "fir
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db } from "../config/firebase-setup.js";
 
+export const getAllUsers = async () => {
+  const snapshot = await get(ref(db, 'users'));
+
+  if (!snapshot.exists()) {
+    return [];
+  }
+
+  return Object.values(snapshot.val());
+}
 //(hande='pesho') - give me everything which pesho contains
 export const getUserByHandle = async (handle) => { //search a user by email or name for example?
   const snapshot = await get(ref(db, `users/${handle}`)); //we use references to access data in the database / it points to it
