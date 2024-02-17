@@ -22,10 +22,10 @@ export default function Home() {
                             <Container>
 
                                 {(location.pathname !== '/home/my-posts' && location.pathname !== '/home') && <Link to="my-posts">My Feed</Link>}
-                                    <Link to="recents">Recents</Link>
-                                    <Link to="popular">Popular</Link>
-                                    <Link to="create-post">Create Post</Link>
-                                    {userData.isAdmin && <Link to="users">Users</Link>}
+                                <Link to="recents">Recents</Link>
+                                <Link to="popular">Popular</Link>
+                                {!userData.isBlocked && <Link to="create-post">Create Post</Link>}
+                                {userData.isAdmin && <Link to="users">Users</Link>}
                             </Container>
                         </div>
 
