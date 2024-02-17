@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateEmail } from "firebase/auth";
 import { auth } from "../config/firebase-setup.js";
 
 export const registerUser = async (email, password) => {  { /* This function will be used to register a user */}
@@ -26,3 +26,13 @@ export const logoutUser = async () => {    { /* This function will be used to lo
         return error;
     }
 }                             
+
+export const changeUserEmail = async (newEmail) => {  
+    try {
+        if (auth.currentUser) {
+            return updateEmail(auth.currentUser, newEmail);
+        }
+    } catch (error) {
+        return error;
+    }
+};
