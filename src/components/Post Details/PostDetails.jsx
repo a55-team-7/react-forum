@@ -15,12 +15,20 @@ export default function PostDetails() {
     const { userData } = useContext(AppContext);
     const [showOptions, setShowOptions] = useState(false);
     const [author, setAuthor] = useState(null);
-    
+
 
     const navigate = useNavigate();
 
+    // console.log(post);
+
     useEffect(() => {
-        getPostById(id).then(setPost);
+        const fetchPost = async () => {
+            const post = await getPostById(id)
+            if (post) {
+                setPost(post);
+            }
+        }
+        fetchPost();
     }, [id]);
 
     useEffect(() => {
@@ -30,21 +38,42 @@ export default function PostDetails() {
     }, [post]);
 
     const togglePostLike = async () => {
+        const post = await getPostById(id)
+        if (post) {
+            setPost(post);
+        }
         if (post.likedBy.includes(userData.handle)) {
             await dislikePost(userData.handle, post.id);
+            setPost((prevPost) => {
+                return {
+                    ...prevPost,
+                    likedBy: prevPost.likedBy.filter((handle) => handle !== userData.handle)
+                }
+
+            })
         } else {
             await likePost(userData.handle, post.id);
+            setPost((prevPost) => {
+                return {
+                    ...prevPost,
+                    likedBy: [...prevPost.likedBy, userData.handle]
+                }
+
+            })
         }
-        getPostById(id).then(setPost);
     };
 
     const postComment = async () => {
         if (!commentText) {
             alert('write something down to comment');
+            return;
         }
 
         await commentPost(id, userData.handle, commentText);
-        getPostById(id).then(setPost);
+        const post = await getPostById(id)
+        if (post) {
+            setPost(post);
+        }
         setCommentText('');
     }
 
@@ -58,17 +87,23 @@ export default function PostDetails() {
         navigate('/home/my-posts');
     }
 
+    const handleAddComment = (event) => {
+        setCommentText(event.target.value);
+    }
+
 
     return (
         <div id='post-details'>
             {(post && userData && author) ? (
                 <>
-                    { (!author.isAdmin && (post.author === userData.handle || userData.isAdmin)) 
-                    ||  (post.author === userData.handle) 
-                    &&  <Button onClick={toggleAuthorOptions}>options</Button>
+
+                    <Button onClick={() => navigate(-1)}>Back</Button>
+                    {(!author.isAdmin && (post.author === userData.handle || userData.isAdmin))
+                        || (post.author === userData.handle)
+                        && <Button onClick={toggleAuthorOptions}>options</Button>
                     }
 
-                    {showOptions &&  (
+                    {showOptions && (
                         <>
                             <Button onClick={() => console.log('edit')}>Edit</Button>
                             <Button onClick={postDeletion}>Delete post</Button>
@@ -85,12 +120,19 @@ export default function PostDetails() {
                     )) : <h3>post has no comments</h3>}
                     <label htmlFor="comment-text">Comment:</label>
                     <br />
-                    <textarea value={commentText} onChange={e => setCommentText(e.target.value)} name="comment-text" id="comment-text" cols="40" rows="10"></textarea>
+                    <textarea value={commentText} onChange={handleAddComment} name="comment-text" id="comment-text" cols="40" rows="10"></textarea>
                     <Button onClick={postComment} id='post-comment-button'>Post</Button>
+                    <div id="post-tags-wrapper">
+                        <h3>Tags:</h3>
+                        <div id="post-tags">{post && post.tags ? post.tags.map((tag, index) => (
+                            <span key={`${index}-${tag}`}>{tag}</span>
+                        )) : []}</div>
+                    </div>
                 </>
             ) : (
                 <p>Loading...</p>
             )}
+
         </div>
     )
 }
