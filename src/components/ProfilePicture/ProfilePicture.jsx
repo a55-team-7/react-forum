@@ -34,7 +34,7 @@ export default function ProfilePicture ({ handle, type, src }) {
     
 
     return (
-        profilePictureURL ? <img src={profilePictureURL} alt="User's profile picture" width={size} height={size} onClick={onPictureClick}/> : <img src={defaultPictureURL} alt="User's profile picture" width={size} height={size} />
+        profilePictureURL ? <img src={profilePictureURL} alt="User's profile picture" width={size} height={size} onClick={onPictureClick}/> : <img src={defaultPictureURL} alt="User's profile picture" width={size} height={size} onClick={onPictureClick}/>
     );
 }
 
