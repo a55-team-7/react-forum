@@ -5,9 +5,11 @@ import AppContext from '../../context/AppContext';
 import Button from '../Button/Button';
 import { logoutUser } from '../../services/authentication-service';
 import PropTypes from 'prop-types';
+import { useLocation } from 'react-router-dom';
 
 export default function Header({ search, setSearch }) {
     const { user, userData, setContext } = useContext(AppContext);
+    const location = useLocation();
 
     const logOut = async () => {
         await logoutUser();
@@ -27,8 +29,13 @@ export default function Header({ search, setSearch }) {
                 {user
                     ? (
                         <>
-                            <input value={search} onChange={e => setSearch(e.target.value)} type="text" name="search" id="search" />
-                            {search && <Button onClick={() => setSearch('')}>Clear</Button>}
+                            {(location.pathname === '/home' || location.pathname === '/home/my-posts') && (
+                                <>
+                                    <input value={search} onChange={e => setSearch(e.target.value)} type="text" name="search" id="search" />
+                                    {search && <Button onClick={() => setSearch('')}>Clear</Button>}
+                                </>
+                            )}
+                            
                             <Button onClick={logOut}>Logout</Button>
                             <NavLink to={userPageLink}>User Page</NavLink>
                         </>
