@@ -29,7 +29,7 @@ export default function Header({ search, setSearch }) {
                 {user
                     ? (
                         <>
-                            {(location.pathname === '/home' || location.pathname === '/home/my-posts') && (
+                            {(location.pathname === '/home' || location.pathname === '/home/my-posts' || location.pathname === '/home/users') && (
                                 <>
                                     <input value={search} onChange={e => setSearch(e.target.value)} type="text" name="search" id="search" />
                                     {search && <Button onClick={() => setSearch('')}>Clear</Button>}

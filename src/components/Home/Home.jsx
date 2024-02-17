@@ -6,10 +6,9 @@ import Recents from '../Recents/Recents'
 import './Home.css'
 import AppContext from '../../context/AppContext'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import AllPosts from '../AllPosts/AllPosts'
 
 export default function Home() {
-    const { user } = useContext(AppContext);
+    const { user, userData } = useContext(AppContext);
     const [view, setView] = useState('home');
     const location = useLocation();
 
@@ -26,7 +25,7 @@ export default function Home() {
                                     <Link to="recents">Recents</Link>
                                     <Link to="popular">Popular</Link>
                                     <Link to="create-post">Create Post</Link>
-                                    <Link to="settings">Settings</Link>
+                                    {userData.isAdmin && <Link to="users">Users</Link>}
                             </Container>
                         </div>
 
