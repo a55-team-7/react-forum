@@ -71,7 +71,7 @@ export default function UserPage() {
 
     //here we start setting the values , enabling the edit mode
     const startEditing = () => {
-        setUpdatedUser({ firstName: user.firstName, lastName: user.lastName, email: user.email });
+        setUpdatedUser({ firstName: user.firstName, lastName: user.lastName, email: user.email, isBlocked: isBlocked });
         setIsEditing(true);
     }
 
