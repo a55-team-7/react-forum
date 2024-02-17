@@ -1,6 +1,6 @@
 import Post from '../Post/Post';
 import { useEffect, useState } from 'react';
-import { getAllPost } from '../../services/posts-service';
+import { getAllPosts } from '../../services/posts-service';
 //import Container from '../Container/Container';
 //import './AllPosts.css';
 import PropTypes from 'prop-types';
@@ -10,7 +10,7 @@ const AllPosts = ({ search }) => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const posts = await getAllPost();
+      const posts = await getAllPosts();
       setPosts(posts);
     }
     fetchPosts()

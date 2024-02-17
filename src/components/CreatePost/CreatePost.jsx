@@ -9,6 +9,7 @@ export default function CreatePost() {
     const [post, setPost] = useState({
         title: '',
         content: '',
+        tags: '',
     });
 
     const updatePost = (value, key) => {
@@ -32,12 +33,14 @@ export default function CreatePost() {
         if (post.content.length > 8192) {
             return alert('Content cannot be more than 8192 characters long');
         }
+        const tagsArray = post.tags.trim().split(', ').join(',').split(',');
 
-        await addPost(userData.handle, post.title, post.content);
+        await addPost(userData.handle, post.title, post.content, tagsArray);
 
         setPost({
             title: '',
             content: '',
+            tags: ''
         });
     };
 
@@ -47,7 +50,9 @@ export default function CreatePost() {
             <label htmlFor="input-title">Title:</label>
             <input value={post.title} onChange={e => updatePost(e.target.value, 'title')} type="text" name="input-title" id="input-title" /><br />
             <label htmlFor="input-content">Content:</label><br />
-            <textarea value={post.content} onChange={e => updatePost(e.target.value, 'content')} name="input-content" id="input-content" cols="30" rows="10"></textarea><br /><br />
+            <textarea value={post.content} onChange={e => updatePost(e.target.value, 'content')} name="input-content" id="input-content" cols="30" rows="10"></textarea><br />
+            <label htmlFor='input-tags'>Tags (separate by comma!):</label>
+            <input type="text" name="input-tags" id="input-tags" value={post.tags} onChange={e => updatePost(e.target.value, 'tags')} /><br /><br />
             <Button onClick={createPost}>Create</Button>
         </div>
     );

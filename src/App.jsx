@@ -55,7 +55,7 @@ const AllRoutes = () => {
           <Route path="recents" element={<Recents />} />
           <Route path="popular" element={<Popular />} />
           <Route path="create-post" element={<CreatePost />} />
-          <Route path="my-posts" element={<AllPosts search={search}/>}>
+          <Route path="my-posts" element={<AllPosts search={search} />}>
           </Route>
         </Route>
         <Route path="home/my-posts/:id" element={<PostDetails />} />
