@@ -98,10 +98,6 @@ export default function UserPage() {
     }
     
     const toggleBlockUser = async () => {
-        if (user.isAdmin) {
-            alert('Admins cannot be blocked');
-            return;
-        }
         if (isBlocked) {
             await unblockUser(user.handle);
         } else {
