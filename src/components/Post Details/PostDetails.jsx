@@ -98,7 +98,7 @@ export default function PostDetails() {
                 <>
 
                     <Button onClick={() => navigate(-1)}>Back</Button>
-                    {(userData.isAdmin && !author.isAdmin) && <Button onClick={toggleAuthorOptions}>options</Button>}
+                    {(userData.handle === post.author || (userData.isAdmin && !author.isAdmin)) && <Button onClick={toggleAuthorOptions}>options</Button>}
 
                     {showOptions && (
                         <>
@@ -112,7 +112,7 @@ export default function PostDetails() {
                     <p>{post.content}</p>
                     <Button onClick={togglePostLike}>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
 
-                    {(userData.isBlocked) ?
+                    {(userData && userData.isBlocked) ?
                         (<h4>Comment section currently not available! Talk to an admin for more information.</h4>)
                         :
                         <>
