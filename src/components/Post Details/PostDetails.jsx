@@ -98,10 +98,7 @@ export default function PostDetails() {
                 <>
 
                     <Button onClick={() => navigate(-1)}>Back</Button>
-                    {(!author.isAdmin && (post.author === userData.handle || userData.isAdmin))
-                        || (post.author === userData.handle)
-                        && <Button onClick={toggleAuthorOptions}>options</Button>
-                    }
+                    {(userData.isAdmin && !author.isAdmin) && <Button onClick={toggleAuthorOptions}>options</Button>}
 
                     {showOptions && (
                         <>
@@ -114,20 +111,28 @@ export default function PostDetails() {
                     <p>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</p>
                     <p>{post.content}</p>
                     <Button onClick={togglePostLike}>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
-                    <h3>Comments:</h3>
-                    {post.comments ? Object.values(post.comments).map((comment, index) => (
-                        <Comment key={index} comment={comment} />
-                    )) : <h3>post has no comments</h3>}
-                    <label htmlFor="comment-text">Comment:</label>
-                    <br />
-                    <textarea value={commentText} onChange={handleAddComment} name="comment-text" id="comment-text" cols="40" rows="10"></textarea>
-                    <Button onClick={postComment} id='post-comment-button'>Post</Button>
-                    <div id="post-tags-wrapper">
-                        <h3>Tags:</h3>
-                        <div id="post-tags">{post && post.tags ? post.tags.map((tag, index) => (
-                            <span key={`${index}-${tag}`}>{tag}</span>
-                        )) : []}</div>
-                    </div>
+
+                    {(userData.isBlocked) ?
+                        (<h4>Comment section currently not available! Talk to an admin for more information.</h4>)
+                        :
+                        <>
+                            <h3>Comments:</h3>
+                            {post.comments ? Object.values(post.comments).map((comment, index) => (
+                                <Comment key={index} comment={comment} />
+                            )) : <h3>post has no comments</h3>}
+                            <label htmlFor="comment-text">Comment:</label>
+                            <br />
+                            <textarea value={commentText} onChange={handleAddComment} name="comment-text" id="comment-text" cols="40" rows="10"></textarea>
+                            <Button onClick={postComment} id='post-comment-button'>Post</Button>
+                            <div id="post-tags-wrapper">
+                                <h3>Tags:</h3>
+                                <div id="post-tags">{post && post.tags ? post.tags.map((tag, index) => (
+                                    <span key={`${index}-${tag}`}>{tag}</span>
+                                )) : []}</div>
+                            </div>
+                        </>
+                    }
+
                 </>
             ) : (
                 <p>Loading...</p>
