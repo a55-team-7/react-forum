@@ -19,13 +19,10 @@ import AllPosts from "./components/AllPosts/AllPosts";
 import Authenticated from "./hoc/Authenticated.jsx";
 
 //SEARCH
-//sort and filter posts in search / or in component
-//most commented
-//most liked
-//newest 
-//oldest
+//in search bar - tags, users OK
+//in button - recently posted, most likes, most commented , oldest - OK 
 
-
+//POSTS
 //edit post (for admind and for own posts) and delete post (for admin and for own posts) IN DETAILED VIEW  OK - finish  (change title, content, tags, delete comments which are not your own , edit commnets which are your own)
 //edit profile information for your own profile SHOULD NOT CHANGE USERNAME  OK                                            |
 //edit your own comments                                                                                                  |
