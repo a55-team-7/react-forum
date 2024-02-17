@@ -8,6 +8,7 @@ import { createUserHandle, getUserByHandle } from '../../services/users-service'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Container from '../Container/Container';
+import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from '../../common/contants';
 
 const Register = () => {
     const { setContext } = useContext(AppContext);
@@ -34,11 +35,11 @@ const Register = () => {
     const register = async () => {
         try {
             //input constraints validation
-            if (form.firstName.length < 4 || form.firstName.length > 32) {
-                alert('Your first name should be between 4 and 32 symbols');
+            if (form.firstName.length < MIN_USER_NAME_LENGTH || form.firstName.length > MAX_USER_NAME_LENGTH) {
+                alert(`Your first name should be between ${MIN_USER_NAME_LENGTH} and ${MAX_USER_NAME_LENGTH} symbols`);
             }
-            if (form.lastName.length < 4 || form.lastName.length > 32) {
-                alert('Your last name should be between 4 and 32 symbols');
+            if (form.lastName.length < MIN_USER_NAME_LENGTH || form.lastName.length > MAX_USER_NAME_LENGTH) {
+                alert(`Your last name should be between ${MIN_USER_NAME_LENGTH} and ${MAX_USER_NAME_LENGTH} symbols`);
             }
             if (!emailValid) {
                 alert('Please enter a valid email');
@@ -88,7 +89,7 @@ const Register = () => {
                 <br />
                 <br />
                 <label htmlFor='register-email'>Email:</label>
-                <input value={form.email} onChange={updateForm('email')} id='register-email' type='text' name='register-email' />
+                <input value={form.email} onChange={updateForm('email')} id='register-email' type='email' name='register-email' />
                 {(form.email.length > 0 && !emailValid) ? <p className='valid-input'>Please enter a valid email</p> : <><br /><br /></>}
                 <label htmlFor='register-password'>Password:</label>
                 <input value={form.password} onChange={updateForm('password')} id='register-password' type='password' name='register-password' />
