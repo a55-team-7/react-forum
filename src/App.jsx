@@ -31,7 +31,7 @@ import { Users } from "./components/Users/Users.jsx";
 //FOR ADMINS
 //search for a user by their username, email, or display name  (search by handle, email, or name in search bar) OK
 //block and unblock a user -> a blocked user is not able to crate posts or to comment  - OK - to finish the new views OK 
-//option to delete ANY post - (exept the one for the admins) 
+//option to delete ANY post - (exept the one for the admins) OK
 
 //TAGS
 //user must be able to add/remove/edit tags only on its own posts 
