@@ -6,6 +6,7 @@ import Recents from '../Recents/Recents'
 import './Home.css'
 import AppContext from '../../context/AppContext'
 import { Link, Outlet } from 'react-router-dom'
+import AllPosts from '../AllPosts/AllPosts'
 
 export default function Home() {
     const { user } = useContext(AppContext);
@@ -18,12 +19,20 @@ export default function Home() {
                     <div id="home-layout-grid-authenticated">
                         <div id='sidebar-content'>
                             <Container>
-                                <Link to="my-posts">My Feed</Link>
-                                <Link to="recents">Recents</Link>
-                                <Link to="popular">Popular</Link>
-                                
-                                <Link to="create-post">Create Post</Link>
-                                <Link to="settings">Settings</Link>
+
+                                {(view !== 'home') && <Link to="my-posts">My Feed</Link>}
+                                <div onClick={() => setView('recents')}>
+                                    <Link to="recents">Recents</Link>
+                                </div>
+                                <div onClick={() => setView('popular')}>
+                                    <Link to="popular">Popular</Link>
+                                </div>
+                                <div onClick={() => setView('create-post')}>
+                                    <Link to="create-post">Create Post</Link>
+                                </div>
+                                <div onClick={() => setView('settings')}>
+                                    <Link to="settings">Settings</Link>
+                                </div>
                             </Container>
                         </div>
 
