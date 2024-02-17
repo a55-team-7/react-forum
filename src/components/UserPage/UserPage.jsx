@@ -5,7 +5,7 @@ import './UserPage.css'
 import { getUserByHandle, uploadProfilePictureByHandle, updateUserByHandle, unblockUser, blockUser, makeUserAdmin } from "../../services/users-service";
 import Button from "../Button/Button";
 import Post from "../Post/Post";
-import { getAllPost } from "../../services/posts-service";
+import { getAllPosts } from "../../services/posts-service";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
 
 export default function UserPage() {
@@ -47,7 +47,7 @@ export default function UserPage() {
     }, [handle, userData]);
 
     useEffect(() => {
-        getAllPost().then(setAllPosts);
+        getAllPosts().then(setAllPosts);
     }, []); //removed allPosts as a dependencybecause it can cause infinite loop
 
     const updateProfilePicture = (event) => {

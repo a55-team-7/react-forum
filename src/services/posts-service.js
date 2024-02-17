@@ -1,34 +1,46 @@
 import { get, ref, query, equalTo, orderByChild, update, push, remove } from "firebase/database";
 import { db } from "../config/firebase-setup";
 
-export const addPost = async (author, content, title) => {
+export const addPost = async (author, content, title, tags) => {
 
     return push(ref(db, 'posts'), {
         author,
         title,
         content,
         createdOn: Date.now(),
+        comments: {},
+        likedBy: {},
+        tags: tags || []
     });
 
 }
 
-export const getAllPost = async () => {   //this function can show all posts by sreation order , but it can also filter posts by title (for now)
+export const getAllPosts = async () => {   //this function can show all posts by sreation order , but it can also filter posts by title (for now)
     const snapshot = await get(query(ref(db, 'posts'), orderByChild('createdOn')));
 
     if (!snapshot.exists()) {
         return [];
     }
 
-    // console.log(Object.values(snapshot.val()));
-    // console.log(Object.keys(snapshot.val()));
+    const allPosts = snapshot.val();
 
-    const posts = Object.keys(snapshot.val()).map((key => ({
+    const likedByArray = Object.entries(allPosts).map((post) => {
+        const postId = post[0]
+        const postData = post[1]
+
+        return {
+            postId: postId,
+            likedBy: postData.likedBy ? postData.likedBy : {}
+        };
+    })
+
+    const posts = Object.keys(allPosts).map((key => ({
         id: key, //the key
-        ...snapshot.val()[key], //console.log  //the key value pairs of this id object
-        createdOn: new Date(snapshot.val()[key].createdOn).toString(),
-        likedBy: snapshot.val().likedBy ? Object.keys(snapshot.val().likedBy) : [],
+        ...allPosts[key], //console.log  //the key value pairs of this id object
+        createdOn: new Date(allPosts[key].createdOn).toString(),
+        likedBy: allPosts[key].likedBy ? Object.keys(likedByArray.filter((post) => post.postId === key)[0].likedBy) : [],
     })))
-        // .filter(post => post.title.toLowerCase().includes(search.toLowerCase()));
+    // .filter(post => post.title.toLowerCase().includes(search.toLowerCase()));
 
     return posts;
 }
@@ -45,6 +57,7 @@ export const getPostById = async (id) => {
         ...snapshot.val(),
         createdOn: new Date(snapshot.val().createdOn).toString(),
         likedBy: snapshot.val().likedBy ? Object.keys(snapshot.val().likedBy) : [],
+        tags: snapshot.val().tags ? snapshot.val().tags : [],
     };
 
     return post;
