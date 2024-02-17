@@ -25,7 +25,7 @@ export default function Home() {
                                 <Link to="recents">Recents</Link>
                                 <Link to="popular">Popular</Link>
                                 {!userData.isBlocked && <Link to="create-post">Create Post</Link>}
-                                {userData.isAdmin && <Link to="users">Users</Link>}
+                                {userData && userData.isAdmin && <Link to="users">Users</Link>}
                             </Container>
                         </div>
 
