@@ -68,14 +68,14 @@ export const deleteAccount = async (uid) => {
 
 
 //block a user
-export const blockUser = async (uid) => {
-  const userRef = ref(db, `users/${uid}`);
+export const blockUser = async (handle) => {
+  const userRef = ref(db, `users/${handle}`);
   await update(userRef, { isBlocked: true });
 };
 
 //unblock a user
-export const unblockUser = async (uid) => {
-  const userRef = ref(db, `users/${uid}`);
+export const unblockUser = async (handle) => {
+  const userRef = ref(db, `users/${handle}`);
   await update(userRef, { isBlocked: false });
 };
 
