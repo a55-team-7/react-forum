@@ -17,7 +17,7 @@ export default function PostDetails() {
     const [showOptions, setShowOptions] = useState(false);
     const [author, setAuthor] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [updatedPost, setUpdatedPost] = useState({ title: '', content: ''});
+    const [updatedPost, setUpdatedPost] = useState({ title: '', content: '' });
 
 
     const navigate = useNavigate();
@@ -97,7 +97,7 @@ export default function PostDetails() {
     }
 
     const startEditing = () => {
-        setUpdatedPost({title:post.title, content:post.content});
+        setUpdatedPost({ title: post.title, content: post.content });
         setIsEditing(true);
     }
 
@@ -110,7 +110,7 @@ export default function PostDetails() {
             alert(`Post content should be between ${MIN_POST_TITLE_LENGTH} and ${MAX_POST_TITLE_LENGTH} symbols`);
             return;
         }
-        
+
         await updatePostById(post.id, updatedPost);
         setIsEditing(false);
         getPostById(id).then(setPost);
@@ -127,31 +127,34 @@ export default function PostDetails() {
                 <>
 
                     <Button onClick={() => navigate(-1)}>Back</Button>
-                    {(userData.handle === post.author || (userData.isAdmin && !author.isAdmin)) && <Button onClick={toggleAuthorOptions}>options</Button>}
-
-                    {showOptions && (userData.handle !== post.author)(
-                        <>
-                            <Button onClick={postDeletion}>Delete post</Button>
-                        </>
-                    )}
-
+                
                     <h2>Title:</h2>
                     <h2>{post.title}</h2>
-                    {userData.handle === post.author ? <Button onClick={postDeletion}>Delete Post</Button> : []}
-                    {isEditing ? (
+
+                    {(userData.handle === post.author || (userData.isAdmin && !author.isAdmin)) && <Button onClick={toggleAuthorOptions}>options</Button>}
+
+                    {showOptions && (
                         <>
-                            <label htmlFor="edit-title">Title:</label>
-                            <input value={updatedPost.title} onChange={e => setUpdatedPost({...updatedPost, title: e.target.value})} type="text" name="edit-title" id="edit-title" /><br />
-                            <label htmlFor="edit-content">Content:</label><br />
-                            <textarea value={updatedPost.content} onChange={e => setUpdatedPost({...updatedPost, content: e.target.value})} name="edit-content" id="edit-content" cols="30" rows="10"></textarea><br />
-            
-                            <Button onClick={saveChanges}>Save</Button>
+                            {<Button onClick={postDeletion}>Delete Post</Button>}
+
+                            {isEditing ? (
+                                <>
+                                    <label htmlFor="edit-title">Title:</label>
+                                    <input value={updatedPost.title} onChange={e => setUpdatedPost({ ...updatedPost, title: e.target.value })} type="text" name="edit-title" id="edit-title" /><br />
+                                    <label htmlFor="edit-content">Content:</label><br />
+                                    <textarea value={updatedPost.content} onChange={e => setUpdatedPost({ ...updatedPost, content: e.target.value })} name="edit-content" id="edit-content" cols="30" rows="10"></textarea><br />
+
+                                    <Button onClick={saveChanges}>Save</Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button onClick={startEditing}>Edit Post</Button>
+                                </>
+                            )}
                         </>
-                    ) : (
-                        <>
-                            {(userData.handle === post.author) && <Button onClick={startEditing}>Edit Post</Button>}
-                        </>
+
                     )}
+
                     <p>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</p>
                     <p>{post.content}</p>
                     <Button onClick={togglePostLike}>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
