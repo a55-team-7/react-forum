@@ -65,8 +65,6 @@ export default function Home() {
                             {view === 'popular' && <Popular />}
 
 
-                           
-
                         </Container>
                     </div>
                 </div>

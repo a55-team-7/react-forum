@@ -18,6 +18,7 @@ import UserPage from "./components/UserPage/UserPage";
 import AllPosts from "./components/AllPosts/AllPosts";
 import Authenticated from "./hoc/Authenticated.jsx";
 import { Users } from "./components/Users/Users.jsx";
+import { ChakraProvider } from '@chakra-ui/react';
 
 //SEARCH
 //in search bar - tags, users OK
@@ -52,8 +53,8 @@ const AllRoutes = () => {
       <Routes>
         <Route path="home" element={<Home />}>
           <Route index element={<Authenticated> <AllPosts search={search} /> </Authenticated>} />
-          <Route path="recents" element={ <Recents /> } />
-          <Route path="popular" element={<Popular /> } />
+          <Route path="recents" element={<Recents />} />
+          <Route path="popular" element={<Popular />} />
           <Route path="create-post" element={<Authenticated> <CreatePost /> </Authenticated>} />
           <Route path="my-posts" element={<Authenticated> <AllPosts search={search} /> </Authenticated>} />
           <Route path="users" element={<Authenticated> <Users search={search} />  </Authenticated>} />
@@ -87,11 +88,13 @@ const App = () => {
   }, [user, loading, error])
 
   return (
-    <BrowserRouter>
-      <AppContext.Provider value={{ ...context, setContext }}>
-        <AllRoutes />
-      </AppContext.Provider>
-    </BrowserRouter>
+    <ChakraProvider>
+      <BrowserRouter>
+        <AppContext.Provider value={{ ...context, setContext }}>
+          <AllRoutes />
+        </AppContext.Provider>
+      </BrowserRouter>
+    </ChakraProvider>
   )
 };
 
