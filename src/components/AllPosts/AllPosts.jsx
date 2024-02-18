@@ -5,7 +5,7 @@ import { getAllPosts, getPostsByMostComments, getPostsByMostLikes, getPostsByNew
 //import './AllPosts.css';
 import PropTypes from 'prop-types';
 // import Button from '../Button/Button';
-import { Box, Button, Heading, SimpleGrid, Divider, Stack, Radio, RadioGroup } from '@chakra-ui/react';
+import { Box, Button, Heading, SimpleGrid, Divider, Stack, Radio, RadioGroup, Grid } from '@chakra-ui/react';
 import { get } from 'firebase/database';
 
 const AllPosts = ({ search }) => {
@@ -93,13 +93,13 @@ const AllPosts = ({ search }) => {
       <Divider my={4} />
 
       <Box id="posts-container" mt={4}>
-        <SimpleGrid columns={1} spacing={10}>
+        <Grid  gridGap='15px' w="500px" >
           {(filter ? sortedPostsState : filteredPosts).map(post => (
             <Box key={post.id} bg="white" p={5} shadow="md" borderWidth="1px" borderRadius="md">
               <Post post={post} />
             </Box>
           ))}
-        </SimpleGrid>
+        </Grid>
       </Box>
     </Box>
   );

@@ -1,4 +1,4 @@
-#post-container  {
+/* #post-container  {
     display: flex;
     align-items: flex-start;
     margin-top: 20px;
@@ -6,7 +6,7 @@
     flex-direction: column;
     border-radius: 10px;
     padding-left: 35px;
-    width: 850px;
+  
 }
 
 #likes-comments-container{
@@ -35,4 +35,4 @@
 
 #post-tags {
     display: none
-}
+} */

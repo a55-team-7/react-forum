@@ -10,9 +10,9 @@ const Post = ({ post, postType = 'post' }) => {
     const navigate = useNavigate();
 
     return (
-        <Box bg="gray.100" p={4} borderRadius="md" boxShadow="lg">
-            <Flex direction="column">
-                <Grid templateColumns="auto 1fr auto" gap={4} alignItems="center">
+        <Box class='box' bg="blue.100"  borderRadius="md" boxShadow="lg" >
+            <Flex direction="column" >
+                <Grid templateColumns="auto 1fr auto" gap={4} alignItems="top">
                     {postType === 'post' ? <ProfilePicture handle={post.author} type={postType} /> : null}
                     <Box>
                         <Link onClick={() => navigate(`/home/my-posts/${post.id}`)} color="cyan.500">
