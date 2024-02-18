@@ -178,7 +178,7 @@ export const commentPost = async (postId, userHandle, comment) => {
     });
 };
 
-export const deleteComment = async (postId, commentId) => {
+export const deleteCommentById = async (postId, commentId) => {
     const commentRef = ref(db, `posts/${postId}/comments/${commentId}`);
     await remove(commentRef);
 };
@@ -203,12 +203,28 @@ export const dislikePost = (handle, postId) => {
 export const updatePostById = async (postId, updatedPost) => {
     const postRef = ref(db, `posts/${postId}`);
 
-    const post = await getPostById(postId);
+    const snapshot = await get(postRef);
+    if (!snapshot.exists()) {
+        return;
+    }
 
     await update(postRef, {
-        ...post,
+      ...snapshot.val(),
       title: updatedPost.title,
       content: updatedPost.content
     });
   }
 
+export const updateCommentById = async (postId, commentId, updatedContent) => {
+    const commentRef = ref(db, `posts/${postId}/comments/${commentId}`);
+
+    const snapshot = await get(commentRef);
+    if (!snapshot.exists()) {
+        return;
+    }
+
+    await update(commentRef, {
+        ...snapshot.val(),
+        comment: updatedContent
+    });
+};
