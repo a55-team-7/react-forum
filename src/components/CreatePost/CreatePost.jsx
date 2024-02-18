@@ -4,6 +4,7 @@ import { useState, useContext } from 'react';
 import AppContext from '../../context/AppContext';
 import './CreatePost.css'
 import { useNavigate } from 'react-router-dom';
+import { MAX_CONTENT_SYMBOLS, MAX_POST_TITLE_LENGTH, MIN_CONTENT_SYMBOLS, MIN_POST_TITLE_LENGTH } from '../../common/contants';
 
 export default function CreatePost() {
     const { userData } = useContext(AppContext);
@@ -24,17 +25,17 @@ export default function CreatePost() {
 
     //TODO: createPost should navigate to all posts once the all posts component is ready
     const createPost = async () => {
-        if (post.title.length < 16) {
-            return alert('Title must be at least 16 characters long');
+        if (post.title.length < MIN_POST_TITLE_LENGTH) {
+            return alert(`Title must be at least ${MIN_POST_TITLE_LENGTH} characters long`);
         }
-        if (post.title.length > 64) {
-            return alert('Title cannot be more than 64 characters long');
+        if (post.title.length > MAX_POST_TITLE_LENGTH) {
+            return alert(`Title cannot be more than ${MAX_POST_TITLE_LENGTH} characters long`);
         }
-        if (post.content.length < 32) {
-            return alert('Content must be at least 32 characters long');
+        if (post.content.length < MIN_CONTENT_SYMBOLS) {
+            return alert(`Content must be at least ${MIN_CONTENT_SYMBOLS} characters long`);
         }
-        if (post.content.length > 8192) {
-            return alert('Content cannot be more than 8192 characters long');
+        if (post.content.length > MAX_CONTENT_SYMBOLS) {
+            return alert(`Content cannot be more than ${MAX_CONTENT_SYMBOLS} characters long`);
         }
         const tagsArray = post.tags.trim().split(', ').join(',').split(',');
 

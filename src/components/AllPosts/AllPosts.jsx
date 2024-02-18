@@ -28,7 +28,7 @@ const AllPosts = ({ search }) => {
   const filteredPosts = posts.filter(post =>
     post.title.toLowerCase().includes(search.toLowerCase()) ||
     post.author.toLowerCase().includes(search.toLowerCase()) ||
-    //post.tags.some(tag => tag.toLowerCase().includes(search.toLowerCase())) ||
+    (post.tags ? Object.values(post.tags) : []).some(tag => tag.toLowerCase().includes(search.toLowerCase())) ||
     post.content.toLowerCase().includes(search.toLowerCase())
   );
 
