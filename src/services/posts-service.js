@@ -178,6 +178,11 @@ export const commentPost = async (postId, userHandle, comment) => {
     });
 };
 
+export const deleteComment = async (postId, commentId) => {
+    const commentRef = ref(db, `posts/${postId}/comments/${commentId}`);
+    await remove(commentRef);
+};
+
 
 export const likePost = (handle, postId) => {
     const updateLikes = {};
@@ -194,4 +199,16 @@ export const dislikePost = (handle, postId) => {
 
     return update(ref(db), updateLikes);
 };
+
+export const updatePostById = async (postId, updatedPost) => {
+    const postRef = ref(db, `posts/${postId}`);
+
+    const post = await getPostById(postId);
+
+    await update(postRef, {
+        ...post,
+      title: updatedPost.title,
+      content: updatedPost.content
+    });
+  }
 

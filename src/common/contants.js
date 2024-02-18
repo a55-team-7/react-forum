@@ -6,4 +6,12 @@ export const MIN_COMMENT_CONTENT_LENGTH = 5;
 
 export const MAX_COMMENT_CONTENT_LENGTH = 200;
 
+export const MIN_POST_TITLE_LENGTH = 16;
+
+export const MAX_POST_TITLE_LENGTH = 64;
+
+export const MIN_POST_CONTENT_LENGTH = 32;
+
+export const MAX_POST_CONTENT_LENGTH = 8196;
+
 export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

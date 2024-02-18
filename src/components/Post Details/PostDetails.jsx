@@ -1,12 +1,13 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import './PostDetails.css'
-import { commentPost, deletePost, getPostById } from "../../services/posts-service";
+import { commentPost, deleteComment, deletePost, getPostById, updatePostById } from "../../services/posts-service";
 import Comment from "../Comment/Comment";
 import Button from "../Button/Button";
 import AppContext from "../../context/AppContext";
 import { dislikePost, likePost } from "../../services/posts-service";
 import { getUserByHandle } from "../../services/users-service";
+import { MAX_POST_CONTENT_LENGTH, MAX_POST_TITLE_LENGTH, MIN_COMMENT_CONTENT_LENGTH, MIN_POST_CONTENT_LENGTH, MIN_POST_TITLE_LENGTH } from "../../common/contants";
 
 export default function PostDetails() {
     const [post, setPost] = useState(null);
@@ -15,11 +16,11 @@ export default function PostDetails() {
     const { userData } = useContext(AppContext);
     const [showOptions, setShowOptions] = useState(false);
     const [author, setAuthor] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [updatedPost, setUpdatedPost] = useState({ title: '', content: ''});
 
 
     const navigate = useNavigate();
-
-    // console.log(post);
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -84,7 +85,35 @@ export default function PostDetails() {
     const postDeletion = async () => {
         await deletePost(post.id);
         setPost(null);
-        navigate('/home/my-posts');
+        navigate(-1);
+    }
+
+    const commentDeletion = async (commentId) => {
+        await deleteComment(post.id, commentId);
+        const postRefresh = await getPostById(id);
+        if (postRefresh) {
+            setPost(postRefresh);
+        }
+    }
+
+    const startEditing = () => {
+        setUpdatedPost({title:post.title, content:post.content});
+        setIsEditing(true);
+    }
+
+    const saveChanges = async () => {
+        if (updatedPost.title.length < MIN_POST_TITLE_LENGTH || updatedPost.title.length > MAX_POST_TITLE_LENGTH) {
+            alert(`Post title should be between ${MIN_POST_TITLE_LENGTH} and ${MAX_POST_TITLE_LENGTH} symbols`);
+            return;
+        }
+        if (updatedPost.content.length < MIN_POST_CONTENT_LENGTH || updatedPost.content.length > MAX_POST_CONTENT_LENGTH) {
+            alert(`Post content should be between ${MIN_POST_TITLE_LENGTH} and ${MAX_POST_TITLE_LENGTH} symbols`);
+            return;
+        }
+        
+        await updatePostById(post.id, updatedPost);
+        setIsEditing(false);
+        getPostById(id).then(setPost);
     }
 
     const handleAddComment = (event) => {
@@ -100,14 +129,29 @@ export default function PostDetails() {
                     <Button onClick={() => navigate(-1)}>Back</Button>
                     {(userData.isAdmin && !author.isAdmin) && <Button onClick={toggleAuthorOptions}>options</Button>}
 
-                    {showOptions && (
+                    {showOptions && (userData.handle !== post.author)(
                         <>
-                            <Button onClick={() => console.log('edit')}>Edit</Button>
                             <Button onClick={postDeletion}>Delete post</Button>
                         </>
                     )}
 
+                    <h2>Title:</h2>
                     <h2>{post.title}</h2>
+                    {userData.handle === post.author ? <Button onClick={postDeletion}>Delete Post</Button> : []}
+                    {isEditing ? (
+                        <>
+                            <label htmlFor="edit-title">Title:</label>
+                            <input value={updatedPost.title} onChange={e => setUpdatedPost({...updatedPost, title: e.target.value})} type="text" name="edit-title" id="edit-title" /><br />
+                            <label htmlFor="edit-content">Content:</label><br />
+                            <textarea value={updatedPost.content} onChange={e => setUpdatedPost({...updatedPost, content: e.target.value})} name="edit-content" id="edit-content" cols="30" rows="10"></textarea><br />
+            
+                            <Button onClick={saveChanges}>Save</Button>
+                        </>
+                    ) : (
+                        <>
+                            {(userData.handle === post.author) && <Button onClick={startEditing}>Edit Post</Button>}
+                        </>
+                    )}
                     <p>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</p>
                     <p>{post.content}</p>
                     <Button onClick={togglePostLike}>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
@@ -117,8 +161,11 @@ export default function PostDetails() {
                         :
                         <>
                             <h3>Comments:</h3>
-                            {post.comments ? Object.values(post.comments).map((comment, index) => (
-                                <Comment key={index} comment={comment} />
+                            {post.comments ? Object.entries(post.comments).map(([commentId, comment]) => (
+                                <div key={commentId} className="post-comment">
+                                    <Comment comment={comment} />
+                                    {userData.handle === comment.userHandle ? <Button onClick={() => commentDeletion(commentId)}>Delete Comment</Button> : null}
+                                </div>
                             )) : <h3>post has no comments</h3>}
                             <label htmlFor="comment-text">Comment:</label>
                             <br />

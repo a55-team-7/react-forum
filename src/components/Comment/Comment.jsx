@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import './Comment.css'
 
 export default function Comment ({comment}) {
+
     return (
         <div className='comment'>
             <p>{comment.comment}</p>
@@ -14,6 +15,6 @@ Comment.propTypes = {
     comment: PropTypes.shape({
         userHandle: PropTypes.string,
         createdOn: PropTypes.number,
-        comment: PropTypes.string,
+        comment: PropTypes.string
     })
 }
