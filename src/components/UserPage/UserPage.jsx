@@ -123,7 +123,7 @@ export default function UserPage() {
             {(user) ? (
                 <>
                     <h2>User: {user.handle}</h2>
-                    <ProfilePicture handle={handle} src={imageURL} />
+                    <ProfilePicture handle={handle} src={imageURL} type='userPage'/>
                     <h3>Name: {user.firstName} {user.lastName}</h3>
                     <h3>Email: {user.email}</h3>
 

@@ -13,9 +13,9 @@ const Post = ({ post, postType='post' }) => {
             <Container>
                 {/*author will be displayed with his profile pic and next to him - his name/username*/}
                 <div id="post-header-container">
-                    {postType==='post' ? <ProfilePicture handle={post.author} type={postType}/> : []}
+                    {postType==='post' && <ProfilePicture handle={post.author} type={postType}/>}
                     <button onClick={() => navigate(`/home/my-posts/${post.id}`)} >see more</button>
-                    {postType==='post' ? <p>{post.author}</p> : []}
+                    {postType==='post' && <p>{post.author}</p>}
                 </div>
                 <h4>{post.title}</h4>
                 {/* content needt to be in a container*/}

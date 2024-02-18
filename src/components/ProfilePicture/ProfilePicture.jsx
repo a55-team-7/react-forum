@@ -12,14 +12,18 @@ export default function ProfilePicture ({ handle, type, src }) {
     //the type prop tells us what the picture is for
     //if it is for a standard post clicking it will take us to the user profile of the author
     const onPictureClick = () => {
-        if (type === 'post') navigate(`../../users/${handle}`);
+        if (type === 'post' || type === 'comment' || type === 'postDetails' || type === 'users') navigate(`../../users/${handle}`);
     }
 
     let size = 100;
 
     //size of picture determined by what it's for
-    if (type === 'post') {
+    if (type === 'post' || type=== 'comment' || type === 'users') {
         size = 40;
+    }
+
+    if ( type === 'postDetails' ) {
+        size = 60;
     }
 
     useEffect(() => {
@@ -27,6 +31,7 @@ export default function ProfilePicture ({ handle, type, src }) {
     }, [handle]);
 
     useEffect(() => {
+        //overrides the previous pictureURL handle
         if (src) {
             setProfilePictureURL(src);
         }

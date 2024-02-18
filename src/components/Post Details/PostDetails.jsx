@@ -8,6 +8,7 @@ import AppContext from "../../context/AppContext";
 import { dislikePost, likePost } from "../../services/posts-service";
 import { getUserByHandle } from "../../services/users-service";
 import { MAX_POST_CONTENT_LENGTH, MAX_POST_TITLE_LENGTH, MIN_POST_CONTENT_LENGTH, MIN_POST_TITLE_LENGTH } from "../../common/contants";
+import ProfilePicture from "../ProfilePicture/ProfilePicture";
 
 export default function PostDetails() {
     const [post, setPost] = useState(null);
@@ -147,6 +148,7 @@ export default function PostDetails() {
                     <h2>Title:</h2>
                     <h2>{post.title}</h2>
                     <p>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</p>
+                    <ProfilePicture handle={post.author} type='postDetails'/>
                     <p>{post.content}</p>
                     <Button onClick={togglePostLike}>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
 
