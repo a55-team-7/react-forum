@@ -222,7 +222,6 @@ export const updateCommentById = async (postId, commentId, updatedContent) => {
     if (!snapshot.exists()) {
         return;
     }
-    console.log('yes');
 
     await update(commentRef, {
         ...snapshot.val(),
