@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 
 
-export const Users = ({search}) => {
+export const Users = ({ search }) => {
 
     const [users, setUsers] = useState([]);
 
@@ -24,17 +24,17 @@ export const Users = ({search}) => {
         (user.firstName && user.firstName.toLowerCase().includes(search.toLowerCase())) ||
         (user.lastName && user.lastName.toLowerCase().includes(search.toLowerCase()))
     );
-    
+
     return (
         <>
-        {filteredUsers.map(user => (
-            <div key={user.id} id="user-data">
-                <h2>{`${user.firstName}${user.lastName} `} </h2> 
-                <p>{user.email}</p>
-                {/* Render other user properties as needed */}
-            </div>
-        ))}
-    </>
+            {filteredUsers.map((user, index) => (
+                <div key={index} id="user-data">
+                    <h2>{`${user.firstName}${user.lastName} `} </h2>
+                    <p>{user.email}</p>
+                    {/* Render other user properties as needed */}
+                </div>
+            ))}
+        </>
     );
 };
 

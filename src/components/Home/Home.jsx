@@ -6,6 +6,7 @@ import Recents from '../Recents/Recents'
 import './Home.css'
 import AppContext from '../../context/AppContext'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Button } from '@chakra-ui/react'
 
 export default function Home() {
     const { user, userData } = useContext(AppContext);
@@ -26,12 +27,12 @@ export default function Home() {
                         <div id='sidebar-content'>
                             <Container>
 
-                                {(location.pathname !== '/home/my-posts' && location.pathname !== '/home') && <NavLink to="my-posts" activeClassName="active">My Feed</NavLink>}
-                                <NavLink to="recents" activeClassName="active">Recents</NavLink>
-                                <NavLink to="popular" activeClassName="active">Popular</NavLink>
-                                {userData && !userData.isBlocked && <NavLink to="create-post" activeClassName="active">Create Post</NavLink>}
-                                {userData && userData.isAdmin && <NavLink to="users" activeClassName="active">Users</NavLink>}
-                                <NavLink to={userPageLink} activeClassName="active" >User Page</NavLink>
+                                {(location.pathname !== '/home/my-posts' && location.pathname !== '/home') && <Button as={NavLink} to="my-posts" >My Feed</Button>}
+                                <Button as={NavLink} to="recents" >Recents</Button>
+                                <Button as={NavLink} to="popular" >Popular</Button>
+                                {userData && !userData.isBlocked && <Button as={NavLink} to="create-post" >Create Post</Button>}
+                                {userData && userData.isAdmin && <Button as={NavLink} to="users" >Users</Button>}
+                                <Button as={NavLink} to={userPageLink} >User Page</Button>
 
                             </Container>
                         </div>

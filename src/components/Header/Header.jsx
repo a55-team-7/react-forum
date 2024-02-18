@@ -2,11 +2,12 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
 import { useContext } from 'react';
 import AppContext from '../../context/AppContext';
-import Button from '../Button/Button';
+//import Button from '../Button/Button';
 import { logoutUser } from '../../services/authentication-service';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import { Input } from "@chakra-ui/react";
+import { Button } from '@chakra-ui/react'
 
 export default function Header({ search, setSearch }) {
     const { user, setContext } = useContext(AppContext);
@@ -23,7 +24,7 @@ export default function Header({ search, setSearch }) {
     return (
         <>
             <div className='navigation'>
-                <NavLink to="/home">ReadIT</NavLink>
+                <Button as={NavLink} to="/home">ReadIT</Button>
 
                 {user
                     ? (
@@ -42,8 +43,8 @@ export default function Header({ search, setSearch }) {
                     : (
                         <>
 
-                            <NavLink to="/register">Register</NavLink>
-                            <NavLink to="/login">Login</NavLink>
+                            <Button as={NavLink} to="/register">Register</Button>
+                            <Button as={NavLink} to="/login">Login</Button>
                         </>
                     )
                 }
