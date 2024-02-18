@@ -4,7 +4,8 @@ import { getAllPosts, getPostsByMostComments, getPostsByMostLikes, getPostsByNew
 //import Container from '../Container/Container';
 //import './AllPosts.css';
 import PropTypes from 'prop-types';
-import Button from '../Button/Button';
+// import Button from '../Button/Button';
+import { Box, Button, Heading, SimpleGrid, Divider, Stack, Radio, RadioGroup } from '@chakra-ui/react';
 import { get } from 'firebase/database';
 
 const AllPosts = ({ search }) => {
@@ -37,15 +38,19 @@ const AllPosts = ({ search }) => {
 
   }
 
-  const handleFilterChange = (event) => {
-    if (filter === event.target.value) {
-      setFilter('');
-    } else {
-      setFilter(event.target.value);
-    }
-  }
+  // const handleFilterChange = (event) => {
+  //   if (filter === event.target.value) {
+  //     setFilter('');
+  //   } else {
+  //     setFilter(event.target.value);
+  //   }
+  // }
 
- 
+  // Had to be changed, because of the RadioGroup component from Chakra UI 
+  // who doesn't work with the onChange event
+ const handleFilterChange = (value) => {
+    setFilter(value);
+  }
 
   const sortedPosts = async () => {
     let result;
@@ -69,45 +74,78 @@ const AllPosts = ({ search }) => {
   };
 
   return (
-    <div>
-      <h1>My feed</h1>
+    <Box bg="gray.100" p={4} borderRadius="md" boxShadow="lg">
+      <Heading as="h1" size="lg">My feed</Heading>
 
-      <Button onClick={toogleFilterLike}> Filter </Button>
+      <Button onClick={toogleFilterLike} colorScheme="cyan" mt={4}> Filter </Button>
 
       {filterToggle && (
-        <>
-          <label>
-            <input type="checkbox" value="most liked" checked={filter === 'most liked'} onChange={handleFilterChange} />
-            most liked
-          </label>
-          <label>
-            <input type="checkbox" value="recents" checked={filter === 'recents'} onChange={handleFilterChange} />
-            recents
-          </label>
-          <label>
-            <input type="checkbox" value="most commented" checked={filter === 'most commented'} onChange={handleFilterChange} />
-            most commented
-          </label>
-          <label>
-            <input type="checkbox" value="oldest" checked={filter === 'oldest'} onChange={handleFilterChange} />
-            oldest
-          </label>
-        </>
+        <RadioGroup onChange={handleFilterChange} value={filter}>
+          <Stack direction="row">
+            <Radio value="most liked">most liked</Radio>
+            <Radio value="recents">recents</Radio>
+            <Radio value="most commented">most commented</Radio>
+            <Radio value="oldest">oldest</Radio>
+          </Stack>
+        </RadioGroup>
       )}
 
-      <div id="posts-container">
-        <div>
+      <Divider my={4} />
+
+      <Box id="posts-container" mt={4}>
+        <SimpleGrid columns={1} spacing={10}>
           {(filter ? sortedPostsState : filteredPosts).map(post => (
-            <Post key={post.id} post={post} />
+            <Box key={post.id} bg="white" p={5} shadow="md" borderWidth="1px" borderRadius="md">
+              <Post post={post} />
+            </Box>
           ))}
-        </div>
-      </div>
-    </div>
+        </SimpleGrid>
+      </Box>
+    </Box>
   );
 };
-
-export default AllPosts;
 
 AllPosts.propTypes = {
   search: PropTypes.string
 }
+
+export default AllPosts;
+
+//   return (
+//     <div>
+//       <h1>My feed</h1>
+
+//       <Button onClick={toogleFilterLike}> Filter </Button>
+
+//       {filterToggle && (
+//         <>
+//           <label>
+//             <input type="checkbox" value="most liked" checked={filter === 'most liked'} onChange={handleFilterChange} />
+//             most liked
+//           </label>
+//           <label>
+//             <input type="checkbox" value="recents" checked={filter === 'recents'} onChange={handleFilterChange} />
+//             recents
+//           </label>
+//           <label>
+//             <input type="checkbox" value="most commented" checked={filter === 'most commented'} onChange={handleFilterChange} />
+//             most commented
+//           </label>
+//           <label>
+//             <input type="checkbox" value="oldest" checked={filter === 'oldest'} onChange={handleFilterChange} />
+//             oldest
+//           </label>
+//         </>
+//       )}
+
+//       <div id="posts-container">
+//         <div>
+//           {(filter ? sortedPostsState : filteredPosts).map(post => (
+//             <Post key={post.id} post={post} />
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+

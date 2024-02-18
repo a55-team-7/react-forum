@@ -1,23 +1,11 @@
-import { BrowserRouter, Route, Routes, useSearchParams } from "react-router-dom";
-import Header from './components/Header/Header';
-import Home from "./components/Home/Home";
-import Register from "./components/Register/Register";
-import Login from "./components/Login/Login";
-import NotFound from "./components/NotFound/NotFound";
-import AppContext from "./context/AppContext";
-import Recents from "./components/Recents/Recents";
-import './App.css'
-import Popular from "./components/Popular/Popular";
+import { BrowserRouter } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./config/firebase-setup.js";
 import { getUserData } from "./services/users-service";
-import CreatePost from "./components/CreatePost/CreatePost";
-import PostDetails from "./components/Post Details/PostDetails";
-import UserPage from "./components/UserPage/UserPage";
-import AllPosts from "./components/AllPosts/AllPosts";
-import Authenticated from "./hoc/Authenticated.jsx";
-import { Users } from "./components/Users/Users.jsx";
+import AppContext from "./context/AppContext";
+import AllRoutes from "./components/All Routes/AllRoutes";
+import { ChakraProvider } from "@chakra-ui/react";
 
 //SEARCH
 //in search bar - tags, users OK
@@ -36,36 +24,6 @@ import { Users } from "./components/Users/Users.jsx";
 //TAGS
 //user must be able to add/remove/edit tags only on its own posts 
 //Admins must be able to add/remove/edit tags on all posts
-
-
-const AllRoutes = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const search = searchParams.get('search') || '';
-
-  const setSearch = (value) => {
-    setSearchParams({ search: value });
-  }
-
-  return (
-    <>
-      <Routes>
-        <Route path="home" element={<Home search={search} setSearch={setSearch} />}>
-          <Route index element={<Authenticated> <AllPosts search={search} /> </Authenticated>} />
-          <Route path="recents" element={<Recents />} />
-          <Route path="popular" element={<Popular />} />
-          <Route path="create-post" element={<Authenticated> <CreatePost /> </Authenticated>} />
-          <Route path="my-posts" element={<Authenticated> <AllPosts search={search} /> </Authenticated>} />
-          <Route path="users" element={<Authenticated> <Users search={search} />  </Authenticated>} />
-        </Route>
-        <Route path="home/my-posts/:id" element={<Authenticated> <PostDetails /> </Authenticated>} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="users/:handle" element={<Authenticated> <UserPage />  </Authenticated>} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </>
-  );
-}
 
 const App = () => {
   const [context, setContext] = useState({
@@ -95,3 +53,4 @@ const App = () => {
 };
 
 export default App;
+

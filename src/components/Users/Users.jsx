@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllUsers } from "../../services/users-service";
 import PropTypes from 'prop-types';
+import ProfilePicture from "../ProfilePicture/ProfilePicture";
 
 
 
@@ -31,6 +32,7 @@ export const Users = ({ search }) => {
                 <div key={index} id="user-data">
                     <h2>{`${user.firstName}${user.lastName} `} </h2>
                     <p>{user.email}</p>
+                    <ProfilePicture handle={user.handle} type='users'/>
                     {/* Render other user properties as needed */}
                 </div>
             ))}

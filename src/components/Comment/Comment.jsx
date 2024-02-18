@@ -5,6 +5,7 @@ import AppContext from '../../context/AppContext';
 import Button from '../Button/Button';
 import { deleteCommentById, updateCommentById } from '../../services/posts-service';
 import { MAX_COMMENT_CONTENT_LENGTH, MIN_COMMENT_CONTENT_LENGTH } from '../../common/contants';
+import ProfilePicture from '../ProfilePicture/ProfilePicture';
 
 export default function Comment ({comment, postId, commentId, setCommentsUpdated}) {
     const { userData } = useContext(AppContext);
@@ -24,9 +25,7 @@ export default function Comment ({comment, postId, commentId, setCommentsUpdated
         }
         
         await updateCommentById(postId, commentId, updatedContent);
-        // console.log('yes');
         setIsEditing(false);
-        // getPostById(id).then(setPost);
         setCommentsUpdated(true);
     }
 
@@ -39,6 +38,7 @@ export default function Comment ({comment, postId, commentId, setCommentsUpdated
         <div className='comment'>
             <p>{comment.comment}</p>
             <p>by {comment.userHandle} on {new Date(comment.createdOn).toLocaleDateString('bg-BG')}</p>
+            <ProfilePicture handle={comment.userHandle} type={'comment'}/>
             {isEditing ? (
                         <>
                             <textarea value={updatedContent} onChange={e => setUpdatedContent(e.target.value)} name="edit-content" id="edit-content" cols="30" rows="10"></textarea><br />
