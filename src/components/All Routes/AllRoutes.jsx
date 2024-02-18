@@ -23,12 +23,11 @@ export const AllRoutes = () => {
 
   return (
     <>
-      <Header search={search} setSearch={setSearch} />
       <Routes>
-        <Route path="home" element={<Home />}>
+        <Route path="home" element={<Home search={search} setSearch={setSearch} />}>
           <Route index element={<Authenticated> <AllPosts search={search} /> </Authenticated>} />
-          <Route path="recents" element={ <Recents /> } />
-          <Route path="popular" element={<Popular /> } />
+          <Route path="recents" element={<Recents />} />
+          <Route path="popular" element={<Popular />} />
           <Route path="create-post" element={<Authenticated> <CreatePost /> </Authenticated>} />
           <Route path="my-posts" element={<Authenticated> <AllPosts search={search} /> </Authenticated>} />
           <Route path="users" element={<Authenticated> <Users search={search} />  </Authenticated>} />

@@ -5,7 +5,7 @@ import { auth } from "./config/firebase-setup.js";
 import { getUserData } from "./services/users-service";
 import AppContext from "./context/AppContext";
 import AllRoutes from "./components/All Routes/AllRoutes";
-import { ChakraProvider } from "@chakra-ui/react";
+
 
 //SEARCH
 //in search bar - tags, users OK
