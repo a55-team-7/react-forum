@@ -1,14 +1,19 @@
 
 import { useContext, useState } from 'react'
-import Container from '../Container/Container'
 import Popular from '../Popular/Popular'
 import Recents from '../Recents/Recents'
 import './Home.css'
 import AppContext from '../../context/AppContext'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Button } from '@chakra-ui/react'
+import { Button, Container, Grid, Box } from '@chakra-ui/react'
+import Header from '../Header/Header'
+import PropTypes from 'prop-types'
+import { CustomNavLink } from '../ChakraUI/CustomNavLink'
+import { useColorModeValue } from '@chakra-ui/react'
 
-export default function Home() {
+
+export default function Home({ search, setSearch }) {
+
     const { user, userData } = useContext(AppContext);
     const [view, setView] = useState('home');
     const location = useLocation();
@@ -18,34 +23,38 @@ export default function Home() {
         userPageLink += userData.handle;
     }
 
+    const color = useColorModeValue("brand.100", "brand.300");
+
     return (
         <>
             {user ?
                 <div>
-                    <div id="home-layout-grid-authenticated">
+                    <Grid gridTemplateColumns='1fr 4fr'  gridGap='80px'>
 
-                        <div id='sidebar-content'>
-                            <Container>
+                        <Box bg={color} >
 
-                                {(location.pathname !== '/home/my-posts' && location.pathname !== '/home') && <Button as={NavLink} to="my-posts" >My Feed</Button>}
-                                <Button as={NavLink} to="recents" >Recents</Button>
-                                <Button as={NavLink} to="popular" >Popular</Button>
-                                {userData && !userData.isBlocked && <Button as={NavLink} to="create-post" >Create Post</Button>}
-                                {userData && userData.isAdmin && <Button as={NavLink} to="users" >Users</Button>}
-                                <Button as={NavLink} to={userPageLink} >User Page</Button>
+                            <Grid justifyItems='start' gridTemplateColumns='auto' mt='30px' gridGap='20px' w='150px' >
+                                <CustomNavLink to="/home">ReadIT</CustomNavLink>
+                                {(location.pathname !== '/home/my-posts' && location.pathname !== '/home') && <CustomNavLink to="my-posts" >My Feed</CustomNavLink>}
+                                <CustomNavLink as={NavLink} to="recents" >Recents</CustomNavLink>
+                                <CustomNavLink as={NavLink} to="popular" >Popular</CustomNavLink>
+                                {userData && !userData.isBlocked && <CustomNavLink as={NavLink} to="create-post" >Create Post</CustomNavLink>}
+                                {userData && userData.isAdmin && <CustomNavLink as={NavLink} to="users" >Users</CustomNavLink>}
+                                <CustomNavLink as={NavLink} to={userPageLink} >User Page</CustomNavLink>
+                            </Grid>
 
-                            </Container>
-                        </div>
+                        </Box>
 
-                        <div id='main-content'>
-                            <Container>
 
+                     
+                            <Container m='0px'p='0px' mt='35px'>
+                                <Header search={search} setSearch={setSearch} />
                                 <Outlet />
 
                             </Container>
-                        </div>
+                    
 
-                    </div>
+                    </Grid>
                 </div>
                 :
                 <div>
@@ -73,4 +82,9 @@ export default function Home() {
 
         </>
     )
+}
+
+Home.propTypes = {
+    search: PropTypes.string,
+    setSearch: PropTypes.func
 }

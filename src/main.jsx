@@ -12,13 +12,18 @@ import { extendTheme } from '@chakra-ui/react'
 // 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
   brand: {
-    900: '#1a365d',
-    800: '#153e75',
-    700: '#2a69ac',
+    100: '#000033', //dark blue
+    200: '#4DFFFA', //light blue
+    300: '#FF4500', //orange red
   },
 }
 
-const theme = extendTheme({ colors })
+const fonts = {
+  heading: "Roboto, sans-serif",
+  body: "Roboto, sans-serif",
+}
+
+export const theme = extendTheme({ colors, fonts })
 
 // 3. Pass the `theme` prop to the `ChakraProvider`
 

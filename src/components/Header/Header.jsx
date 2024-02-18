@@ -24,7 +24,6 @@ export default function Header({ search, setSearch }) {
     return (
         <>
             <div className='navigation'>
-                <Button as={NavLink} to="/home">ReadIT</Button>
 
                 {user
                     ? (

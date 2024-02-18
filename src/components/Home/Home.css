@@ -17,20 +17,13 @@
     margin-right: 10px; /* Add space between elements */
 }
 
-#sidebar-content .container {
-    display: grid;
-    grid-template-columns: auto;
-    justify-items: start;
-    justify-items: start;
-    margin-top: 40px;
-    grid-gap: 20px;
-    width: 150px; /* limit the width of the content */
-}
+
 
 #home-layout-grid-authenticated{
     display: grid;
-    grid-template-columns: 150px 900px;
-  
-    margin-top: 40px;
+    grid-template-columns: 1fr 6fr;
+    justify-items: start;
     
+    width: 100%;
+    height: 100vh;
 }
