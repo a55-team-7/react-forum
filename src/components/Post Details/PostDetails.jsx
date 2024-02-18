@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import './PostDetails.css'
-import { commentPost, deleteComment, deletePost, getPostById, updatePostById } from "../../services/posts-service";
+import { commentPost, deleteCommentById, deletePost, getPostById, updatePostById } from "../../services/posts-service";
 import Comment from "../Comment/Comment";
 import Button from "../Button/Button";
 import AppContext from "../../context/AppContext";
@@ -18,6 +18,7 @@ export default function PostDetails() {
     const [author, setAuthor] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [updatedPost, setUpdatedPost] = useState({ title: '', content: ''});
+    const [commentsUpdated, setCommentsUpdated] = useState(false);
 
 
     const navigate = useNavigate();
@@ -27,10 +28,11 @@ export default function PostDetails() {
             const post = await getPostById(id)
             if (post) {
                 setPost(post);
+                setCommentsUpdated(false);
             }
         }
         fetchPost();
-    }, [id]);
+    }, [id, commentsUpdated]);
 
     useEffect(() => {
         if (post) {
@@ -88,14 +90,6 @@ export default function PostDetails() {
         navigate(-1);
     }
 
-    const commentDeletion = async (commentId) => {
-        await deleteComment(post.id, commentId);
-        const postRefresh = await getPostById(id);
-        if (postRefresh) {
-            setPost(postRefresh);
-        }
-    }
-
     const startEditing = () => {
         setUpdatedPost({title:post.title, content:post.content});
         setIsEditing(true);
@@ -127,17 +121,17 @@ export default function PostDetails() {
                 <>
 
                     <Button onClick={() => navigate(-1)}>Back</Button>
-                    {(userData.handle === post.author || (userData.isAdmin && !author.isAdmin)) && <Button onClick={toggleAuthorOptions}>options</Button>}
+                    {/* {(userData.handle === post.author || (userData.isAdmin && !author.isAdmin)) && <Button onClick={toggleAuthorOptions}>options</Button>}
 
                     {showOptions && (userData.handle !== post.author)(
                         <>
                             <Button onClick={postDeletion}>Delete post</Button>
                         </>
-                    )}
+                    )} */}
 
                     <h2>Title:</h2>
                     <h2>{post.title}</h2>
-                    {userData.handle === post.author ? <Button onClick={postDeletion}>Delete Post</Button> : []}
+                    {(userData.handle === post.author || userData.isAdmin)? <Button onClick={postDeletion}>Delete Post</Button> : []}
                     {isEditing ? (
                         <>
                             <label htmlFor="edit-title">Title:</label>
@@ -163,8 +157,7 @@ export default function PostDetails() {
                             <h3>Comments:</h3>
                             {post.comments ? Object.entries(post.comments).map(([commentId, comment]) => (
                                 <div key={commentId} className="post-comment">
-                                    <Comment comment={comment} />
-                                    {userData.handle === comment.userHandle ? <Button onClick={() => commentDeletion(commentId)}>Delete Comment</Button> : null}
+                                    <Comment comment={comment} postId={post.id} commentId={commentId} setCommentsUpdated={setCommentsUpdated}/>
                                 </div>
                             )) : <h3>post has no comments</h3>}
                             <label htmlFor="comment-text">Comment:</label>
