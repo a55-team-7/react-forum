@@ -30,15 +30,15 @@ export default function Home({ search, setSearch }) {
         <>
             {user ?
                 <div>
-                    <Grid gridTemplateColumns='1fr 6fr' gridGap='75px'>
+                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' style={{ height: '100vh' }}>
 
                         <Box bg={color} >
 
                             <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px' gridGap='20px' w='250px' ml='0px' mr='50px' position='static'>
                                 <CustomNavLink to="/home">
-                                <Box width="150px" height="50px" >
-                                    <Logo />
-                                </Box>
+                                    <Box width="150px" height="50px" >
+                                        <Logo />
+                                    </Box>
                                 </CustomNavLink>
                                 {(location.pathname !== '/home/my-posts' && location.pathname !== '/home') && <CustomNavLink to="/home/my-posts">My Feed</CustomNavLink>}
                                 <CustomNavLink to="/home/recents">Recents</CustomNavLink>
@@ -52,11 +52,25 @@ export default function Home({ search, setSearch }) {
 
 
 
-                        <Container class='outelt-container' m='0px' p='0px' maxW="1200px">
-                            <Header search={search} setSearch={setSearch} />
-                            <Outlet />
+
+                        <Container className='BOX'>
+                            <Box
+                                class='outelt-container'
+                                m='0px'
+                                p='0px'
+                                maxW="1200px"
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                                flexDirection="column"
+                                position="static"
+                            >
+                                <Header search={search} setSearch={setSearch} />
+                                <Outlet style={{ width: '100%', height: '100%' }} />
+                            </Box>
 
                         </Container>
+
 
 
                     </Grid>

@@ -5,8 +5,9 @@ import { getAllPosts, getPostsByMostComments, getPostsByMostLikes, getPostsByNew
 //import './AllPosts.css';
 import PropTypes from 'prop-types';
 // import Button from '../Button/Button';
-import { Box, Button, Heading, SimpleGrid, Divider, Stack, Radio, RadioGroup, Grid } from '@chakra-ui/react';
+import { Box, Button, Heading, SimpleGrid, Divider, Stack, Radio, RadioGroup, Grid , Flex} from '@chakra-ui/react';
 import { get } from 'firebase/database';
+
 
 const AllPosts = ({ search }) => {
   const [posts, setPosts] = useState([]);
@@ -48,7 +49,7 @@ const AllPosts = ({ search }) => {
 
   // Had to be changed, because of the RadioGroup component from Chakra UI 
   // who doesn't work with the onChange event
- const handleFilterChange = (value) => {
+  const handleFilterChange = (value) => {
     setFilter(value);
   }
 
@@ -74,11 +75,16 @@ const AllPosts = ({ search }) => {
   };
 
   return (
-    <Box bg="gray.100" p={4} borderRadius="md" boxShadow="lg">
-      <Heading as="h1" size="lg">My feed</Heading>
+    <Box   borderRadius="md" boxShadow="lg" w="1200px" ml='30px' >
 
-      <Button onClick={toogleFilterLike} colorScheme="cyan" mt={4}> Filter </Button>
 
+   
+
+      <Flex direction="row" alignItems={'flex-end'}>
+        <Heading as="h1" size="lg" mr={'15px'}>My feed</Heading>
+        <div className="material-symbols-outlined" onClick={toogleFilterLike}>&#xe429;</div>
+      </Flex>
+      
       {filterToggle && (
         <RadioGroup onChange={handleFilterChange} value={filter}>
           <Stack direction="row">
@@ -93,9 +99,9 @@ const AllPosts = ({ search }) => {
       <Divider my={4} />
 
       <Box id="posts-container" mt={4}>
-        <Grid  gridGap='15px' w="500px" >
+        <Grid templateColumns="repeat(3, 1fr)" gap={6}>
           {(filter ? sortedPostsState : filteredPosts).map(post => (
-            <Box key={post.id} bg="white" p={5} shadow="md" borderWidth="1px" borderRadius="md">
+            <Box key={post.id} bg="white" p={5} shadow="md" borderWidth="1px" borderRadius="md" maxH="200px" w="350px" overflow="auto">
               <Post post={post} />
             </Box>
           ))}
