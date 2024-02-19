@@ -31,12 +31,11 @@ export default function Home({ search, setSearch }) {
             {user ?
                 <div>
 
-                    
-                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' style={{ height: '100vh' }} >
+                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' style={{ height: '100vh' }} mb='20px' mt='5px' >
 
-                        <Box bg={color} >
+                        <Box bg={color} borderRadius="20px" p='0px' h='100%'  position='fixed' ml='8px'mb='20px' >
 
-                            <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px' gridGap='10px' w='200px' ml='0px' mr='50px' position='static'>
+                            <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px'  w='200px'  mr='50px' position='static'>
                                 <CustomNavLink to="/home">
                                     <Box width="150px" height="50px" >
                                         <Logo />
@@ -55,7 +54,7 @@ export default function Home({ search, setSearch }) {
 
 
 
-                        <Box>
+                        <Box ml='260px'>
                             <Header search={search} setSearch={setSearch} />
                             <Box
                                 class='outlet-container'

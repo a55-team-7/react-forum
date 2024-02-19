@@ -125,7 +125,7 @@ const AllPosts = ({ search }) => {
       <Box id="posts-container" >
         <Grid templateColumns="repeat(3, 1fr)" gap={4}>
           {(filter ? sortedPostsState : filteredPosts).map(post => (
-            <Box key={post.id} bg="white" p={5} shadow={`5px 10px 35px  ${getRandomColor()}`} borderWidth="1px" borderRadius="md" maxH="250px" w="400px">
+            <Box key={post.id} bg="white" p={5} shadow={`5px 10px 35px  ${getRandomColor()}`} borderWidth="1px" borderRadius="md" maxH="250px" w="390px">
               <Post post={post} />
             </Box>
           ))}
