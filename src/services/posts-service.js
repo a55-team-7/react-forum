@@ -89,18 +89,7 @@ export const deletePost = async (id) => {
 
 
 export const getPostsByMostLikes = async () => {
-    const snapshot = await get(ref(db, 'posts'));
-
-    if (!snapshot.exists()) {
-        return [];
-    }
-
-    const posts = Object.values(snapshot.val()).map((post, id) => ({
-        id,
-        ...post,
-        createdOn: new Date(post.createdOn).toString(),
-        likedBy: post.likedBy ? Object.keys(post.likedBy) : [],
-    }));
+    const posts = await getAllPosts();
 
     posts.sort((a, b) => b.likedBy.length - a.likedBy.length);
 
@@ -108,18 +97,31 @@ export const getPostsByMostLikes = async () => {
 };
 
 export const getPostsByMostComments = async () => {
-    const snapshot = await get(ref(db, 'posts'));
+    const snapshot = await get(query(ref(db, 'posts'), orderByChild('createdOn')));
 
     if (!snapshot.exists()) {
         return [];
     }
 
-    const posts = Object.values(snapshot.val()).map((post, id) => ({
-        id,
-        ...post,
-        createdOn: new Date(post.createdOn).toString(),
-        comments: post.comments ? Object.keys(post.comments) : [],
-    }));
+    const allPosts = snapshot.val();
+
+    const likedByArray = Object.entries(allPosts).map((post) => {
+        const postId = post[0]
+        const postData = post[1]
+
+        return {
+            postId: postId,
+            likedBy: postData.likedBy ? postData.likedBy : {}
+        };
+    })
+
+    const posts = Object.keys(allPosts).map((key => ({
+        id: key, //the key
+        ...allPosts[key], //console.log  //the key value pairs of this id object
+        createdOn: new Date(allPosts[key].createdOn).toString(),
+        comments: allPosts[key].comments ? Object.keys(allPosts[key].comments) : [],
+        likedBy: allPosts[key].likedBy ? Object.keys(likedByArray.filter((post) => post.postId === key)[0].likedBy) : [],
+    })));
 
     // Sort posts by comments
     posts.sort((a, b) => b.comments.length - a.comments.length);
@@ -129,18 +131,8 @@ export const getPostsByMostComments = async () => {
 
 
 export const getPostsByNewest = async () => {
-    const snapshot = await get(query(ref(db, 'posts'), orderByChild('createdOn')));
 
-    if (!snapshot.exists()) {
-        return [];
-    }
-
-    const posts = Object.values(snapshot.val()).map((post, id) => ({
-        id,
-        ...post,
-        createdOn: new Date(post.createdOn).toString(),
-        likedBy: post.likedBy ? Object.keys(post.likedBy) : [],
-    }));
+    const posts = await getAllPosts();
 
     // Sort posts by date in descending order
     posts.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
@@ -149,18 +141,8 @@ export const getPostsByNewest = async () => {
 };
 
 export const getPostsByOldest = async () => {
-    const snapshot = await get(query(ref(db, 'posts'), orderByChild('createdOn')));
-
-    if (!snapshot.exists()) {
-        return [];
-    }
-
-    const posts = Object.values(snapshot.val()).map((post, id) => ({
-        id,
-        ...post,
-        createdOn: new Date(post.createdOn).toString(),
-        likedBy: post.likedBy ? Object.keys(post.likedBy) : [],
-    }));
+    
+    const posts = await getAllPosts();
 
     // Sort posts by date in ascending order
     posts.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn));
