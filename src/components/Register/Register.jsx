@@ -1,13 +1,12 @@
-
+import { Box, Button, FormControl, FormLabel, Input, Text, VStack } from "@chakra-ui/react";
 import { useContext } from 'react'
-import Button from '../Button/Button'
+// import Button from '../Button/Button'
 import './Register.css'
 import AppContext from '../../context/AppContext';
 import { registerUser } from '../../services/authentication-service';
 import { createUserHandle, getUserByHandle } from '../../services/users-service';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Container from '../Container/Container';
 import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH, EMAIL_REGEX } from '../../common/contants';
 
 const Register = () => {
@@ -71,33 +70,34 @@ const Register = () => {
     }
 
 
+
     return (
-        <div id='register-form'>
-            <h3>Join ReadIT and become part of the biggest
-                IT lifestyle forum in the world!</h3>
-            <Container>
-
-                <label htmlFor='register-first-name'>First Name:</label>
-                <input value={form.firstName} onChange={updateForm('firstName')} id='register-first-name' type='text' name='register-first-name' />
-                {(form.firstName.length > 0 && (form.firstName.length < 4 || form.firstName.length > 32)) ? <p className='valid-input'>First name must be between 4 and 32 symbols long</p> : <><br /><br /></>}
-                <label htmlFor='register-last-name'>Last Name:</label>
-                <input value={form.lastName} onChange={updateForm('lastName')} id='register-last-name' type='text' name='register-last-name' />
-                {(form.lastName.length > 0 && (form.lastName.length < 4 || form.lastName.length > 32)) ? <p className='valid-input'>Last name must be between 4 and 32 symbols long</p> : <><br /><br /></>}
-                <label htmlFor='register-username'>Username:</label>
-                <input value={form.username} onChange={updateForm('username')} id='register-username' type='text' name='register-username' />
-                <br />
-                <br />
-                <label htmlFor='register-email'>Email:</label>
-                <input value={form.email} onChange={updateForm('email')} id='register-email' type='email' name='register-email' />
-                {(form.email.length > 0 && !emailValid) ? <p className='valid-input'>Please enter a valid email</p> : <><br /><br /></>}
-                <label htmlFor='register-password'>Password:</label>
-                <input value={form.password} onChange={updateForm('password')} id='register-password' type='password' name='register-password' />
-                <br />
-                <br />
-
-            </Container>
-            <Button onClick={register}>Join</Button>
-        </div>
+        <Box id='register-form' w="300px" p={4} mx="auto" minHeight="100vh">
+            <Text mb={4}>Join ReadIT and become part of the biggest IT lifestyle forum in the world!</Text>
+            <VStack spacing={4}>
+                <FormControl id="firstName">
+                    <FormLabel>First Name:</FormLabel>
+                    <Input value={form.firstName} onChange={updateForm('firstName')} type='text' />
+                </FormControl>
+                <FormControl id="lastName">
+                    <FormLabel>Last Name:</FormLabel>
+                    <Input value={form.lastName} onChange={updateForm('lastName')} type='text' />
+                </FormControl>
+                <FormControl id="username">
+                    <FormLabel>Username:</FormLabel>
+                    <Input value={form.username} onChange={updateForm('username')} type='text' />
+                </FormControl>
+                <FormControl id="email">
+                    <FormLabel>Email:</FormLabel>
+                    <Input value={form.email} onChange={updateForm('email')} type='email' />
+                </FormControl>
+                <FormControl id="password">
+                    <FormLabel>Password:</FormLabel>
+                    <Input value={form.password} onChange={updateForm('password')} type='password' />
+                </FormControl>
+                <Button onClick={register} colorScheme="orange">Join</Button>
+            </VStack>
+        </Box>
     )
 }
 

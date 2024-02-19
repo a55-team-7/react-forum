@@ -1,16 +1,19 @@
+import { Box, Button, Flex, Heading, Image, Input, Text, extendTheme } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import AppContext from "../../context/AppContext";
 import { useParams } from "react-router-dom"
 import './UserPage.css'
 import { getUserByHandle, uploadProfilePictureByHandle, updateUserByHandle, unblockUser, blockUser, makeUserAdmin } from "../../services/users-service";
-import Button from "../Button/Button";
+// import Button from "../Button/Button";
 import Post from "../Post/Post";
 import { getAllPosts } from "../../services/posts-service";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
-import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH, EMAIL_REGEX } from "../../common/contants";
+import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from "../../common/contants";
 
 export default function UserPage() {
-  
+    const { colors, fonts } = extendTheme;
+    // const buttonColor = colors.brand[300];
+
     //update the local user 
     const [user, setUser] = useState(null);
 
@@ -47,7 +50,7 @@ export default function UserPage() {
             setIsBlocked(user.isBlocked !== undefined ? user.isBlocked : false); // set isBlocked based on the user's block status, or false if it's undefined
         });
     }, [handle, userData]);
-    
+
 
     useEffect(() => {
         getAllPosts().then(setAllPosts);
@@ -88,15 +91,11 @@ export default function UserPage() {
             alert(`Your last name should be between ${MIN_USER_NAME_LENGTH} and ${MAX_USER_NAME_LENGTH} symbols`);
             return;
         }
-        if (!EMAIL_REGEX.test(updatedUser.email)) {
-            alert('Please enter a valid email');
-            return;
-        }
         await updateUserByHandle(handle, updatedUser);
         setIsEditing(false);
         getUserByHandle(handle).then(setUser);
     }
-    
+
     const toggleBlockUser = async () => {
         if (isBlocked) {
             await unblockUser(user.handle);
@@ -118,48 +117,51 @@ export default function UserPage() {
         getUserByHandle(handle).then(setUser);
     }
 
+
+
     return (
-        <div id='user-page'>
-            {(user) ? (
+        <Box id='user-page' p={5} minHeight="100vh">
+            {user ? (
                 <>
-                    <h2>User: {user.handle}</h2>
-                    <ProfilePicture handle={handle} src={imageURL} type='userPage'/>
-                    <h3>Name: {user.firstName} {user.lastName}</h3>
-                    <h3>Email: {user.email}</h3>
+                    <Heading as="h2">User: {user.handle}</Heading>
+                    <Flex mt={2} direction="row" alignItems="start">
+                        <ProfilePicture handle={handle} src={imageURL} type='userPage' />
+                        <Box ml={4}>
+                            <Heading as="h3" mt={2} size="md">Name: {user.firstName} {user.lastName}</Heading>
+                            <Heading as="h3" mt={2} size="md">Email: {user.email}</Heading>
+                            {yourOwnProfile && !isEditing && <Button onClick={startEditing} colorScheme="orange" mt={2}>Edit</Button>}
+                        </Box>
+                    </Flex>
 
-                    {/*if profile is his own*/}
                     {isEditing ? (
-                        <>
-                            <input value={updatedUser.firstName} onChange={e => setUpdatedUser({ ...updatedUser, firstName: e.target.value })} />
-                            <input value={updatedUser.lastName} onChange={e => setUpdatedUser({ ...updatedUser, lastName: e.target.value })} />
-                            <input value={updatedUser.email} onChange={e => setUpdatedUser({ ...updatedUser, email: e.target.value })} />
-                            <Button onClick={saveChanges}>Save</Button>
-                        </>
-                    ) : (
-                        <>
-                            {/*if profile is  his own*/}
-                            {yourOwnProfile && <Button onClick={startEditing}>Edit</Button>}
-                        </>
-                    )}
+                        <Flex mt={3} direction="column" maxWidth="200px">
+                            <Input value={updatedUser.firstName} onChange={e => setUpdatedUser({ ...updatedUser, firstName: e.target.value })} placeholder="First Name" />
+                            <Input value={updatedUser.lastName} onChange={e => setUpdatedUser({ ...updatedUser, lastName: e.target.value })} placeholder="Last Name" />
+                            <Button onClick={saveChanges} colorScheme='orange' mt={4}>Save</Button>
+                        </Flex>
+                    ) : null}
 
-                    {/*if the user is an admin and the profile is not his own*/}
-                    {userData && userData.isAdmin &&  userData.handle !== handle && !user.isAdmin && <Button onClick={toggleBlockUser}>{isBlocked ? 'Unblock user' : 'Block user'}</Button>}
-                    {userData && userData.isAdmin &&  userData.handle !== handle && !user.isAdmin && <Button onClick={giveAdminRights}>Make admin</Button>}
+                    {userData && userData.isAdmin && userData.handle !== handle && !user.isAdmin &&
+                        <Button onClick={toggleBlockUser} colorScheme="red" mt={4}>{isBlocked ? 'Unblock user' : 'Block user'}</Button>
+                    }
+                    {userData && userData.isAdmin && userData.handle !== handle && !user.isAdmin &&
+                        <Button onClick={giveAdminRights} colorScheme="green" mt={4}>Make admin</Button>
+                    }
 
                     {yourOwnProfile && (
-                        <div id='upload-picture'>
-                            {newPictureURL && <img src={newPictureURL} id='profile-picture-preview' alt="Preview" width='100' height='100' />}
-                            <input id="upload-picture-input" type="file" onChange={updateProfilePicture} accept=".jpg, .jpeg, .png" />
-                            {loadStatus && <p>{loadStatus}</p>}
-                            <Button id='upload-profile-picture-button' onClick={uploadProfilePicture}>Change Profile Picture</Button>
-                        </div>
+                        <Box id='upload-picture' mt={4}>
+                            {newPictureURL && <Image my = {3} src={newPictureURL} id='profile-picture-preview' alt="Preview" boxSize="100px" />}
+                            <Input id="upload-picture-input" type="file" onChange={updateProfilePicture} accept=".jpg, .jpeg, .png" style={{ border: 'none' }} />
+                            {loadStatus && <Text>{loadStatus}</Text>}
+                            <Button id='upload-profile-picture-button' onClick={uploadProfilePicture} colorScheme="orange" mt={4}>Change Profile Picture</Button>
+                        </Box>
                     )}
-                    <h2>Posts by {user.handle}:</h2>
-                    {userPosts.length ? userPosts.map((post, index) => <Post key={index} post={post} postType='profilePagePosts' />) : <p>{user.handle} has no posts</p>}
+                    <Heading as="h2" size="lg" my={4}>Posts by {user.handle}:</Heading>
+                    {userPosts.length ? userPosts.map((post, index) => <Post key={index} post={post} postType='profilePagePosts' />) : <Text>{user.handle} has no posts</Text>}
                 </>
             ) : (
-                <p>Loading...</p>
+                <Text>Loading...</Text>
             )}
-        </div>
+        </Box>
     )
-}
+}    
