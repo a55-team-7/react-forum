@@ -52,7 +52,7 @@ export default function CreatePost() {
     };
 
     return (
-        <Box textAlign="left"  w="500px" p={2} my={5} >
+        <Box textAlign="left"  w="500px" p={2} my={5}  h="100vh" d="flex" flexDirection="column" alignItems="center" justifyContent="center">
 
             <Heading as="h1" size="xl" mb={3}>Create Post</Heading>
 

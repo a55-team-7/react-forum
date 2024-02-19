@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllUsers } from "../../services/users-service";
 import PropTypes from 'prop-types';
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
-
+import { Box, Grid } from "@chakra-ui/react";
 
 
 export const Users = ({ search }) => {
@@ -27,16 +27,16 @@ export const Users = ({ search }) => {
     );
 
     return (
-        <>
+        <Box h="100vh">
             {filteredUsers.map((user, index) => (
                 <div key={index} id="user-data">
                     <h2>{`${user.firstName}${user.lastName} `} </h2>
                     <p>{user.email}</p>
-                    <ProfilePicture handle={user.handle} type='users'/>
+                    <ProfilePicture handle={user.handle} type='users' />
                     {/* Render other user properties as needed */}
                 </div>
             ))}
-        </>
+        </Box>
     );
 };
 

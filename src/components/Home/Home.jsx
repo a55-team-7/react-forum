@@ -34,7 +34,7 @@ export default function Home({ search, setSearch }) {
 
                         <Box bg={color} >
 
-                            <Grid justifyItems='start' gridTemplateColumns='auto' mt='20px' gridGap='20px' w='150px' ml='20px' >
+                            <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px' gridGap='20px' w='250px' ml='0px' mr='50px' position='static'>
                                 <CustomNavLink to="/home">
                                 <Box width="150px" height="50px" >
                                     <Logo />

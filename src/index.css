@@ -64,3 +64,10 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/Inter-ExtraLight.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+}
