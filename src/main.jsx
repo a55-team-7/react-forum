@@ -14,7 +14,7 @@ const colors = {
   brand: {
     100: 'rgb(1, 2, 20)', //dark blue
     200: 'rgb(255, 0, 54)', //light blue
-    300: '#FF1934', //orange red
+    300: 'rgb(255, 25, 52)', //orange red
   },
 }
 

@@ -32,7 +32,7 @@ export default function Home({ search, setSearch }) {
                 <div>
 
                     
-                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' style={{ height: '100vh' }}>
+                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' style={{ height: '100vh' }} >
 
                         <Box bg={color} >
 
@@ -55,7 +55,7 @@ export default function Home({ search, setSearch }) {
 
 
 
-                        <Container className='BOX'>
+                        <Box>
                             <Header search={search} setSearch={setSearch} />
                             <Box
                                 class='outlet-container'
@@ -64,13 +64,13 @@ export default function Home({ search, setSearch }) {
                                 maxW="1200px"
                                 display="flex"
                                 alignItems="center"
-                                justifyContent="center"
                                 flexDirection="column"
                                 position="static"
+                                ml='30px'
                             >
                                 <Outlet style={{ width: '100%', height: '100%' }} />
                             </Box>
-                        </Container>
+                        </Box>
 
 
                     </Grid>
