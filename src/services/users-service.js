@@ -150,7 +150,6 @@ export const updateUserByHandle = async (handle, updatedUser) => {
   await update(userRef, {
     firstName: updatedUser.firstName,
     lastName: updatedUser.lastName,
-    email: updatedUser.email,
     isBlocked: updatedUser.isBlocked,
   });
 }
