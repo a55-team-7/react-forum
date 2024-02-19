@@ -30,11 +30,13 @@ export default function Home({ search, setSearch }) {
         <>
             {user ?
                 <div>
+
+                    
                     <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' style={{ height: '100vh' }}>
 
                         <Box bg={color} >
 
-                            <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px' gridGap='20px' w='250px' ml='0px' mr='50px' position='static'>
+                            <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px' gridGap='10px' w='200px' ml='0px' mr='50px' position='static'>
                                 <CustomNavLink to="/home">
                                     <Box width="150px" height="50px" >
                                         <Logo />
@@ -54,8 +56,9 @@ export default function Home({ search, setSearch }) {
 
 
                         <Container className='BOX'>
+                            <Header search={search} setSearch={setSearch} />
                             <Box
-                                class='outelt-container'
+                                class='outlet-container'
                                 m='0px'
                                 p='0px'
                                 maxW="1200px"
@@ -65,12 +68,9 @@ export default function Home({ search, setSearch }) {
                                 flexDirection="column"
                                 position="static"
                             >
-                                <Header search={search} setSearch={setSearch} />
                                 <Outlet style={{ width: '100%', height: '100%' }} />
                             </Box>
-
                         </Container>
-
 
 
                     </Grid>

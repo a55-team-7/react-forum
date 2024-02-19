@@ -1,7 +1,7 @@
+import { Avatar } from "@chakra-ui/react";
 import { useEffect, useState } from 'react';
 import { getProfilePictureByHandle } from '../../services/users-service';
 import PropTypes from 'prop-types';
-import './ProfilePicture.css';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProfilePicture ({ handle, type, src }) {
@@ -9,21 +9,18 @@ export default function ProfilePicture ({ handle, type, src }) {
     const defaultPictureURL = 'https://firebasestorage.googleapis.com/v0/b/readit-22759.appspot.com/o/profilePictures%2Fdefault.jpg?alt=media&token=9361446f-e56a-4e40-af34-3d3f1610a3be';
     const navigate = useNavigate();
 
-    //the type prop tells us what the picture is for
-    //if it is for a standard post clicking it will take us to the user profile of the author
     const onPictureClick = () => {
         if (type === 'post' || type === 'comment' || type === 'postDetails' || type === 'users') navigate(`../../users/${handle}`);
     }
 
-    let size = 100;
+    let size = "100px";
 
-    //size of picture determined by what it's for
     if (type === 'post' || type=== 'comment' || type === 'users') {
-        size = 40;
+        size = "40px";
     }
 
     if ( type === 'postDetails' ) {
-        size = 60;
+        size = "60px";
     }
 
     useEffect(() => {
@@ -31,15 +28,18 @@ export default function ProfilePicture ({ handle, type, src }) {
     }, [handle]);
 
     useEffect(() => {
-        //overrides the previous pictureURL handle
         if (src) {
             setProfilePictureURL(src);
         }
     }, [src]);
-    
 
     return (
-        profilePictureURL ? <img src={profilePictureURL} alt="User's profile picture" width={size} height={size} onClick={onPictureClick}/> : <img src={defaultPictureURL} alt="User's profile picture" width={size} height={size} onClick={onPictureClick}/>
+        <Avatar
+            src={profilePictureURL || defaultPictureURL}
+            alt="User's profile picture"
+            boxSize={size}
+            onClick={onPictureClick}
+        />
     );
 }
 

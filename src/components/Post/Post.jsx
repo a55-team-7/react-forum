@@ -4,38 +4,46 @@ import PropTypes from 'prop-types';
 import { Box, Text, Button, Flex, Grid, Tag, Link } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ProfilePicture from '../ProfilePicture/ProfilePicture';
+import { useColorModeValue } from '@chakra-ui/react';
 
 const Post = ({ post, postType = 'post' }) => {
-    //const [post, setPost] = useState(null);
     const navigate = useNavigate();
 
+    const color = useColorModeValue("brand.100", "brand.300");
     return (
-        <Box class='box' bg="blue.100"  borderRadius="md" boxShadow="lg" >
-            <Flex direction="column" >
-                <Grid templateColumns="auto 1fr auto" gap={4} alignItems="top">
+        <Box borderRadius="md" boxShadow="lg" >
+            <Flex direction="column">
+
+                <Grid templateColumns="auto 1fr auto" gap={6} alignItems="center">
                     {postType === 'post' ? <ProfilePicture handle={post.author} type={postType} /> : null}
-                    <Box>
-                        <Link onClick={() => navigate(`/home/my-posts/${post.id}`)} color="cyan.500">
-                            <Text as="h4" fontSize="xl" fontWeight="bold">{post.title}</Text>
-                        </Link>
+
+                    <Box p={2}>
                         <Text color="gray.500">{post.author}</Text>
                     </Box>
-                    <Button onClick={() => navigate(`/home/my-posts/${post.id}`)} >see more</Button>
+
+                    <Button onClick={() => navigate(`/home/my-posts/${post.id}`)}>see more</Button>
                 </Grid>
-                <Box bg="white" p={4} my={2} borderRadius="md">
-                    <Text>Content: {post.content}</Text>
-                </Box>
-                <Grid templateColumns="1fr 1fr" justifyContent="space-between" alignItems="start">
+
+                <Link onClick={() => navigate(`/home/my-posts/${post.id}`)} color="cyan.500" >
+                    <Text as="h4" fontSize="15px" fontWeight="bold">{post.title}</Text>
+                </Link>
+
+                <Box bg="white" w="320px" h="100px" borderRadius="md" overflowY="auto" border="1px" borderColor="gray.200" >
+                    <Text> {post.content}</Text>
                     <Text> Likes: {post.likedBy ? post.likedBy.length : 0}  Comments: {post.comments ? Object.values(post.comments).length : 0}</Text>
+                </Box>
+
+                
                     <Flex id="post-tags">{post && post.tags ? post.tags.map((tag, index) => (
-                        <Tag key={`${index}-${tag}`} colorScheme="cyan" mr={2}>{tag}</Tag>
-                    )) : null}</Flex>
-                </Grid>
+                        <Tag key={`${index}-${tag}`} >{tag}</Tag>
+                    )) : null}
+                    </Flex>
+          
+
             </Flex>
         </Box>
     )
 };
-
 Post.propTypes = {
     post: PropTypes.object.isRequired,
     postType: PropTypes.string

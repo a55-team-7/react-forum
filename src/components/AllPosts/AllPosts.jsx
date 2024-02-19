@@ -5,7 +5,7 @@ import { getAllPosts, getPostsByMostComments, getPostsByMostLikes, getPostsByNew
 //import './AllPosts.css';
 import PropTypes from 'prop-types';
 // import Button from '../Button/Button';
-import { Box, Button, Heading, SimpleGrid, Divider, Stack, Radio, RadioGroup, Grid , Flex} from '@chakra-ui/react';
+import { Box, Button, Heading, SimpleGrid, Divider, Stack, Radio, RadioGroup, Grid, Flex } from '@chakra-ui/react';
 import { get } from 'firebase/database';
 
 
@@ -75,17 +75,29 @@ const AllPosts = ({ search }) => {
   };
 
   return (
-    <Box   borderRadius="md" boxShadow="lg" w="1200px" ml='30px' >
+    <Box borderRadius="md" boxShadow="1g" w="1200px" ml='30px' >
 
 
-   
 
-      <Flex direction="row" alignItems={'flex-end'}>
+
+      <Flex direction="row" alignItems={'center'}>
         <Heading as="h1" size="lg" mr={'15px'}>My feed</Heading>
-        <div className="material-symbols-outlined" onClick={toogleFilterLike}>&#xe429;</div>
+        <div className="material-symbols-outlined" style={{ marginRight: '15px' }} onClick={toogleFilterLike}>&#xe429;</div>
+
+        {filterToggle && (
+          <RadioGroup onChange={handleFilterChange} value={filter}>
+            <Stack direction="row">
+              <Radio value="most liked">most liked</Radio>
+              <Radio value="recents">recents</Radio>
+              <Radio value="most commented">most commented</Radio>
+              <Radio value="oldest">oldest</Radio>
+            </Stack>
+          </RadioGroup>
+        )}
+
       </Flex>
-      
-      {filterToggle && (
+
+      {/* {filterToggle && (
         <RadioGroup onChange={handleFilterChange} value={filter}>
           <Stack direction="row">
             <Radio value="most liked">most liked</Radio>
@@ -94,14 +106,14 @@ const AllPosts = ({ search }) => {
             <Radio value="oldest">oldest</Radio>
           </Stack>
         </RadioGroup>
-      )}
+      )} */}
 
       <Divider my={4} />
 
-      <Box id="posts-container" mt={4}>
-        <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+      <Box id="posts-container" >
+        <Grid templateColumns="repeat(3, 1fr)" gap={4}>
           {(filter ? sortedPostsState : filteredPosts).map(post => (
-            <Box key={post.id} bg="white" p={5} shadow="md" borderWidth="1px" borderRadius="md" maxH="200px" w="350px" overflow="auto">
+            <Box key={post.id} bg="white" p={5} shadow="md" borderWidth="1px" borderRadius="md" maxH="250px" w="400px">
               <Post post={post} />
             </Box>
           ))}

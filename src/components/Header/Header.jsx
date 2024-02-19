@@ -2,12 +2,13 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
 import { useContext } from 'react';
 import AppContext from '../../context/AppContext';
-//import Button from '../Button/Button';
+
 import { logoutUser } from '../../services/authentication-service';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import { Input } from "@chakra-ui/react";
-import { Button } from '@chakra-ui/react'
+import { Button , Grid} from '@chakra-ui/react'
+import { useColorModeValue } from '@chakra-ui/react'
 
 export default function Header({ search, setSearch }) {
     const { user, setContext } = useContext(AppContext);
@@ -20,6 +21,7 @@ export default function Header({ search, setSearch }) {
         navigate('../../../home');
     }
 
+    const color = useColorModeValue("brand.300", "brand.300");
 
     return (
         <>
@@ -28,14 +30,17 @@ export default function Header({ search, setSearch }) {
                 {user
                     ? (
                         <>
-                            {(location.pathname === '/home' || location.pathname === '/home/my-posts' || location.pathname === '/home/users') && (
-                                <>
-                                    <Input value={search} onChange={e => setSearch(e.target.value)} type="text" name="search" id="search" />
-                                    {search && <Button onClick={() => setSearch('')}>Clear</Button>}
-                                </>
-                            )}
 
-                            <Button onClick={logOut}>Logout</Button>
+                            
+                            <Grid templateColumns="600px 100px" gap={50} mt={'20px'} mr={'50px'}  >
+                                {(location.pathname === '/home' || location.pathname === '/home/my-posts' || location.pathname === '/home/users') && (
+                                    <>
+                                        <Input value={search} onChange={e => setSearch(e.target.value)} type="text" name="search" id="search" placeholder='Find your topic!'/>
+                                        {search && <Button onClick={() => setSearch('')}>Clear</Button>}
+                                    </>
+                                )}
+                                <Button onClick={logOut} border="1px" borderColor={color} mr={'20px'}>Logout</Button>
+                            </Grid>
 
                         </>
                     )
