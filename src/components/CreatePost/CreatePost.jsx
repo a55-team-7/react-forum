@@ -1,5 +1,6 @@
+import { Box, Button, FormControl, FormLabel, Heading, Input, Textarea} from "@chakra-ui/react";
 import { addPost } from '../../services/posts-service';
-import Button from '../Button/Button';
+// import Button from '../Button/Button';
 import { useState, useContext } from 'react';
 import AppContext from '../../context/AppContext';
 import './CreatePost.css'
@@ -51,15 +52,28 @@ export default function CreatePost() {
     };
 
     return (
-        <div>
-            <h1>Create post</h1>
-            <label htmlFor="input-title">Title:</label>
-            <input value={post.title} onChange={e => updatePost(e.target.value, 'title')} type="text" name="input-title" id="input-title" /><br />
-            <label htmlFor="input-content">Content:</label><br />
-            <textarea value={post.content} onChange={e => updatePost(e.target.value, 'content')} name="input-content" id="input-content" cols="30" rows="10"></textarea><br />
-            <label htmlFor='input-tags'>Tags (separate by comma!):</label>
-            <input type="text" name="input-tags" id="input-tags" value={post.tags} onChange={e => updatePost(e.target.value, 'tags')} /><br /><br />
-            <Button onClick={createPost}>Create</Button>
-        </div>
+        <Box textAlign="left"  w="500px" p={2} my={5} >
+
+            <Heading as="h1" size="xl" mb={3}>Create Post</Heading>
+
+            <FormControl id="input-title" isRequired>
+                <FormLabel>Title:</FormLabel>
+                <Input value={post.title} onChange={e => updatePost(e.target.value, 'title')} />
+            </FormControl>
+
+            <FormControl id="input-content" isRequired mt={3}>
+                <FormLabel>Content:</FormLabel>
+                <Textarea value={post.content} onChange={e => updatePost(e.target.value, 'content')} />
+            </FormControl>
+
+            <FormControl id="input-tags" mt={3}>
+                <FormLabel>Tags (separate by comma!):</FormLabel>
+                <Input type="text" value={post.tags} onChange={e => updatePost(e.target.value, 'tags')} />
+            </FormControl>
+
+            <Button colorScheme="orange" width="full" mt={6} onClick={createPost}>
+                Create
+            </Button>
+        </Box>
     );
 }

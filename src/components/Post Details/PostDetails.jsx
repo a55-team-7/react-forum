@@ -1,9 +1,10 @@
+import { Box, Button, Flex, FormControl, FormLabel, Heading, Input, Text, Textarea, useToast } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import './PostDetails.css'
 import { commentPost, deletePost, getPostById, updatePostById } from "../../services/posts-service";
 import Comment from "../Comment/Comment";
-import Button from "../Button/Button";
+// import Button from "../Button/Button";
 import AppContext from "../../context/AppContext";
 import { dislikePost, likePost } from "../../services/posts-service";
 import { getUserByHandle } from "../../services/users-service";
@@ -120,61 +121,65 @@ export default function PostDetails() {
         <div id='post-details'>
             {(post && userData && author) ? (
                 <>
-                    <Button onClick={() => navigate(-1)}>Back</Button>
-                    {(userData.handle === post.author || (userData.isAdmin && !author.isAdmin)) && <Button onClick={toggleAuthorOptions}>options</Button>}
+                    <Box w="500px" p={4} my={12} >
+                        <Flex justify="space-between">
+                            <Button onClick={() => navigate(-1)}>Back</Button>
+                            {(userData.handle === post.author || (userData.isAdmin && !author.isAdmin)) &&
+                                <Button onClick={toggleAuthorOptions}>Options</Button>
+                            }
+                        </Flex>
 
-                    {showOptions && (
-                        <>
-                            {<Button onClick={postDeletion}>Delete Post</Button>}
-
-                            {isEditing ? (
-                                <>
-                                    <label htmlFor="edit-title">Title:</label>
-                                    <input value={updatedPost.title} onChange={e => setUpdatedPost({ ...updatedPost, title: e.target.value })} type="text" name="edit-title" id="edit-title" /><br />
-                                    <label htmlFor="edit-content">Content:</label><br />
-                                    <textarea value={updatedPost.content} onChange={e => setUpdatedPost({ ...updatedPost, content: e.target.value })} name="edit-content" id="edit-content" cols="30" rows="10"></textarea><br />
-
-                                    <Button onClick={saveChanges}>Save</Button>
-                                </>
-                            ) : (
-                                <>
+                        {showOptions && (
+                            <Box mt={4}>
+                                <Button mr={2} onClick={postDeletion}>Delete Post</Button>
+                                {isEditing ? (
+                                    <Box mt={4}>
+                                        <FormControl>
+                                            <FormLabel>Title:</FormLabel>
+                                            <Input value={updatedPost.title} onChange={e => setUpdatedPost({ ...updatedPost, title: e.target.value })} />
+                                        </FormControl>
+                                        <FormControl mt={4}>
+                                            <FormLabel>Content:</FormLabel>
+                                            <Textarea value={updatedPost.content} onChange={e => setUpdatedPost({ ...updatedPost, content: e.target.value })} />
+                                        </FormControl>
+                                        <Button mt={4} colorScheme="teal" onClick={saveChanges}>Save</Button>
+                                    </Box>
+                                ) : (
                                     <Button onClick={startEditing}>Edit Post</Button>
-                                </>
-                            )}
-                        </>
+                                )}
+                            </Box>
+                        )}
 
-                    )}
+                        <Box mt={6}>
+                            <Flex alignItems="center">
+                                <ProfilePicture handle={post.author} type='postDetails' />
+                                <Box ml={4} maxWidth="500px">
+                                    <Heading as="h3" size="lg">{post.title}</Heading>
+                                    <Text  mt={2}>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</Text>
+                                </Box>
+                            </Flex>
+                            <Text mt={4}>{post.content}</Text>
+                            <Button onClick={togglePostLike} mt={4}>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
+                        </Box>
 
-                    <h2>Title:</h2>
-                    <h2>{post.title}</h2>
-                    <p>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</p>
-                    <ProfilePicture handle={post.author} type='postDetails'/>
-                    <p>{post.content}</p>
-                    <Button onClick={togglePostLike}>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
-
-                    {(userData && userData.isBlocked) ?
-                        (<h4>Comment section currently not available! Talk to an admin for more information.</h4>)
-                        :
-                        <>
-                            <h3>Comments:</h3>
-                            {post.comments ? Object.entries(post.comments).map(([commentId, comment]) => (
-                                <div key={commentId} className="post-comment">
-                                    <Comment comment={comment} postId={post.id} commentId={commentId} setCommentsUpdated={setCommentsUpdated} />
-                                </div>
-                            )) : <h3>post has no comments</h3>}
-                            <label htmlFor="comment-text">Comment:</label>
-                            <br />
-                            <textarea value={commentText} onChange={handleAddComment} name="comment-text" id="comment-text" cols="40" rows="10"></textarea>
-                            <Button onClick={postComment} id='post-comment-button'>Post</Button>
-                            <div id="post-tags-wrapper">
-                                <h3>Tags:</h3>
-                                <div id="post-tags">{post && post.tags ? post.tags.map((tag, index) => (
-                                    <span key={`${index}-${tag}`}>{tag}</span>
-                                )) : []}</div>
-                            </div>
-                        </>
-                    }
-
+                        {(userData && userData.isBlocked) ?
+                            (<Text mt={4}>Comment section currently not available! Talk to an admin for more information.</Text>)
+                            :
+                            <Box mt={4}>
+                                <Heading as="h3" size="md">Comments:</Heading>
+                                {post.comments ? Object.entries(post.comments).map(([commentId, comment]) => (
+                                    <Box key={commentId} className="post-comment" mt={4}>
+                                        <Comment comment={comment} postId={post.id} commentId={commentId} setCommentsUpdated={setCommentsUpdated} />
+                                    </Box>
+                                )) : <Text mt={4}>This post has no comments</Text>}
+                                <FormControl mt={4}>
+                                    <FormLabel>Comment:</FormLabel>
+                                    <Textarea value={commentText} onChange={handleAddComment} />
+                                </FormControl>
+                                <Button onClick={postComment} id='post-comment-button' mt={4}>Post</Button>
+                            </Box>
+                        }
+                    </Box>
                 </>
             ) : (
                 <p>Loading...</p>
@@ -183,3 +188,5 @@ export default function PostDetails() {
         </div>
     )
 }
+
+
