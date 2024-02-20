@@ -57,7 +57,7 @@ export default function Home({ search, setSearch }) {
                         <Box ml='260px'>
                             <Header search={search} setSearch={setSearch} />
                             <Box
-                                class='outlet-container'
+                                className='outlet-container'
                                 m='0px'
                                 p='0px'
                                 maxW="1200px"
