@@ -1,16 +1,18 @@
-
-import { useContext, useState } from 'react'
+import { Box, Heading, Text, VStack, Flex } from "@chakra-ui/react";
+import { useContext, useEffect, useState } from 'react'
 import Popular from '../Popular/Popular'
 import Recents from '../Recents/Recents'
 import './Home.css'
 import AppContext from '../../context/AppContext'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Button, Container, Grid, Box } from '@chakra-ui/react'
+import { Button, Container, Grid } from '@chakra-ui/react'
 import Header from '../Header/Header'
 import PropTypes from 'prop-types'
 import { CustomNavLink } from '../ChakraUI/CustomNavLink'
 import { useColorModeValue } from '@chakra-ui/react'
 import Logo from '../Logo/Logo'
+import { getAllPosts } from '../../services/posts-service'
+import { getAllUsers } from '../../services/users-service'
 
 
 export default function Home({ search, setSearch }) {
@@ -18,11 +20,18 @@ export default function Home({ search, setSearch }) {
     const { user, userData } = useContext(AppContext);
     const [view, setView] = useState('home');
     const location = useLocation();
+    const [allPosts, setAllPosts] = useState([]);
+    const [allUsers, setAllUsers] = useState([]);
 
     let userPageLink = '/users/';
     if (userData) {
         userPageLink += userData.handle;
     }
+
+    useEffect(() => {
+        getAllPosts().then(setAllPosts);
+        getAllUsers().then(setAllUsers);
+    }, []);
 
     const color = useColorModeValue("brand.100", "brand.300");
 
@@ -33,9 +42,9 @@ export default function Home({ search, setSearch }) {
 
                     <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' style={{ height: '100vh' }} mb='20px' mt='5px' >
 
-                        <Box bg={color} borderRadius="20px" p='0px' h='100%'  position='fixed' ml='8px'mb='20px' >
+                        <Box bg={color} borderRadius="20px" p='0px' h='100%' position='fixed' ml='8px' mb='20px' >
 
-                            <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px'  w='200px'  mr='50px' position='static'>
+                            <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px' w='200px' mr='50px' position='static'>
                                 <CustomNavLink to="/home">
                                     <Box width="150px" height="50px" >
                                         <Logo />
@@ -75,27 +84,35 @@ export default function Home({ search, setSearch }) {
                     </Grid>
                 </div>
                 :
-                <div>
-                    <div id='currentUsers-and-Post-content'>
-                        <Container>
 
-                            <h2 id='number-of-users'>Current users: <br /> 20,109</h2>
-                            <h2 id='number-of-posts'>Posts:<br /> 40,290</h2>
-
-                        </Container>
-                    </div>
-                    <div id='recents-and-popular-content'>
-
-                        <Container>
-                            <button onClick={() => setView('recents')}>Recents</button>
-                            <button onClick={() => setView('popular')}>Popular</button>
-                            {view === 'recents' && <Recents />}
-                            {view === 'popular' && <Popular />}
-
-
-                        </Container>
-                    </div>
-                </div>
+            <VStack spacing={10} align="center">
+                <Flex id='currentUsers-and-Post-content' direction="column" align="center" mb={5}>
+                    <Flex mt={5}>
+                    <Button mr={3} as={NavLink} to="/register"  size="lg" mb={3}>Register</Button>
+                    <Button as={NavLink} to="/login"  size="lg" >Login</Button>
+                    </Flex>
+                    <Container>
+                        <Flex spacing={5} align="center">
+                            <Box mr={3}  p={4}>
+                                <Heading as="h4" size="lg">Current Users:</Heading>
+                                <Text fontSize="2xl">{allUsers.length}</Text>
+                            </Box>
+                            <Box p={4}>
+                                <Heading as="h4" size="lg">Posts:</Heading>
+                                <Text fontSize="xl">{allPosts.length}</Text>
+                            </Box>
+                        </Flex>
+                    </Container>
+                </Flex>
+                <Flex id='recents-and-popular-content' direction="column" align="center">
+                    <Container>
+                        <Button onClick={() => setView('recents')}  size="lg" mb={3} mr={3}>Recents</Button>
+                        <Button onClick={() => setView('popular')}  size="lg" mb={3}>Popular</Button>
+                        {view === 'recents' && <Recents />}
+                        {view === 'popular' && <Popular />}
+                    </Container>
+                </Flex>
+            </VStack>
             }
 
         </>
