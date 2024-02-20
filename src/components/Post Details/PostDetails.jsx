@@ -12,6 +12,10 @@ import { MAX_POST_CONTENT_LENGTH, MAX_POST_TITLE_LENGTH, MIN_POST_CONTENT_LENGTH
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import { CustomNavLink } from "../ChakraUI/CustomNavLink";
 import Logo from "../Logo/Logo";
+import { Spinner } from "@chakra-ui/react";
+import { CiEdit } from "react-icons/ci";
+import { IoArrowBack } from "react-icons/io5";
+import { AiFillHeart } from 'react-icons/ai';
 
 export default function PostDetails() {
     const [post, setPost] = useState(null);
@@ -128,31 +132,15 @@ export default function PostDetails() {
         <div id='post-details'>
             {(post && userData && author) ? (
                 <>
-                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' >
+                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px'  >
 
-                        <Box bg={color} >
-
-                            <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px' gridGap='10px' w='200px' ml='0px' mr='50px' position='static'>
-                                <CustomNavLink to="/home">
-                                    <Box width="150px" height="50px" >
-                                        <Logo />
-                                    </Box>
-                                </CustomNavLink>
-                                {(location.pathname !== '/home/my-posts' && location.pathname !== '/home') && <CustomNavLink to="/home/my-posts">My Feed</CustomNavLink>}
-                                <CustomNavLink to="/home/recents">Recents</CustomNavLink>
-                                <CustomNavLink to="/home/popular">Popular</CustomNavLink>
-                                {userData && !userData.isBlocked && <CustomNavLink to="/home/create-post">Create Post</CustomNavLink>}
-                                {userData && userData.isAdmin && <CustomNavLink to="/home/users">Users</CustomNavLink>}
-                                <CustomNavLink to={userPageLink}>User Page</CustomNavLink>
-                            </Grid>
-
-                        </Box>
-
-                        <Box w="500px" p={4} my={3} ml={5} >
+                        <Box w="1220px" p={4} my={3} ml={5} >
                             <Flex >
-                                <Button onClick={() => navigate(-1)}>Back</Button>
+                                <IoArrowBack size='30px' color='blue'onClick={() => navigate(-1)}/>
                                 {(userData.handle === post.author || (userData.isAdmin && !author.isAdmin)) &&
-                                    <Button ml={3} onClick={toggleAuthorOptions}>Options</Button>
+                                    <Box ml={800}> 
+                                    <CiEdit size='20px' onClick={toggleAuthorOptions}/>
+                                    </Box>
                                 }
                             </Flex>
 
@@ -177,16 +165,20 @@ export default function PostDetails() {
                                 </Box>
                             )}
 
-                            <Box mt={6}>
+                         
+                            <Box mt={6} border="none">
                                 <Flex alignItems="center">
                                     <ProfilePicture handle={post.author} type='postDetails' />
-                                    <Box ml={4} maxWidth="500px">
-                                        <Heading as="h3" size="lg">{post.title}</Heading>
+                                    <Box ml={4} maxWidth="800px">
+                                        <Text fontSize='30px'>{post.title}</Text>
                                         <Text mt={2}>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</Text>
                                     </Box>
                                 </Flex>
                                 <Text mt={4}>{post.content}</Text>
-                                <Button onClick={togglePostLike} mt={4}>{post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}</Button>
+                                <Button onClick={togglePostLike} mt={4} color="magenta" leftIcon={post.likedBy.includes(userData.handle) ? <AiFillHeart /> : null}>
+                                    {post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}
+                                </Button>
+
                             </Box>
 
                             {(userData && userData.isBlocked) ?
@@ -206,11 +198,14 @@ export default function PostDetails() {
                                     <Button onClick={postComment} id='post-comment-button' mt={4}>Post</Button>
                                 </Box>
                             }
+                            
                         </Box>
                     </Grid>
                     </>
                     ) : (
-                    <p>Loading...</p>
+                       
+                        <Spinner size="xl" />
+                
             )}
 
                 </div>

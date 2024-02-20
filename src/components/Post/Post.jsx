@@ -53,7 +53,7 @@ const Post = ({ post, postType = 'post' }) => {
                     <Box >
                         <Text color="gray.500" fontWeight="700">@{post.author}</Text>
                     </Box>
-                    <Flex id="post-tags" overflowX="auto" whiteSpace="nowrap">
+                    <Flex id="post-tags" overflowX="auto" whiteSpace="nowrap" >
                         {post && post.tags ? (
                             post.tags.map((tag, index) => (
                                 <Tag key={index} fontSize="sm" borderRadius="md" isTruncated maxWidth="100px" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">

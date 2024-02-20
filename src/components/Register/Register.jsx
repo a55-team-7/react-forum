@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel, Input, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Text, VStack,Flex , Container } from "@chakra-ui/react";
 import { useContext } from 'react'
 // import Button from '../Button/Button'
 import './Register.css'
@@ -8,6 +8,9 @@ import { createUserHandle, getUserByHandle } from '../../services/users-service'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH, EMAIL_REGEX } from '../../common/contants';
+import { Link } from 'react-router-dom';
+import Logo from '../Logo/Logo';
+import { Heading } from "@chakra-ui/react";
 
 const Register = () => {
     const { setContext } = useContext(AppContext);
@@ -72,33 +75,51 @@ const Register = () => {
 
 
     return (
-        <Box id='register-form' w="300px" p={4} mx="auto" minHeight="100vh">
-            <Text mb={4}>Join ReadIT and become part of the biggest IT lifestyle forum in the world!</Text>
-            <VStack spacing={4}>
-                <FormControl id="firstName">
-                    <FormLabel>First Name:</FormLabel>
-                    <Input value={form.firstName} onChange={updateForm('firstName')} type='text' />
-                </FormControl>
-                <FormControl id="lastName">
-                    <FormLabel>Last Name:</FormLabel>
-                    <Input value={form.lastName} onChange={updateForm('lastName')} type='text' />
-                </FormControl>
-                <FormControl id="username">
-                    <FormLabel>Username:</FormLabel>
-                    <Input value={form.username} onChange={updateForm('username')} type='text' />
-                </FormControl>
-                <FormControl id="email">
-                    <FormLabel>Email:</FormLabel>
-                    <Input value={form.email} onChange={updateForm('email')} type='email' />
-                </FormControl>
-                <FormControl id="password">
-                    <FormLabel>Password:</FormLabel>
-                    <Input value={form.password} onChange={updateForm('password')} type='password' />
-                </FormControl>
-                <Button onClick={register} colorScheme="orange">Join</Button>
-            </VStack>
-        </Box>
+        <Flex
+            flexDirection="column"
+            align="center"
+            h='100%'
+            spacing={10}
+            style={{
+                background: 'linear-gradient(to right, blue, #ffc837)',
+                minHeight: '100vh'
+            }}
+        >
+            <Flex justifyContent="space-between" mt={5} width="90%" ml='30px'>
+                <Box width="150px" height="40px">
+                    <Logo />
+                </Box>
+                <Flex>
+                    <Link to="/login">
+                        <Button border="1px" bg='blue' color="cyan" w="80px" ml='50px'>Login</Button>
+                    </Link>
+                </Flex>
+            </Flex>
+
+            <Container id='register-form' maxW="400px" p={4} mx="auto" >
+                <Heading  as='h3' color='white' mb={4}>Join ReadIT and become part of the biggest IT lifestyle forum in the world!</Heading>
+                <VStack spacing={4}>
+                    <FormControl id="firstName">
+                        <Input bg='white' value={form.firstName} onChange={updateForm('firstName')} type='text' placeholder='First Name' />
+                    </FormControl>
+                    <FormControl id="lastName">
+                        <Input bg='white' value={form.lastName} onChange={updateForm('lastName')} type='text' placeholder='Last Name' />
+                    </FormControl>
+                    <FormControl id="username">
+                        <Input bg='white' value={form.username} onChange={updateForm('username')} type='text' placeholder='Username' />
+                    </FormControl>
+                    <FormControl id="email">
+                        <Input bg='white' value={form.email} onChange={updateForm('email')} type='email' placeholder='Email' />
+                    </FormControl>
+                    <FormControl id="password">
+                        <Input bg='white' value={form.password} onChange={updateForm('password')} type='password' placeholder='Password' />
+                    </FormControl>
+                    <Button onClick={register} border="1px" bg='blue' w="80px" color="cyan">Join</Button>
+                </VStack>
+            </Container>
+        </Flex>
     )
+    
 }
 
 export default Register;

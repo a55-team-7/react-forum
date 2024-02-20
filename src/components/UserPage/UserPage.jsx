@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Input, Text, Grid, useColorModeValue, VStack} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image, Input, Text, Grid, useColorModeValue, VStack } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import AppContext from "../../context/AppContext";
 import { useParams } from "react-router-dom"
@@ -11,6 +11,9 @@ import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from "../../common/contants";
 import { CustomNavLink } from "../ChakraUI/CustomNavLink";
 import Logo from "../Logo/Logo";
+import { Spinner } from "@chakra-ui/react";
+import { MdDriveFolderUpload } from "react-icons/md";
+import { CiSaveUp1, CiEdit } from "react-icons/ci";
 
 export default function UserPage() {
 
@@ -120,79 +123,80 @@ export default function UserPage() {
     }
 
 
+    const colors = ['rgb(255, 25, 52)', 'rgb(255, 0, 54)', 'rgb(128, 0, 128)', 'rgb(204, 204, 0)', 'rgb(0, 153, 0)'];
+
+    const getRandomColor = () => {
+        return colors[Math.floor(Math.random() * colors.length)];
+    };
 
     return (
         <Box id='user-page'>
             {user ? (
                 <>
-                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' >
-
-                        <Box bg={color} >
-
-                            <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px' gridGap='10px' w='200px' ml='0px' mr='50px' position='static'>
-                                <CustomNavLink to="/home">
-                                    <Box width="150px" height="50px" >
-                                        <Logo />
-                                    </Box>
-                                </CustomNavLink>
-                                {(location.pathname !== '/home/my-posts' && location.pathname !== '/home') && <CustomNavLink to="/home/my-posts">My Feed</CustomNavLink>}
-                                <CustomNavLink to="/home/recents">Recents</CustomNavLink>
-                                <CustomNavLink to="/home/popular">Popular</CustomNavLink>
-                                {userData && !userData.isBlocked && <CustomNavLink to="/home/create-post">Create Post</CustomNavLink>}
-                                {userData && userData.isAdmin && <CustomNavLink to="/home/users">Users</CustomNavLink>}
-                            </Grid>
-
-                        </Box>
-
-                        <Box ml={8} my={8} >
-                            <Heading as="h2">User: {user.handle}</Heading>
-                            <Heading as="h3" mt={2} size="md">Email: {user.email}</Heading>
-                            <Flex mt={5} direction="row" alignItems="start">
-                                <ProfilePicture handle={handle} src={imageURL} type='userPage' />
+                    <Box ml={8} my={8} w='1220px'>
+                        <Flex mt={5} direction="row" alignItems="start" >
+                            <ProfilePicture handle={handle} src={imageURL} type='userPage' />
+                            {user.isAdmin && <Text color="green" fontWeight="700" >Admin</Text>}
+                            <Box ml={4}>
                                 {isEditing ? (
-                                    <Flex ml={4} mt={3} direction="column" maxWidth="200px">
+                                    <Flex mt={3} direction="column" maxWidth="200px">
                                         <Input value={updatedUser.firstName} onChange={e => setUpdatedUser({ ...updatedUser, firstName: e.target.value })} placeholder="First Name" />
                                         <Input mt={2} value={updatedUser.lastName} onChange={e => setUpdatedUser({ ...updatedUser, lastName: e.target.value })} placeholder="Last Name" />
-                                        <Button onClick={saveChanges} colorScheme="orange" mt={2}>Save</Button>
+                                        <Button onClick={saveChanges} colorScheme="blue" mt={2}>Save</Button>
                                     </Flex>
                                 ) :
-                                    <Box ml={4}>
-                                        <Heading as="h3" mt={2} size="md">Name:</Heading>
-                                        <Heading as="h3" mt={2} mb={1} size="md">{user.firstName} {user.lastName}</Heading>
-                                        {yourOwnProfile && !isEditing && <Button mt={10} onClick={startEditing} colorScheme="orange" >Edit</Button>}
-                                    </Box>
+                                    <Flex direction="column" alignItems="start">
+                                        <Heading as="h2" ><Text color={getRandomColor()}>@{user.handle}</Text></Heading>
+                                        <Flex direction="row" alignItems="center">
+                                            <Text mt={2} mb={1} size="md" fontWeight="700" >Email: {user.email}</Text>
+                                            {yourOwnProfile && !isEditing && <CiEdit ml={2} onClick={startEditing} colorScheme="orange" />}
+                                        </Flex>
+                                        <Flex direction="row" alignItems="center">
+                                            <Text as="h3" mt={2} mb={1} size="md">Name: {user.firstName} {user.lastName}</Text>
+                                            {yourOwnProfile && !isEditing && <CiEdit ml={2} onClick={startEditing} colorScheme="orange" />}
+
+                                        </Flex>
+                                    </Flex>
                                 }
-                            </Flex>
-
-                            {userData && userData.isAdmin && userData.handle !== handle && !user.isAdmin &&
-                                <Button onClick={toggleBlockUser} colorScheme="red" mt={4}>{isBlocked ? 'Unblock user' : 'Block user'}</Button>
-                            }
-                            {userData && userData.isAdmin && userData.handle !== handle && !user.isAdmin &&
-                                <Button onClick={giveAdminRights} colorScheme="green" mt={4}>Make admin</Button>
-                            }
-
+                            </Box>
                             {yourOwnProfile && (
                                 <Flex id='upload-picture' mt={4} direction="row" alignItems="center">
                                     <Box ml={4}>
                                         <VStack spacing={2}>
                                             <Input id="upload-picture-input" type="file" onChange={updateProfilePicture} accept=".jpg, .jpeg, .png" style={{ display: 'none' }} />
-                                            <Button onClick={() => document.getElementById('upload-picture-input').click()} colorScheme="orange">Choose File</Button>
-                                            {loadStatus && <Text>{loadStatus}</Text>}
-                                            <Button id='upload-profile-picture-button' onClick={uploadProfilePicture} colorScheme="orange" >Change Picture</Button>
+                                            <Flex direction="row" alignItems="center">
+                                                <MdDriveFolderUpload size="1.5em" onClick={() => document.getElementById('upload-picture-input').click()} colorScheme="orange" />
+                                                {loadStatus && <Text>{loadStatus}</Text>}
+                                                <CiSaveUp1 size="1.5em" id='upload-profile-picture-button' onClick={uploadProfilePicture} colorScheme="orange" />
+                                            </Flex>
                                         </VStack>
                                     </Box>
                                     {newPictureURL && <Image ml={3} my={2} src={newPictureURL} id='profile-picture-preview' alt="Preview" boxSize="100px" />}
                                 </Flex>
                             )}
-
+                            {userData && userData.isAdmin && userData.handle !== handle && !user.isAdmin &&
+                                <VStack spacing={4} ml='650px' alignItems='flex-end'>
+                                    <Button onClick={toggleBlockUser} colorScheme="red">{isBlocked ? 'Unblock user' : 'Block user'}</Button>
+                                    <Button onClick={giveAdminRights} colorScheme="green">Make admin</Button>
+                                </VStack>
+                            }
+                        </Flex>
+                        <Box width="900px" >
                             <Heading as="h2" size="lg" my={4}>Posts by {user.handle}:</Heading>
-                            {userPosts.length ? userPosts.map((post, index) => <Post key={index} post={post} postType='profilePagePosts' />) : <Text>{user.handle} has no posts</Text>}
-                        </Box>
 
-                    </Grid>
+                            {userPosts.length ? userPosts.map((post, index) =>
+                                <Box key={index} mt={5}  border='1px solid gray 'borderRadius='10px'>
+                                    <Box p={4} >
+                                    <Post key={index} post={post} postType='profilePagePosts' />
+                                    </Box>
+                                </Box>)
+                                : <Text>{user.handle} has no posts</Text>}
+
+                        </Box>
+                    </Box>
                 </>
             ) : (
-                <Text>Loading...</Text>
+                <Spinner />
             )}
         </Box>
     )

@@ -12,7 +12,7 @@ export const CustomNavLink = ({ to, children }) => {
     }
 
     const activeColor = useColorModeValue("white", "brand.300"); // Always white for active links
-    const inactiveColor = useColorModeValue("white", "brand.200");
+    const inactiveColor = useColorModeValue("brand.300", "brand.200");
 
     const theme = useTheme();
     const activeBorderColor = theme.colors.brand[300]; // Use brand color for active border
@@ -22,6 +22,8 @@ export const CustomNavLink = ({ to, children }) => {
             as={RouterLink}
             to={to}
             color={isActive ? activeColor : inactiveColor} // Change color based on active state
+            fontWeight="700"
+            fontSize="lg"
             borderLeft={isActive ? `2px solid ${activeBorderColor}` : "none"} // Use brand color for active border
         >
             {children}

@@ -88,7 +88,8 @@ const AllPosts = ({ search }) => {
 
   return (
     <Box borderRadius="md" boxShadow="1g" w="1200px"  >
-      
+
+
       <Flex direction="row" alignItems={'center'}>
         <Heading as="h1" size="lg" mr={'15px'}>My feed</Heading>
         <div className="material-symbols-outlined" style={{ marginRight: '15px' }} onClick={toogleFilterLike}>&#xe429;</div>

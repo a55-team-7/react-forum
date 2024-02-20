@@ -31,11 +31,12 @@ export const AllRoutes = () => {
           <Route path="create-post" element={<Authenticated> <CreatePost /> </Authenticated>} />
           <Route path="my-posts" element={<Authenticated> <AllPosts search={search} /> </Authenticated>} />
           <Route path="users" element={<Authenticated> <Users search={search} />  </Authenticated>} />
+          <Route path="users/:handle" element={<Authenticated> <UserPage />  </Authenticated>} />
+           <Route path="my-posts/:id" element={<Authenticated> <PostDetails /> </Authenticated>} />
         </Route>
-        <Route path="home/my-posts/:id" element={<Authenticated> <PostDetails /> </Authenticated>} />
+       
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-        <Route path="users/:handle" element={<Authenticated> <UserPage />  </Authenticated>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

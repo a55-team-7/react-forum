@@ -10,7 +10,7 @@ export default function ProfilePicture ({ handle, type, src }) {
     const navigate = useNavigate();
 
     const onPictureClick = () => {
-        if (type === 'post' || type === 'comment' || type === 'postDetails' || type === 'users') navigate(`../../users/${handle}`);
+        if (type === 'post' || type === 'comment' || type === 'postDetails' || type === 'users') navigate(`/home/users/${handle}`);
     }
 
     let size = "150px";

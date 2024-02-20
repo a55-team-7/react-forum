@@ -36,7 +36,7 @@ export const Users = ({ search }) => {
         <Box borderRadius="md" boxShadow="1g" w="1200px" ml='100px'>
         <Grid templateColumns="1fr 1fr 1fr 1fr"  h="25vh">
             {filteredUsers.map((user, index) => (
-                <Box key={index} id="user-data" display="flex" alignItems="center">
+                <Box key={index} id="user-data" display="flex" alignItems="center" >
                     <ProfilePicture handle={user.handle} type='users'/>
                     <Text as="h4" ml='25px' fontSize="17px" fontWeight="700" isTruncated maxWidth="200px" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" color={getRandomColor()}>{`${user.firstName}${user.lastName} `} </Text>
                 </Box>
