@@ -13,7 +13,7 @@ export default function ProfilePicture ({ handle, type, src }) {
         if (type === 'post' || type === 'comment' || type === 'postDetails' || type === 'users') navigate(`../../users/${handle}`);
     }
 
-    let size = "100px";
+    let size = "150px";
 
     if (type === 'post' || type=== 'comment' || type === 'users') {
         size = "40px";

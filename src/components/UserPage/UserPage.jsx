@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Image, Input, Text, extendTheme } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image, Input, Text, Grid, useColorModeValue, VStack} from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import AppContext from "../../context/AppContext";
 import { useParams } from "react-router-dom"
@@ -9,10 +9,12 @@ import Post from "../Post/Post";
 import { getAllPosts } from "../../services/posts-service";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from "../../common/contants";
+import { CustomNavLink } from "../ChakraUI/CustomNavLink";
+import Logo from "../Logo/Logo";
 
 export default function UserPage() {
-    const { colors, fonts } = extendTheme;
-    // const buttonColor = colors.brand[300];
+
+    const color = useColorModeValue("brand.100", "brand.300");
 
     //update the local user 
     const [user, setUser] = useState(null);
@@ -120,44 +122,74 @@ export default function UserPage() {
 
 
     return (
-        <Box id='user-page' p={5} minHeight="100vh">
+        <Box id='user-page'>
             {user ? (
                 <>
-                    <Heading as="h2">User: {user.handle}</Heading>
-                    <Flex mt={2} direction="row" alignItems="start">
-                        <ProfilePicture handle={handle} src={imageURL} type='userPage' />
-                        <Box ml={4}>
-                            <Heading as="h3" mt={2} size="md">Name: {user.firstName} {user.lastName}</Heading>
+                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' >
+
+                        <Box bg={color} >
+
+                            <Grid justifyContent='space-around' justifyItems='start' gridTemplateColumns='auto' mt='20px' gridGap='10px' w='200px' ml='0px' mr='50px' position='static'>
+                                <CustomNavLink to="/home">
+                                    <Box width="150px" height="50px" >
+                                        <Logo />
+                                    </Box>
+                                </CustomNavLink>
+                                {(location.pathname !== '/home/my-posts' && location.pathname !== '/home') && <CustomNavLink to="/home/my-posts">My Feed</CustomNavLink>}
+                                <CustomNavLink to="/home/recents">Recents</CustomNavLink>
+                                <CustomNavLink to="/home/popular">Popular</CustomNavLink>
+                                {userData && !userData.isBlocked && <CustomNavLink to="/home/create-post">Create Post</CustomNavLink>}
+                                {userData && userData.isAdmin && <CustomNavLink to="/home/users">Users</CustomNavLink>}
+                            </Grid>
+
+                        </Box>
+
+                        <Box ml={8} my={8} >
+                            <Heading as="h2">User: {user.handle}</Heading>
                             <Heading as="h3" mt={2} size="md">Email: {user.email}</Heading>
-                            {yourOwnProfile && !isEditing && <Button onClick={startEditing} colorScheme="orange" mt={2}>Edit</Button>}
+                            <Flex mt={5} direction="row" alignItems="start">
+                                <ProfilePicture handle={handle} src={imageURL} type='userPage' />
+                                {isEditing ? (
+                                    <Flex ml={4} mt={3} direction="column" maxWidth="200px">
+                                        <Input value={updatedUser.firstName} onChange={e => setUpdatedUser({ ...updatedUser, firstName: e.target.value })} placeholder="First Name" />
+                                        <Input mt={2} value={updatedUser.lastName} onChange={e => setUpdatedUser({ ...updatedUser, lastName: e.target.value })} placeholder="Last Name" />
+                                        <Button onClick={saveChanges} colorScheme="orange" mt={2}>Save</Button>
+                                    </Flex>
+                                ) :
+                                    <Box ml={4}>
+                                        <Heading as="h3" mt={2} size="md">Name:</Heading>
+                                        <Heading as="h3" mt={2} mb={1} size="md">{user.firstName} {user.lastName}</Heading>
+                                        {yourOwnProfile && !isEditing && <Button mt={10} onClick={startEditing} colorScheme="orange" >Edit</Button>}
+                                    </Box>
+                                }
+                            </Flex>
+
+                            {userData && userData.isAdmin && userData.handle !== handle && !user.isAdmin &&
+                                <Button onClick={toggleBlockUser} colorScheme="red" mt={4}>{isBlocked ? 'Unblock user' : 'Block user'}</Button>
+                            }
+                            {userData && userData.isAdmin && userData.handle !== handle && !user.isAdmin &&
+                                <Button onClick={giveAdminRights} colorScheme="green" mt={4}>Make admin</Button>
+                            }
+
+                            {yourOwnProfile && (
+                                <Flex id='upload-picture' mt={4} direction="row" alignItems="center">
+                                    <Box ml={4}>
+                                        <VStack spacing={2}>
+                                            <Input id="upload-picture-input" type="file" onChange={updateProfilePicture} accept=".jpg, .jpeg, .png" style={{ display: 'none' }} />
+                                            <Button onClick={() => document.getElementById('upload-picture-input').click()} colorScheme="orange">Choose File</Button>
+                                            {loadStatus && <Text>{loadStatus}</Text>}
+                                            <Button id='upload-profile-picture-button' onClick={uploadProfilePicture} colorScheme="orange" >Change Picture</Button>
+                                        </VStack>
+                                    </Box>
+                                    {newPictureURL && <Image ml={3} my={2} src={newPictureURL} id='profile-picture-preview' alt="Preview" boxSize="100px" />}
+                                </Flex>
+                            )}
+
+                            <Heading as="h2" size="lg" my={4}>Posts by {user.handle}:</Heading>
+                            {userPosts.length ? userPosts.map((post, index) => <Post key={index} post={post} postType='profilePagePosts' />) : <Text>{user.handle} has no posts</Text>}
                         </Box>
-                    </Flex>
 
-                    {isEditing ? (
-                        <Flex mt={3} direction="column" maxWidth="200px">
-                            <Input value={updatedUser.firstName} onChange={e => setUpdatedUser({ ...updatedUser, firstName: e.target.value })} placeholder="First Name" />
-                            <Input value={updatedUser.lastName} onChange={e => setUpdatedUser({ ...updatedUser, lastName: e.target.value })} placeholder="Last Name" />
-                            <Button onClick={saveChanges} colorScheme='orange' mt={4}>Save</Button>
-                        </Flex>
-                    ) : null}
-
-                    {userData && userData.isAdmin && userData.handle !== handle && !user.isAdmin &&
-                        <Button onClick={toggleBlockUser} colorScheme="red" mt={4}>{isBlocked ? 'Unblock user' : 'Block user'}</Button>
-                    }
-                    {userData && userData.isAdmin && userData.handle !== handle && !user.isAdmin &&
-                        <Button onClick={giveAdminRights} colorScheme="green" mt={4}>Make admin</Button>
-                    }
-
-                    {yourOwnProfile && (
-                        <Box id='upload-picture' mt={4}>
-                            {newPictureURL && <Image my = {3} src={newPictureURL} id='profile-picture-preview' alt="Preview" boxSize="100px" />}
-                            <Input id="upload-picture-input" type="file" onChange={updateProfilePicture} accept=".jpg, .jpeg, .png" style={{ border: 'none' }} />
-                            {loadStatus && <Text>{loadStatus}</Text>}
-                            <Button id='upload-profile-picture-button' onClick={uploadProfilePicture} colorScheme="orange" mt={4}>Change Profile Picture</Button>
-                        </Box>
-                    )}
-                    <Heading as="h2" size="lg" my={4}>Posts by {user.handle}:</Heading>
-                    {userPosts.length ? userPosts.map((post, index) => <Post key={index} post={post} postType='profilePagePosts' />) : <Text>{user.handle} has no posts</Text>}
+                    </Grid>
                 </>
             ) : (
                 <Text>Loading...</Text>
