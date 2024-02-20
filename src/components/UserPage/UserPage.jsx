@@ -130,7 +130,7 @@ export default function UserPage() {
     };
 
     return (
-        <Box id='user-page'>
+        <Box id='user-page' h='calc(100vh)' minWidth="30em" width="30em">
             {user ? (
                 <>
                     <Box ml={8} my={8} w='1220px'>
