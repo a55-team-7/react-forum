@@ -1,8 +1,8 @@
 import { get, ref, query, equalTo, orderByChild, update, push, remove } from "firebase/database";
 import { db } from "../config/firebase-setup";
 
-export const addPost = async (author, content, title, tags) => {
-
+export const addPost = async (author, title, content, tags) => {
+ 
     return push(ref(db, 'posts'), {
         author,
         title,
