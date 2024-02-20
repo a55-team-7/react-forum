@@ -7,7 +7,7 @@ import { logoutUser } from '../../services/authentication-service';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import { Input } from "@chakra-ui/react";
-import { Button , Grid} from '@chakra-ui/react'
+import { Button , Grid, Spacer} from '@chakra-ui/react'
 import { useColorModeValue } from '@chakra-ui/react'
 
 export default function Header({ search, setSearch }) {
@@ -31,17 +31,17 @@ export default function Header({ search, setSearch }) {
                     ? (
                         <>
 
-                            
-                            <Grid templateColumns="600px 100px" gap={50} mt={'20px'} mr={'50px'}  >
+                          
+
+                            <Grid templateColumns="1fr auto" mt={'20px'} justifyContent="flex-end" justifyItems="end" mr='50px'>
                                 {(location.pathname === '/home' || location.pathname === '/home/my-posts' || location.pathname === '/home/users') && (
                                     <>
-                                        <Input value={search} onChange={e => setSearch(e.target.value)} type="text" name="search" id="search" placeholder='Find your topic!'/>
+                                        <Input value={search} onChange={e => setSearch(e.target.value)} type="text" name="search" w="600px" id="search" placeholder='Find your topic!'/>
                                         {search && <Button onClick={() => setSearch('')}>Clear</Button>}
                                     </>
                                 )}
-                                <Button onClick={logOut} border="1px" borderColor={color} mr={'20px'}>Logout</Button>
+                                <Button onClick={logOut} border="1px" borderColor={color} w="80px" ml='50px'>Logout</Button>
                             </Grid>
-
                         </>
                     )
                     : (
