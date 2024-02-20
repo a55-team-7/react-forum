@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormControl, FormLabel, Heading, Input, Grid, Text, Textarea, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormLabel, Heading, Input, Grid, Text, Textarea, useColorModeValue, Spacer } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import './PostDetails.css'
@@ -126,6 +126,10 @@ export default function PostDetails() {
         userPageLink += userData.handle;
     }
 
+    const cancelEditPost = () => {
+        setIsEditing(false);
+    }
+
     return (
         <div id='post-details'>
             {(post && userData && author) ? (
@@ -175,7 +179,9 @@ export default function PostDetails() {
                                                 <FormLabel>Tags:</FormLabel>
                                                 <Input type="text" value={updatedPost.tags} onChange={e => setUpdatedPost({ ...updatedPost, tags: e.target.value })} />
                                             </FormControl>
-                                            <Button mt={4} colorScheme="teal" onClick={saveChanges}>Save</Button>
+                                            <Button mt={4} colorScheme="teal" onClick={saveChanges} mr={2}>Save</Button>
+                                            <Button mt={4} colorScheme="teal" onClick={cancelEditPost}>Cancel</Button>
+
                                         </Box>
                                     ) : (
                                         <Button onClick={startEditing}>Edit Post</Button>

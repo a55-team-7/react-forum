@@ -122,10 +122,10 @@ export default function UserPage() {
 
 
     return (
-        <Box id='user-page'>
+        <Box id='user-page' h='calc(100vh)' minWidth="30em" width="30em">
             {user ? (
                 <>
-                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' >
+                    <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' h='calc(100vh)' minWidth="30em" width="30em">
 
                         <Box bg={color} >
 
@@ -144,7 +144,7 @@ export default function UserPage() {
 
                         </Box>
 
-                        <Box ml={8} my={8} >
+                        <Box ml={8} my={8}>
                             <Heading as="h2">User: {user.handle}</Heading>
                             <Heading as="h3" mt={2} size="md">Email: {user.email}</Heading>
                             <Flex mt={5} direction="row" alignItems="start">
