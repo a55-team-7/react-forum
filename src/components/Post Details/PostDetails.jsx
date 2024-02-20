@@ -21,7 +21,7 @@ export default function PostDetails() {
     const [showOptions, setShowOptions] = useState(false);
     const [author, setAuthor] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [updatedPost, setUpdatedPost] = useState({ title: '', content: '' });
+    const [updatedPost, setUpdatedPost] = useState({ title: '', content: '', tags: '' });
     const [commentsUpdated, setCommentsUpdated] = useState(false);
     const color = useColorModeValue("brand.100", "brand.300");
 
@@ -96,7 +96,7 @@ export default function PostDetails() {
     }
 
     const startEditing = () => {
-        setUpdatedPost({ title: post.title, content: post.content });
+        setUpdatedPost({ title: post.title, content: post.content, tags: post.tags.join(', ') });
         setIsEditing(true);
     }
 
@@ -110,7 +110,9 @@ export default function PostDetails() {
             return;
         }
 
-        await updatePostById(post.id, updatedPost);
+        const tagsArray = updatedPost.tags.trim().split(', ').join(',').split(',');
+
+        await updatePostById(post.id, { ...updatePostById, tags: tagsArray});
         setIsEditing(false);
         getPostById(id).then(setPost);
     }
@@ -168,6 +170,10 @@ export default function PostDetails() {
                                             <FormControl mt={4}>
                                                 <FormLabel>Content:</FormLabel>
                                                 <Textarea value={updatedPost.content} onChange={e => setUpdatedPost({ ...updatedPost, content: e.target.value })} />
+                                            </FormControl>
+                                            <FormControl mt={4}> 
+                                                <FormLabel>Tags:</FormLabel>
+                                                <Input type="text" value={updatedPost.tags} onChange={e => setUpdatedPost({ ...updatedPost, tags: e.target.value })} />
                                             </FormControl>
                                             <Button mt={4} colorScheme="teal" onClick={saveChanges}>Save</Button>
                                         </Box>
