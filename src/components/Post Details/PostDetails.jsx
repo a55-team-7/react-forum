@@ -90,18 +90,24 @@ export default function PostDetails() {
     }
 
     const toggleAuthorOptions = () => {
-        setShowOptions(!showOptions);
+        if (userData.handle === post.author || userData.isAdmin) {
+            setShowOptions(!showOptions);
+        }
     }
 
     const postDeletion = async () => {
-        await deletePost(post.id);
-        setPost(null);
-        navigate(-1);
+        if (userData.handle === post.author || userData.isAdmin) {
+            await deletePost(post.id);
+            setPost(null);
+            navigate(-1);
+        }
     }
 
     const startEditing = () => {
-        setUpdatedPost({ title: post.title, content: post.content, tags: post.tags.join(', ') });
-        setIsEditing(true);
+        if (userData.handle === post.author) {
+            setUpdatedPost({ title: post.title, content: post.content, tags: post.tags.join(', ') });
+            setIsEditing(true);
+        }
     }
 
     const saveChanges = async () => {
@@ -116,7 +122,7 @@ export default function PostDetails() {
 
         const tagsArray = updatedPost.tags.trim().split(', ').join(',').split(',');
 
-        await updatePostById(post.id, { ...updatePostById, tags: tagsArray});
+        await updatePostById(post.id, { ...updatePostById, tags: tagsArray });
         setIsEditing(false);
         getPostById(id).then(setPost);
     }
@@ -142,18 +148,20 @@ export default function PostDetails() {
 
                         <Box w="1220px" p={4} my={3} ml={5} >
                             <Flex >
-                                <IoArrowBack size='30px' color='blue'onClick={() => navigate(-1)}/>
-                                {(userData.handle === post.author || (userData.isAdmin && !author.isAdmin)) &&
-                                    <Box ml={800}> 
-                                    <CiEdit size='20px' onClick={toggleAuthorOptions}/>
+                                <IoArrowBack size='30px' color='blue' onClick={() => navigate(-1)} />
+                                {(userData.handle === post.author || userData.isAdmin) &&
+                                    <Box ml={800}>
+                                        <CiEdit size='20px' onClick={toggleAuthorOptions} />
                                     </Box>
                                 }
                             </Flex>
 
                             {showOptions && (
                                 <Box mt={3}>
-                                    <Button mr={3} onClick={postDeletion}>Delete Post</Button>
-                                    {isEditing ? (
+                                    {(userData.handle === post.author || userData.isAdmin) &&
+                                        <Button mr={3} onClick={postDeletion}>Delete Post</Button>
+                                    }
+                                    {isEditing && (userData.handle === post.author) ? (
                                         <Box mt={4}>
                                             <FormControl>
                                                 <FormLabel>Title:</FormLabel>
@@ -163,7 +171,7 @@ export default function PostDetails() {
                                                 <FormLabel>Content:</FormLabel>
                                                 <Textarea value={updatedPost.content} onChange={e => setUpdatedPost({ ...updatedPost, content: e.target.value })} />
                                             </FormControl>
-                                            <FormControl mt={4}> 
+                                            <FormControl mt={4}>
                                                 <FormLabel>Tags:</FormLabel>
                                                 <Input type="text" value={updatedPost.tags} onChange={e => setUpdatedPost({ ...updatedPost, tags: e.target.value })} />
                                             </FormControl>
@@ -173,11 +181,11 @@ export default function PostDetails() {
                                         </Box>
                                     ) : (
                                         <Button onClick={startEditing}>Edit Post</Button>
-                                        )}
+                                    )}
                                 </Box>
                             )}
 
-                         
+
                             <Box mt={6} border="none">
                                 <Flex alignItems="center">
                                     <ProfilePicture handle={post.author} type='postDetails' />
@@ -210,18 +218,18 @@ export default function PostDetails() {
                                     <Button onClick={postComment} id='post-comment-button' mt={4}>Post</Button>
                                 </Box>
                             }
-                            
+
                         </Box>
                     </Grid>
-                    </>
-                    ) : (
-                       
-                        <Spinner size="xl" />
-                
+                </>
+            ) : (
+
+                <Spinner size="xl" />
+
             )}
 
-                </div>
-            )
+        </div>
+    )
 }
 
 

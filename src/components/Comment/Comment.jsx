@@ -7,6 +7,7 @@ import AppContext from '../../context/AppContext';
 import { deleteCommentById, updateCommentById } from '../../services/posts-service';
 import { MAX_COMMENT_CONTENT_LENGTH, MIN_COMMENT_CONTENT_LENGTH } from '../../common/contants';
 import ProfilePicture from '../ProfilePicture/ProfilePicture';
+// import { set } from "firebase/database";
 
 export default function Comment({ comment, postId, commentId, setCommentsUpdated }) {
     const { userData } = useContext(AppContext);
@@ -15,8 +16,10 @@ export default function Comment({ comment, postId, commentId, setCommentsUpdated
 
 
     const startEditing = () => {
-        setUpdatedContent(comment.comment);
-        setIsEditing(true);
+        if (userData.handle === comment.userHandle) {
+            setUpdatedContent(comment.comment);
+            setIsEditing(true);
+        }
     }
 
     const saveChanges = async () => {
@@ -31,8 +34,10 @@ export default function Comment({ comment, postId, commentId, setCommentsUpdated
     }
 
     const deleteComment = async () => {
-        await deleteCommentById(postId, commentId);
-        setCommentsUpdated(true);
+        if (userData.handle === comment.userHandle || userData.isAdmin) {
+            await deleteCommentById(postId, commentId);
+            setCommentsUpdated(true);
+        }
     }
 
     return (
@@ -63,7 +68,7 @@ export default function Comment({ comment, postId, commentId, setCommentsUpdated
                     </Box>
                 ) : (
                     <Box mt={4}>
-                        {(userData.handle === comment.userHandle || userData.isAdmin) &&
+                        {(userData.handle === comment.userHandle) &&
                             <Button colorScheme="teal" variant="outline" onClick={startEditing}>Edit</Button>
                         }
                         {(userData.handle === comment.userHandle || userData.isAdmin) &&
@@ -83,5 +88,6 @@ Comment.propTypes = {
         comment: PropTypes.string
     }),
     postId: PropTypes.string,
-    commentId: PropTypes.string
+    commentId: PropTypes.string,
+    setCommentsUpdated: PropTypes.func
 }
