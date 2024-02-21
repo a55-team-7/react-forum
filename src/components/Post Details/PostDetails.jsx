@@ -182,11 +182,11 @@ export default function PostDetails() {
                                 <Flex alignItems="center">
                                     <ProfilePicture handle={post.author} type='postDetails' />
                                     <Box ml={4} maxWidth="800px">
-                                        <Text fontSize='30px'>{post.title}</Text>
+                                        <Text fontSize='30px'>{post.content}</Text>
                                         <Text mt={2}>by {post.author} on {new Date(post.createdOn).toLocaleDateString('bg-BG')}</Text>
                                     </Box>
                                 </Flex>
-                                <Text mt={4}>{post.content}</Text>
+                                <Text mt={4}>{post.title}</Text>
                                 <Button onClick={togglePostLike} mt={4} color="magenta" leftIcon={post.likedBy.includes(userData.handle) ? <AiFillHeart /> : null}>
                                     {post.likedBy.includes(userData.handle) ? 'Dislike' : 'Like'}
                                 </Button>

@@ -24,7 +24,7 @@ const Post = ({ post, postType = 'post' }) => {
                 <Flex direction="row" justifyContent="space-between" alignItems="center" pb={3}>
                     <Link onClick={() => navigate(`/home/my-posts/${post.id}`)} color={color}>
                         <Text as="h4" fontSize="17px" fontWeight="700" isTruncated maxWidth="200px" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis" color={getRandomColor()}>
-                            {post.title}
+                            {post.content}
                         </Text>
                     </Link>
 
@@ -35,7 +35,7 @@ const Post = ({ post, postType = 'post' }) => {
                 <Text fontSize="20px" h="90px" overflowY="auto"
                     whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis"
                     border="1px solid" borderColor="gray.200" borderRadius="10px" p={2} justifyContent='center'>
-                    {post.content}
+                    {post.title}
                 </Text>
 
                 <Spacer />
