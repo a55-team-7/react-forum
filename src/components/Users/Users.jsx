@@ -33,7 +33,7 @@ export const Users = ({ search }) => {
       };
 
     return (
-        <Box borderRadius="md" boxShadow="1g" w="1200px" ml='100px'>
+        <Box borderRadius="md" boxShadow="1g" w="1000px" ml='100px'>
         <Grid templateColumns="1fr 1fr 1fr 1fr"  h="25vh">
             {filteredUsers.map((user, index) => (
                 <Box key={index} id="user-data" display="flex" alignItems="center" >

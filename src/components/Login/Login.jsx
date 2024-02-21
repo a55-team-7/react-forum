@@ -66,8 +66,8 @@ export default function Login() {
             <Container id='login-form' w="400px" p={4} mx="auto" h='500px' justifyContent='center' mt='100px'>
                 <VStack spacing={4}>
                     <Heading color='white'>Welcome back! </Heading>
-                    <Input bg='pink' value={form.email} onChange={updateForm('email')} id='login-email' type='text' placeholder='Email' />
-                    <Input bg='pink' value={form.password} onChange={updateForm('password')} id='login-password' type='password' placeholder='Password' />
+                    <Input bg='white' value={form.email} onChange={updateForm('email')} id='login-email' type='text' placeholder='Email' />
+                    <Input bg='white' value={form.password} onChange={updateForm('password')} id='login-password' type='password' placeholder='Password' />
                     <Button onClick={login} border="1px" bg='blue' w="80px" color="cyan">Sign In</Button>
                 </VStack>
             </Container>

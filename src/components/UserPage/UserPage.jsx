@@ -130,10 +130,10 @@ export default function UserPage() {
     };
 
     return (
-        <Box id='user-page' h='calc(100vh)' minWidth="30em" width="30em">
+        <Box borderRadius="md" boxShadow="1g" w="1200px" >
             {user ? (
                 <>
-                    <Box ml={8} my={8} w='1220px'>
+                    <Box ml={8} my={8} alignItems="start" >
                         <Flex mt={5} direction="row" alignItems="start" >
                             <ProfilePicture handle={handle} src={imageURL} type='userPage' />
                             {user.isAdmin && <Text color="green" fontWeight="700" >Admin</Text>}
