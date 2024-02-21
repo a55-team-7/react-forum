@@ -38,7 +38,7 @@ export default function Home({ search, setSearch }) {
 
     return (
         <>
-            {user ?
+            {user && userData ?
                 <div>
                     <Grid gridTemplateColumns='1fr 6fr' gridGap='0px' style={{ height: '100vh' }}   >
 
